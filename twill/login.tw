@@ -1,0 +1,35 @@
+#!/usr/bin/env DJANGO_SETTINGS_MODULE=settings twill-sh
+# We want valid HTML
+config use_tidy 0
+config use_BeautifulSoup 0
+config allow_parse_errors 0
+
+# Create a user
+extend_with django.contrib.auth.models
+run 'u = User.objects.create_user(username="test", email="test", password="test")'
+run 'u.save()'
+
+# Access login page
+go http://localhost:8000/netunong/login
+notfind '<a +.*href="/netunong/logout/"'
+
+# Authenticate
+fv 1 username test
+fv 1 password test
+submit
+
+# Validate new page. Should have logout link
+code 200
+url http://localhost:8000/netunong/$
+find 'test'
+find '<a +.*href="/netunong/logout/"'
+
+# Click in logout link
+follow logout
+url http://localhost:8000/netunong/login/$
+# Should go to login page
+notfind '<a +.*href="/netunong/logout/"'
+
+# Remove user
+run 'u.delete()'
+

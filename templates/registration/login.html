@@ -1,0 +1,30 @@
+{% extends "model.html" %}
+
+{% block title %}
+Netuno NG - Autentica&ccedil;&atilde;o 
+{% endblock %}
+
+{% block logout_link %}
+{# There is no sense on logging out a not logged in user #}
+{% endblock %}
+
+{% block content %}
+{% if form.errors %}
+<div class="error">A autentica&ccedil;&atilde;o falhou</div>
+{% endif %}
+<form action="/netunong/login/" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="/netunong/" />
+    <table>
+        <tr>
+            <td>Usu&aacute;rio<td>
+            <td><input type="text" name="username" />
+        </tr>
+        <tr>
+            <td>Senha<td>
+            <td><input type="password" name="password" />
+        </tr>
+    </table>
+    <input type="submit" value="Autentique-me" />
+</form>
+{% endblock %}

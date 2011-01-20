@@ -1,0 +1,4 @@
+\.twill-history
+.*\.pyc
+.*\.save
+base.db

@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>{% block title %}Base model for Netuno NG Pages{% endblock %}</title>
+    </head>
+    <body>
+        {% block logout_link %}<a name="logout" href="/netunong/logout/">Sair</a>{% endblock %}
+        {% block content %}
+        <p>This is the base model for Netuno NG pages. If you are seeing it
+        in the browser, something is wrong.
+        </p>
+        {% endblock %}
+        
+    </body>
+</html>
