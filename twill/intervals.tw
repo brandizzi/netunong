@@ -1,0 +1,9 @@
+#!/usr/bin/env DJANGO_SETTINGS_MODULE=settings twill-sh
+runfile strict-html.twi
+runfile setup.twi
+
+
+fv 1 activity "do something"
+fv 1 task
+
+runfile clean.twi

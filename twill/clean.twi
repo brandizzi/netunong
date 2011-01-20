@@ -1,0 +1,2 @@
+# Delete user
+run 'User.objects.get(username="test").delete()'
