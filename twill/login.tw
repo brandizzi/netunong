@@ -13,7 +13,7 @@ submit
 
 # Validate new page. Should have logout link
 code 200
-url http://localhost:8000/netunong/$
+url http://localhost:8000/netunong/register/$
 find 'test'
 find '<a +.*href="/netunong/logout/"'
 
