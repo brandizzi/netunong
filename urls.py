@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 import django.contrib.auth.views
-import netunong.view
+import netunong.views.main
 import netunong.views.authentication
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -8,7 +8,7 @@ import netunong.views.authentication
 
 urlpatterns = patterns('',
     # Example:
-    (r'^netunong/$', netunong.view.current_datetime),
+    (r'^netunong/$', netunong.views.main.index),
     (r'^netunong/login/$', django.contrib.auth.views.login),
     (r'^netunong/logout/$', netunong.views.authentication.logout)
 
