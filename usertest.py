@@ -1,9 +1,6 @@
 #!/usr/bin/env DJANGO_SETTINGS_MODULE=settings python
-import django.contrib.auth.models as am
+from register.models import Employee
+from register.test.test_utilities import get_organization, get_employee
 
-
-test_user = am.User.objects.create_user(
-        username='test', 
-        password='test', 
-        email='test')
+test_user = get_employee()
 print "User test created"

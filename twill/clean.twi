@@ -1,2 +1,4 @@
-# Delete user
-run 'User.objects.get(username="test").delete()'
+# Cleans the database
+extend_with 'register.test.test_utilities'
+run 'clear_database()'
+

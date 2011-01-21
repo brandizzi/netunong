@@ -1,0 +1,72 @@
+#!/usr/bin/env DJANGO_SETTINGS_MODULE=settings twill-sh
+runfile twill/strict-html.twi
+
+# Creating entities
+extend_with 'register.models'
+run 'organization = Organization(name="SEA Tecnologia", description="Criadora do Netuno Nova Geracao (NetunoNG)")'
+run 'organization.save()'
+run 'employee = Employee.create_employee(organization=organization, username="test", first_name="Test", last_name="Testein", middle_name="Testos", email="test@test.tst", password="test")'
+run 'project = Project(name="NetunoNG", description="Netuno Nova Geracao (NetunoNG)", organization=organization)'
+run 'project.save()'
+run 'task1 = Task(name="Test login screen", project=project, description="Testing the login screen")'
+run 'task1.save()'
+run 'task2 = Task(name="Test index screen", project=project, description="Testing the index screen")'
+run 'task2.save()'
+run 'employee.tasks.add(task1, task2)'
+
+runfile twill/login.twi
+
+# Validate new page
+code 200
+url http://localhost:8000/netunong/register/$
+find '${employee.user.username}'
+find '<select name="task">'
+find '<option value="${str(task1.id)}">${task1.name}</option>'
+find '<option value="${str(task2.id)}">${task2.name}</option>'
+find '<input type="hidden" name="operation" value="open" />'
+
+# Starts a period
+fv 1 intention 'write a Twill test'
+fv 1 task ${str(task1.id)}
+submit
+
+# Should have the working period at the database
+run 'wp = employee.get_last_working_period()'
+run 'assert not wp.is_complete()'
+run 'assert wp.intended_task == task1'
+
+# Validate result
+code 200
+url http://localhost:8000/netunong/register/$
+find 'write a Twill test'
+# Trying to verify if the task really appears as a label and not only as an
+# option.
+find '[^>]${str(task1.name)}[^>]' 
+find '<select name="task">'
+find '<option value="${str(task1.id)}">${task1.name}</option>'
+find '<option value="${str(task2.id)}">${task2.name}</option>'
+find '<input type="hidden" name="working_period" value="${str(wp.id)}" />'
+find '<input type="hidden" name="operation" value="close" />'
+
+# Now, close period
+fv 1 execution 'write another Twill test'
+fv 1 task ${str(task2.id)}
+submit
+
+# Returns to open page
+code 200
+url http://localhost:8000/netunong/register/$
+find '${employee.user.username}'
+find '<select name="task">'
+find '<option value="${str(task1.id)}">${task1.name}</option>'
+find '<option value="${str(task2.id)}">${task2.name}</option>'
+find '<input type="hidden" name="operation" value="open" />'
+
+# Working period should be closed
+run 'wp = employee.get_last_working_period()'
+run 'assert wp.is_complete()'
+run 'assert wp.executed_task == task2'
+
+# Cleans the database
+#runfile twill/clean.twi
+

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import auth
@@ -35,9 +37,9 @@ class Employee(models.Model):
         """
         Creates a new employee and a correspondent user. If we do:
 
-        >>> organization = Organization(name="SEA", description="SEA Tecnologia")
-        >>> organization.save()
-        >>> employee = Employee.create_employee(organization=organization,
+        >>> import test.test_utilities as tu
+        >>> org = tu.get_organization()
+        >>> employee = Employee.create_employee(organization=org,
         ...     username="test", first_name="Test", last_name="Testein",
         ...     middle_name="Testos", email="test@test.tst", password="test")
 
@@ -65,9 +67,7 @@ class Employee(models.Model):
         True
 
         Cleanup:
-        >>> employee.user.delete()
-        >>> employee.organization.delete()
-        >>> employee.delete()
+        >>> tu.clear_database()
         """
         user = User.objects.create_user(username=username, password=password,
                 email=email)
@@ -84,9 +84,9 @@ class Employee(models.Model):
         """
         Deletes an employee and its user. If we create an employee:
 
-        >>> organization = Organization(name="SEA", description="SEA Tecnologia")
-        >>> organization.save()
-        >>> employee = Employee.create_employee(organization=organization,
+        >>> import test.test_utilities as tu
+        >>> org = tu.get_organization()
+        >>> employee = Employee.create_employee(organization=org,
         ...     username="test", first_name="Test", last_name="Testein",
         ...     middle_name="Testos", email="test@test.tst", password="test")
 
@@ -116,20 +116,77 @@ class Employee(models.Model):
         []
 
         Cleanup:
-        >>> organization.delete()
+        >>> tu.clear_database()
         """
         self.user.delete()
         models.Model.delete(self)
 
     def get_last_working_period(self):
-        return self.workingperiod_set.latest()
+        """
+        Get the last working period, ordered by the moment it started.
+
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod( employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="I've done it!", executed_task=task, 
+        ...     start= datetime.now(), end=datetime.now())
+        >>> wp2 = WorkingPeriod(intended_task=task, employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start= datetime.now())
+        >>> wp1.save()
+        >>> wp2.save()
+        >>> employee.get_last_working_period() == wp2
+        True
+
+        Cleanup:
+        >>> tu.clear_database()
+        """
+        try:
+            return self.workingperiod_set.latest()
+        except WorkingPeriod.DoesNotExist:
+            return WorkingPeriod.NONE
 
 class WorkingPeriod(models.Model):
     employee = models.ForeignKey(Employee)
-    activity = models.CharField(max_length=500)
-    task = models.ForeignKey(Task)
+
     start = models.DateTimeField()
+    intended = models.CharField(max_length=200)
+    intended_task = models.ForeignKey(Task, 
+            related_name='intended_working_periods')
+
     end = models.DateTimeField(null=True)
+    executed = models.CharField(max_length=200, null=True)
+    executed_task = models.ForeignKey(Task, null=True, 
+            related_name='executed_working_periods')
+
+    def is_complete(self):
+        """
+        Returns True if the period is complete --- that is, its end field is
+        filled; returns False otherwise.
+
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employe have it", executed_task=task, 
+        ...     start= datetime.now(), end=datetime.now())
+        >>> wp1.save()
+        >>> wp1.is_complete()
+        True
+        >>> wp2 = WorkingPeriod(intended_task=task, employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start= datetime.now())
+        >>> wp2.save()
+        >>> wp2.is_complete()
+        False
+
+        Cleanup:
+        >>> tu.clear_database()
+        """
+        return self.end is not None
 
     def __cmp__(self, other):
         """Required for using TestCase.assertItemsEqual()"""
@@ -137,3 +194,8 @@ class WorkingPeriod(models.Model):
 
     class Meta:
         get_latest_by = "start"
+
+# Represents the null working period. Better than verifying if the working
+# period is None
+WorkingPeriod.NONE = WorkingPeriod()
+WorkingPeriod.NONE.is_complete = lambda : True

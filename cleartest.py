@@ -1,10 +1,4 @@
 #!/usr/bin/env DJANGO_SETTINGS_MODULE=settings python
-import django.contrib.auth.models as am
+from register.test.test_utilities import clear_database
 
-try:
-    test_user = am.User.objects.get(username='test')
-    print "User test found"
-    test_user.delete()
-    print "User test deleted"
-except Exception as e:
-    print e
+clear_database()

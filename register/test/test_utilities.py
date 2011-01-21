@@ -8,7 +8,33 @@ class ModelTestCase(unittest.TestCase):
     def __init__(self, methodName='runTest'):
         unittest.TestCase.__init__(self, methodName)
 
-    def clearDatabase(self):
-        for model in Task, Project, User, Employee, Organization:
-            for instance in model.objects.all():
-                instance.delete()
+def get_organization():
+    organization = Organization(name="SEA Tecnologia",
+            description="Criadora do Netuno Nova Geracao (NetunoNG)")
+    organization.save()
+    return organization
+
+def get_organization_project():
+    organization = get_organization()
+    project = Project(organization=organization, name="NetunoNG", 
+                description="Netuno Nova Geracao (NetunoNG)")
+    project.save()
+    return organization, project
+
+def get_organization_project_task():
+    organization, project = get_organization_project()
+    task = Task(name="Test employee", project=project, 
+            description="Testing the Employee model")
+    task.save()
+    return organization, project, task
+
+def get_employee(organization=None):
+    if organization is None: organization = get_organization()
+    return Employee.create_employee(organization=organization,
+            username="test", first_name="Test", last_name="Testein",
+            middle_name="Testos", email="test@test.tst", password="test")     
+
+def clear_database():
+    for model in Task, Project, User, Employee, Organization:
+        for instance in model.objects.all():
+            instance.delete()

@@ -1,5 +1,5 @@
 import unittest2 as unittest
-from test_utilities import ModelTestCase
+from test_utilities import ModelTestCase, clear_database
 
 from datetime import datetime
 
@@ -94,11 +94,15 @@ class EmployeeTestCase(ModelTestCase):
                 description="Testing the Employee model")
         task.save()
 
-        wp1 = WorkingPeriod(task=task, employee=employee,
-                activity="test if employee has working period",
+        wp1 = WorkingPeriod(employee=employee,
+                intended="test if employee has working period",
+                intended_task=task,
+                executed="made the employe have it",
+                executed_task=task,
                 start= datetime.now(), end=datetime.now())
-        wp2 = WorkingPeriod(task=task, employee=employee,
-                activity="test if employee has working period again",
+        wp2 = WorkingPeriod(employee=employee,
+                intended="test if employee has working period again",
+                intended_task=task,
                 start= datetime.now())
         wp1.save()
         wp2.save()
@@ -115,16 +119,32 @@ class EmployeeTestCase(ModelTestCase):
                 description="Testing the Employee model")
         task.save()
 
-        wp1 = WorkingPeriod(task=task, employee=employee,
-                activity="test if employee has working period",
+        wp1 = WorkingPeriod(employee=employee,
+                intended="test if employee has working period",
+                intended_task=task,
+                executed="made the employe have it",
+                executed_task=task,
                 start= datetime.now(), end=datetime.now())
-        wp2 = WorkingPeriod(task=task, employee=employee,
-                activity="test if employee has working period again",
+        wp2 = WorkingPeriod(employee=employee,
+                intended="test if employee has working period again",
+                intended_task=task,
                 start= datetime.now())
         wp1.save()
         wp2.save()
 
         self.assertEquals(employee.get_last_working_period(), wp2)
+
+    def get_last_working_period_none_found(self):
+        employee = self.get_default_employee()
+
+        project = Project(name="Project 1", description="First project",
+                    organization=self.organization)
+        project.save()
+        task = Task(name="Test employee", project=project, 
+                description="Testing the Employee model")
+        task.save()
+
+        self.assertIs(employee.get_last_working_period(), WorkingPeriod.NONE)
         
         
     def get_default_employee(self):
@@ -133,7 +153,7 @@ class EmployeeTestCase(ModelTestCase):
                 middle_name="Testos", email="test@test.tst", password="test")
 
     def tearDown(self):
-        self.clearDatabase()
+        clear_database()
 
 
 employeeTestSuite = unittest.TestSuite()
@@ -144,3 +164,4 @@ employeeTestSuite.addTest(EmployeeTestCase('has_organization'))
 employeeTestSuite.addTest(EmployeeTestCase('has_tasks'))
 employeeTestSuite.addTest(EmployeeTestCase('has_working_periods'))
 employeeTestSuite.addTest(EmployeeTestCase('get_last_working_period'))
+employeeTestSuite.addTest(EmployeeTestCase('get_last_working_period_none_found'))

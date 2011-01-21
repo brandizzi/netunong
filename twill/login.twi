@@ -1,6 +1,6 @@
-# Create a user
-runfile twill/setup.twi
-
 # Access login page
 go http://localhost:8000/netunong/login
-notfind '<a +.*href="/netunong/logout/"'
+# Authenticate
+fv 1 username test
+fv 1 password test
+submit

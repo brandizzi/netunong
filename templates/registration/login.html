@@ -12,7 +12,7 @@ Netuno NG - Autentica&ccedil;&atilde;o
 {% if form.errors %}
 <div class="error">A autentica&ccedil;&atilde;o falhou</div>
 {% endif %}
-<form action="/netunong/login/" method="POST">
+<form action="." method="POST">
     {% csrf_token %}
     <input type="hidden" name="next" value="/netunong/register/" />
     <table>
