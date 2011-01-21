@@ -16,23 +16,28 @@ class Task(models.Model):
     description = models.TextField()
     project = models.ForeignKey(Project)
 
-class WorkingPeriod(models.Model):
-    activity = models.CharField(max_length=500)
-    task = models.ForeignKey(Task)
-    start = models.TimeField()
-    end = models.TimeField()
+    def __str__(self):
+        return "Task(name=%s)" % self.name
+
+    def __cmp__(self, other):
+        """Required for using TestCase.assertItemsEqual()"""
+        return self.id - other.id
 
 class Employee(models.Model):
-    user = models.ForeignKey(User)
     middle_name = models.CharField(max_length=200)
+    user = models.ForeignKey(User)
+    organization = models.ForeignKey(Organization)
+    tasks = models.ManyToManyField(Task, null=True)
 
     @staticmethod
-    def create_employee(username, password, first_name=None, middle_name=None, 
+    def create_employee(organization, username, password, first_name=None, middle_name=None, 
             last_name=None, email=None):
         """
         Creates a new employee and a correspondent user. If we do:
 
-        >>> employee = Employee.create_employee(
+        >>> organization = Organization(name="SEA", description="SEA Tecnologia")
+        >>> organization.save()
+        >>> employee = Employee.create_employee(organization=organization,
         ...     username="test", first_name="Test", last_name="Testein",
         ...     middle_name="Testos", email="test@test.tst", password="test")
 
@@ -61,6 +66,7 @@ class Employee(models.Model):
 
         Cleanup:
         >>> employee.user.delete()
+        >>> employee.organization.delete()
         >>> employee.delete()
         """
         user = User.objects.create_user(username=username, password=password,
@@ -69,7 +75,8 @@ class Employee(models.Model):
         user.last_name=last_name
         user.save()
 
-        employee = Employee(user=user, middle_name=middle_name)
+        employee = Employee(user=user, middle_name=middle_name, 
+            organization=organization)
         employee.save()
         return employee
 
@@ -77,7 +84,9 @@ class Employee(models.Model):
         """
         Deletes an employee and its user. If we create an employee:
 
-        >>> employee = Employee.create_employee(
+        >>> organization = Organization(name="SEA", description="SEA Tecnologia")
+        >>> organization.save()
+        >>> employee = Employee.create_employee(organization=organization,
         ...     username="test", first_name="Test", last_name="Testein",
         ...     middle_name="Testos", email="test@test.tst", password="test")
 
@@ -105,6 +114,26 @@ class Employee(models.Model):
         []
         >>> User.objects.all()
         []
+
+        Cleanup:
+        >>> organization.delete()
         """
         self.user.delete()
         models.Model.delete(self)
+
+    def get_last_working_period(self):
+        return self.workingperiod_set.latest()
+
+class WorkingPeriod(models.Model):
+    employee = models.ForeignKey(Employee)
+    activity = models.CharField(max_length=500)
+    task = models.ForeignKey(Task)
+    start = models.DateTimeField()
+    end = models.DateTimeField(null=True)
+
+    def __cmp__(self, other):
+        """Required for using TestCase.assertItemsEqual()"""
+        return self.id - other.id
+
+    class Meta:
+        get_latest_by = "start"

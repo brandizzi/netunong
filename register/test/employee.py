@@ -1,79 +1,146 @@
-import unittest
-from register.models import Employee
-from django.contrib import auth
+import unittest2 as unittest
+from test_utilities import ModelTestCase
 
-class CreateEmployee(unittest.TestCase):
+from datetime import datetime
+
+from register.models import Employee, Organization, Task, Project, WorkingPeriod
+from django.contrib import auth
+from django.contrib.auth.models import User
+
+class EmployeeTestCase(ModelTestCase):
 
     def __init__(self, methodName='runTest'):
-        unittest.TestCase.__init__(self, methodName)
-        
+        ModelTestCase.__init__(self, methodName)
 
-    def runTest(self):
-        employee = Employee.create_employee(
-                username="test", first_name="Test", last_name="Testein",
-                middle_name="Testos", email="test@test.tst", password="test")
+    def setUp(self):
+        self.organization = Organization(name="SEA Tecnologia",
+                description="Criadora do Netuno Nova Geracao (NetunoNG)")
+        self.organization.save()
+
+
+    def create_employee(self):
+        employee = self.get_default_employee()
 
         user = auth.authenticate(username='test', password='test')
-        self.assertNotEquals(user, None, "User should be created")
+        self.assertIsNotNone(user, "User should be created")
 
-        self.assertEquals(user.first_name, "Test")
-        self.assertEquals(user.last_name, "Testein")
-        self.assertEquals(user.email, "test@test.tst")
+        self.assertEqual(user.first_name, "Test")
+        self.assertEqual(user.last_name, "Testein")
+        self.assertEqual(user.email, "test@test.tst")
 
         employee = Employee.objects.get(user=user)
-        self.assertNotEquals(employee, None, "Employee should be found")
-        self.assertEquals(employee.middle_name, "Testos")
+        self.assertIsNotNone(employee, "Employee should be found")
+        self.assertEqual(employee.middle_name, "Testos")
 
-        user.delete()
-        employee.delete()
-
-class RemoveEmployee(unittest.TestCase):
-    def __init__(self, methodName='runTest'):
-        unittest.TestCase.__init__(self, methodName)
-    def runTest(self):
-        employee = Employee.create_employee(
-                username="test", first_name="Test", last_name="Testein",
-                middle_name="Testos", email="test@test.tst", password="test")
+    def detele_with_user(self):
+        employee = self.get_default_employee()
 
         user = auth.authenticate(username='test', password='test')
-        self.assertNotEquals(user, None, "User should be created")
+        self.assertIsNotNone(user, "User should be created")
         employee = Employee.objects.get(middle_name="Testos")
-        self.assertNotEquals(employee, None, "Employee should be found")
+        self.assertIsNotNone(employee, "Employee should be found")
 
         employee.delete_with_user()
 
         user = auth.authenticate(username='test', password='test')
-        self.assertEquals(user, None, "User should not exist anymore")
+        self.assertIsNone(user, "User should not exist anymore")
 
-        try:        
+        with self.assertRaises(Employee.DoesNotExist):
             employee = Employee.objects.get(middle_name="Testos")
-            self.fail("Employee should not be found")
-        except Employee.DoesNotExist:
-            pass        
 
-class DontCreateRepeatedEmployee(unittest.TestCase):
-
-    def __init__(self, methodName='runTest'):
-        unittest.TestCase.__init__(self, methodName)
-
-    def runTest(self):
-        employee = Employee.create_employee(
-                username="test", first_name="Test", last_name="Testein",
-                middle_name="Testos", email="test@test.tst", password="test")
-        try:
-            employee = Employee.create_employee(
+    def reject_repeated_username(self):
+        employee = self.get_default_employee()
+        with self.assertRaises(Exception):
+            employee = Employee.create_employee(organization=self.organization,
                     username="test", first_name="Test", last_name="Testein",
                     middle_name="Testos", email="test@test.tst", 
                     password="test")
-            self.fail("Cannot create employees with repeated usernames")
-        except:
-            pass
-        finally:
-            employee.delete_with_user()
+
+    def has_organization(self):
+        organization = Organization(name="SEA Tecnologia",
+                description="Criadora do Netuno Nova Geracao (NetunoNG)")
+        organization.save()
+        employee = Employee.create_employee(organization=organization,
+                username="test", first_name="Test", last_name="Testein",
+                middle_name="Testos", email="test@test.tst", password="test")
+
+        self.assertEqual(employee.organization, organization)
+        retrieved = Employee.objects.get(middle_name='Testos')
+        self.assertEqual(retrieved.organization, organization)
+        
+    def has_tasks(self):
+        employee = self.get_default_employee()
+
+        project = Project(name="Project 1", description="First project",
+                    organization=self.organization)
+        project.save()
+        task1 = Task(name="Task 1", description="First task", project=project)
+        task2 = Task(name="Task 2", description="Second task", project=project)
+        task1.save()
+        task2.save()
+
+        employee.tasks.add(task1, task2)
+
+        retrieved = Employee.objects.get(middle_name='Testos')
+        self.assertItemsEqual(retrieved.tasks.all(), (task1, task2))
+
+    def has_working_periods(self):
+        employee = self.get_default_employee()
+
+        project = Project(name="Project 1", description="First project",
+                    organization=self.organization)
+        project.save()
+        task = Task(name="Test employee", project=project, 
+                description="Testing the Employee model")
+        task.save()
+
+        wp1 = WorkingPeriod(task=task, employee=employee,
+                activity="test if employee has working period",
+                start= datetime.now(), end=datetime.now())
+        wp2 = WorkingPeriod(task=task, employee=employee,
+                activity="test if employee has working period again",
+                start= datetime.now())
+        wp1.save()
+        wp2.save()
+
+        self.assertItemsEqual(employee.workingperiod_set.all(), (wp1, wp2))
+
+    def get_last_working_period(self):
+        employee = self.get_default_employee()
+
+        project = Project(name="Project 1", description="First project",
+                    organization=self.organization)
+        project.save()
+        task = Task(name="Test employee", project=project, 
+                description="Testing the Employee model")
+        task.save()
+
+        wp1 = WorkingPeriod(task=task, employee=employee,
+                activity="test if employee has working period",
+                start= datetime.now(), end=datetime.now())
+        wp2 = WorkingPeriod(task=task, employee=employee,
+                activity="test if employee has working period again",
+                start= datetime.now())
+        wp1.save()
+        wp2.save()
+
+        self.assertEquals(employee.get_last_working_period(), wp2)
+        
+        
+    def get_default_employee(self):
+        return Employee.create_employee(organization=self.organization,
+                username="test", first_name="Test", last_name="Testein",
+                middle_name="Testos", email="test@test.tst", password="test")
+
+    def tearDown(self):
+        self.clearDatabase()
 
 
 employeeTestSuite = unittest.TestSuite()
-employeeTestSuite.addTest(CreateEmployee())
-employeeTestSuite.addTest(RemoveEmployee())
-employeeTestSuite.addTest(DontCreateRepeatedEmployee())
-
+employeeTestSuite.addTest(EmployeeTestCase('create_employee'))
+employeeTestSuite.addTest(EmployeeTestCase('detele_with_user'))
+employeeTestSuite.addTest(EmployeeTestCase('reject_repeated_username'))
+employeeTestSuite.addTest(EmployeeTestCase('has_organization'))
+employeeTestSuite.addTest(EmployeeTestCase('has_tasks'))
+employeeTestSuite.addTest(EmployeeTestCase('has_working_periods'))
+employeeTestSuite.addTest(EmployeeTestCase('get_last_working_period'))
