@@ -1,7 +1,10 @@
-#!/usr/bin/env DJANGO_SETTINGS_MODULE=settings twill-sh -q
+#!/usr/bin/env DJANGO_SETTINGS_MODULE=settings twill-sh
 runfile twill/strict-html.twi
 
-runfile twill/setup.twi
+# Create a user
+extend_with 'register.test.test_utilities'
+run 'e = get_employee()'
+run 'e.save()'
 
 # Access login page
 go http://localhost:8000/netunong/login
@@ -13,8 +16,9 @@ submit
 
 # Validate new page. Should have logout link
 code 200
+
 url http://localhost:8000/netunong/register/$
-find 'test'
+find '${e.name}'
 find '<a +.*href="/netunong/logout/"'
 
 # Click in logout link

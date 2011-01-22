@@ -5,9 +5,20 @@
     <body>
         {% block logout_link %}
         <div class="user-options">
-            {{user.username}} | <a name="logout" href="/netunong/logout/">Sair</a>
+            {{employee.name}} | <a name="logout" href="/netunong/logout/">Sair</a>
         </div>
         {% endblock %}
+
+        {% block errors %}
+        {% if errors %}
+        <ul class="errorlist">
+            {% for error in errors %}
+            <li>{{error}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endblock %}
+        
         {% block content %}
         <p class="error">This is the base model for Netuno NG pages. If you are seeing it
         in the browser, something is wrong.

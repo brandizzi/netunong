@@ -1,4 +1,0 @@
-# Create a user
-extend_with django.contrib.auth.models
-run 'u = User.objects.create_user(username="test", email="test", password="test")'
-run 'u.save()'

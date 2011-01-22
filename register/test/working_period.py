@@ -7,6 +7,7 @@ from datetime import datetime
 from register.models import Employee, Organization, Task, Project, WorkingPeriod
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
 
 class WorkingPeriodTestCase(ModelTestCase):
     def __init__(self, methodName='runTest'):
@@ -33,8 +34,16 @@ class WorkingPeriodTestCase(ModelTestCase):
         wp2.save()
         self.assertFalse(wp2.is_complete())         
 
+    def save_without_intended_task(self):
+        wp1 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                #intended_task=self.task, # no task
+                start= datetime.now())
+        wp1.save()
+
     def tearDown(self):
         clear_database()
 
 workingPeriodTestSuite = unittest.TestSuite()
 workingPeriodTestSuite.addTest(WorkingPeriodTestCase('is_complete'))
+workingPeriodTestSuite.addTest(WorkingPeriodTestCase('save_without_intended_task'))

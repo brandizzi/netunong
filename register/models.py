@@ -108,7 +108,7 @@ class Employee(models.Model):
 
         >>> employee.delete_with_user()
 
-        both the employer and the user are removed from de database:
+        both the employee and the user are removed from de database:
 
         >>> Employee.objects.all()
         []
@@ -121,7 +121,8 @@ class Employee(models.Model):
         self.user.delete()
         models.Model.delete(self)
 
-    def get_last_working_period(self):
+    @property
+    def last_working_period(self):
         """
         Get the last working period, ordered by the moment it started.
 
@@ -137,7 +138,7 @@ class Employee(models.Model):
         ...     start= datetime.now())
         >>> wp1.save()
         >>> wp2.save()
-        >>> employee.get_last_working_period() == wp2
+        >>> employee.last_working_period == wp2
         True
 
         Cleanup:
@@ -148,13 +149,56 @@ class Employee(models.Model):
         except WorkingPeriod.DoesNotExist:
             return WorkingPeriod.NONE
 
+    @property
+    def first_name(self):
+        """
+        Returns the first name which is actually stored at the user:
+
+        >>> import test.test_utilities as tu
+        >>> employee = tu.get_employee()
+        >>> employee.first_name
+        'Test'
+        >>> employee.first_name == employee.user.first_name
+        True
+        >>> tu.clear_database()
+        """
+        return self.user.first_name
+
+    @property
+    def last_name(self):
+        """
+        Returns the last name which is actually stored at the user:
+
+        >>> import test.test_utilities as tu
+        >>> employee = tu.get_employee()
+        >>> employee.last_name
+        'Testein'
+        >>> employee.first_name == employee.user.first_name
+        True
+        >>> tu.clear_database()
+        """
+        return self.user.last_name
+
+    @property
+    def name(self):
+        """
+        Returns the employee's full name:
+
+        >>> import test.test_utilities as tu
+        >>> employee = tu.get_employee()
+        >>> employee.name
+        'Test Testos Testein'
+        >>> tu.clear_database()
+        """
+        return " ".join([self.first_name, self.middle_name, self.last_name])
+        
 class WorkingPeriod(models.Model):
     employee = models.ForeignKey(Employee)
 
     start = models.DateTimeField()
     intended = models.CharField(max_length=200)
     intended_task = models.ForeignKey(Task, 
-            related_name='intended_working_periods')
+            related_name='intended_working_periods', null=True)
 
     end = models.DateTimeField(null=True)
     executed = models.CharField(max_length=200, null=True)
@@ -171,7 +215,7 @@ class WorkingPeriod(models.Model):
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
         ...     intended="test if employee has working period", intended_task=task, 
-        ...     executed="made the employe have it", executed_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
         ...     start= datetime.now(), end=datetime.now())
         >>> wp1.save()
         >>> wp1.is_complete()

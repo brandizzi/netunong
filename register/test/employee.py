@@ -109,7 +109,7 @@ class EmployeeTestCase(ModelTestCase):
 
         self.assertItemsEqual(employee.workingperiod_set.all(), (wp1, wp2))
 
-    def get_last_working_period(self):
+    def last_working_period(self):
         employee = self.get_default_employee()
 
         project = Project(name="Project 1", description="First project",
@@ -132,9 +132,9 @@ class EmployeeTestCase(ModelTestCase):
         wp1.save()
         wp2.save()
 
-        self.assertEquals(employee.get_last_working_period(), wp2)
+        self.assertEquals(employee.last_working_period, wp2)
 
-    def get_last_working_period_none_found(self):
+    def last_working_period_none_found(self):
         employee = self.get_default_employee()
 
         project = Project(name="Project 1", description="First project",
@@ -144,8 +144,15 @@ class EmployeeTestCase(ModelTestCase):
                 description="Testing the Employee model")
         task.save()
 
-        self.assertIs(employee.get_last_working_period(), WorkingPeriod.NONE)
+        self.assertIs(employee.last_working_period, WorkingPeriod.NONE)
         
+    def name_properties(self):
+        employee = self.get_default_employee()
+        self.assertEqual(employee.first_name, employee.user.first_name)
+        self.assertEqual(employee.last_name, employee.user.last_name)
+        self.assertEqual(employee.name, "%s %s %s" % ( 
+                    employee.first_name, employee.middle_name, employee.last_name
+             ))
         
     def get_default_employee(self):
         return Employee.create_employee(organization=self.organization,
@@ -163,5 +170,6 @@ employeeTestSuite.addTest(EmployeeTestCase('reject_repeated_username'))
 employeeTestSuite.addTest(EmployeeTestCase('has_organization'))
 employeeTestSuite.addTest(EmployeeTestCase('has_tasks'))
 employeeTestSuite.addTest(EmployeeTestCase('has_working_periods'))
-employeeTestSuite.addTest(EmployeeTestCase('get_last_working_period'))
-employeeTestSuite.addTest(EmployeeTestCase('get_last_working_period_none_found'))
+employeeTestSuite.addTest(EmployeeTestCase('last_working_period'))
+employeeTestSuite.addTest(EmployeeTestCase('last_working_period_none_found'))
+employeeTestSuite.addTest(EmployeeTestCase('name_properties'))
