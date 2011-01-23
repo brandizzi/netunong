@@ -4,14 +4,19 @@
 Netuno NG - Autentica&ccedil;&atilde;o 
 {% endblock %}
 
-{% block logout_link %}
-{# There is no sense on logging out a not logged in user #}
+{% block user_options %}
+{# There is no sense on user options of a not logged in user #}
+{% endblock %}
+
+{% block errors %}
+{% if form.errors %}
+<ul class="errorlist">
+    <li>A autentica&ccedil;&atilde;o falhou</li>
+</ul>
+{% endif %}
 {% endblock %}
 
 {% block content %}
-{% if form.errors %}
-<div class="error">A autentica&ccedil;&atilde;o falhou</div>
-{% endif %}
 <form action="." method="POST">
     {% csrf_token %}
     <input type="hidden" name="next" value="/netunong/register/" />
