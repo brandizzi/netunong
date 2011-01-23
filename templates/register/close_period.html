@@ -6,9 +6,9 @@
 
 {% block formcontent %}
 
-Eu planejava {{working_period.intended}}
+Eu planejava {{working_period.intended|escape}}
 {% if working_period.intended_task %} para avan&ccedil;ar na tarefa de 
-{{working_period.intended_task.name}}{% endif %}. 
+{{working_period.intended_task.name|escape}}{% endif %}. 
 
 O que eu efetivamente fiz foi
     <input type="text" name="execution" />
@@ -16,9 +16,9 @@ para adiantar a tarefa de
     <select name="task">
         <option />
         {% for task in employee.tasks.all %}
-        <option value="{{task.id}}">{{task.name}}</option>
+        <option value="{{task.id}}">{{task.name|escape}}</option>
         {% endfor %}
     </select>
-<input type="hidden" name="working_period" value="{{working_period.id}}" />
+<input type="hidden" name="working_period" value="{{working_period.id|escape}}" />
 {% endblock %}
 
