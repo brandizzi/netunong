@@ -1,0 +1,24 @@
+{% extends "register/model.html" %}
+
+{% block title %}Netuno NG - o que eu fiz{% endblock %}
+
+{% block operation %}close{% endblock %}
+
+{% block formcontent %}
+
+Eu planejava {{working_period.intended}}
+{% if working_period.intended_task %} para avan&ccedil;ar na tarefa de 
+{{working_period.intended_task.name}}{% endif %}. 
+
+O que eu efetivamente fiz foi
+    <input type="text" name="execution" />
+para adiantar a tarefa de
+    <select name="task">
+        <option />
+        {% for task in employee.tasks.all %}
+        <option value="{{task.id}}">{{task.name}}</option>
+        {% endfor %}
+    </select>
+<input type="hidden" name="working_period" value="{{working_period.id}}" />
+{% endblock %}
+

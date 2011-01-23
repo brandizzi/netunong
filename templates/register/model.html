@@ -1,0 +1,14 @@
+{% extends "model.html" %}
+
+{% block content %}
+<form action="." method="POST">
+{% csrf_token %}
+    <input type="hidden" name="operation" value="{% block operation %}{% endblock %}" />
+    {% block formcontent %}
+    Este &eacute; o modelo para p&aacute;ginas de registro de horas. Se esse 
+    texto apareceu, algo est&aacute; errado na aplica&ccedil;&atilde;o.
+    {% endblock %}
+    <input type="submit" value="Registre" />
+</form>
+{% endblock %}
+
