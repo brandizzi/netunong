@@ -1,4 +1,3 @@
 # Create your views here.
-from view.main import index
-
-
+from view.index import index
+from view.manage import manage

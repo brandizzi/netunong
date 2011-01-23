@@ -5,7 +5,10 @@
     <body>
         {% block logout_link %}
         <div class="user-options">
-            {{employee.name}} | <a name="logout" href="/netunong/logout/">Sair</a>
+            {{employee.name}} | 
+            <a name="register" href="/netunong/register/">Registrar</a> |
+            <a name="manage" href="/netunong/register/manage/">Gerenciar</a> |
+            <a name="logout" href="/netunong/logout/">Sair</a>            
         </div>
         {% endblock %}
 

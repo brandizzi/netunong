@@ -232,6 +232,225 @@ class WorkingPeriod(models.Model):
         """
         return self.end is not None
 
+    @property
+    def last_activity(self):
+        """
+        If the working period is complete, return the "executed" field; return
+        the "intended" field.
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start= datetime.now(), end=datetime.now())
+        >>> wp1.save()
+        >>> wp1.last_activity
+        'made the employee have it'
+        >>> wp2 = WorkingPeriod(intended_task=task, employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start= datetime.now())
+        >>> wp2.save()
+        >>> wp2.last_activity
+        'test if employee has working period again'
+
+        Cleanup:
+        >>> tu.clear_database()
+        """
+        return self.executed if self.is_complete() else self.intended
+        
+    @property
+    def last_task(self):
+        """
+        If the working period is complete, return the executed task; return
+        the intended task otherwise.
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start= datetime.now(), end=datetime.now())
+        >>> wp1.save()
+        >>> wp1.last_task == wp1.executed_task
+        True
+        >>> wp2 = WorkingPeriod(intended_task=task, employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start= datetime.now())
+        >>> wp2.save()
+        >>> wp2.last_task == wp2.intended_task
+        True
+
+        Cleanup:
+        >>> tu.clear_database()
+        """
+        return self.executed_task if self.is_complete() else self.intended_task
+
+    @property
+    def total_time(self):
+        """
+        Returns the total time spend in this period, in hours as a float
+        (if the period lasted eight hours and thirty minutes, this
+        property returns 8.5)
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start=datetime(2011, 1, 23, 1, 8), 
+        ...     end=  datetime(2011, 1, 23, 9, 38))
+        >>> wp1.total_time
+        8.5
+
+        However, it returns the time spent only if both start and end moments
+        are still specified for the period. Otherwise it just returns None
+        
+        >>> wp2 = WorkingPeriod(intended_task=task,
+        ...     employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start=datetime(2011, 1, 23, 1, 8))
+        >>> wp2.total_time == None
+        True
+
+        Cleanup:
+        >>> tu.clear_database()
+        """
+        return float(self.timedelta.seconds)/3600 if self.end is not None else None
+
+    @property
+    def timedelta(self):
+        """
+        Returns the timedelta between start and end moments:
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start=datetime(2011, 1, 23, 1, 8), 
+        ...     end=  datetime(2011, 1, 23, 9, 38))
+        >>> wp1.timedelta
+        datetime.timedelta(0, 30600)
+
+        However, it returns the time spent only if both start and end moments
+        are still specified for the period. Otherwise it just returns None
+        
+        >>> wp2 = WorkingPeriod(intended_task=task,
+        ...     employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start=datetime(2011, 1, 23, 1, 8))
+        >>> wp2.timedelta == None
+        True
+
+        Cleanup:
+        >>> tu.clear_database()
+        """
+        return self.end - self.start if self.end is not None else None
+
+    @property
+    def hours_minutes(self):
+        """
+        Returs a tuple containing the total of hours spent at the first position
+        and the total of minutes which lasted at the second position
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start=datetime(2011, 1, 23, 1, 8), 
+        ...     end=  datetime(2011, 1, 23, 9, 38))
+        >>> wp1.hours_minutes
+        (8, 30)
+
+        However, it returns the tuple only if both start and end moments
+        are still specified for the period. Otherwise it just returns None
+        
+        >>> wp2 = WorkingPeriod(intended_task=task,
+        ...     employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start=datetime(2011, 1, 23, 1, 8))
+        >>> wp2.hours_minutes == None
+        True
+
+        Cleanup:
+        >>> tu.clear_database()
+        """
+        if self.timedelta:
+            hours, seconds = divmod(self.timedelta.seconds, 3600)
+            minutes = seconds/60
+            return hours, minutes
+        else:
+            return None
+
+    @property
+    def hours(self):
+        """
+        Returns the total of hours spent.
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start=datetime(2011, 1, 23, 1, 8), 
+        ...     end=  datetime(2011, 1, 23, 9, 38))
+        >>> wp1.hours
+        8
+
+        However, it returns the hour only if both start and end moments
+        are still specified for the period. Otherwise it just returns None
+        
+        >>> wp2 = WorkingPeriod(intended_task=task,
+        ...     employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start=datetime(2011, 1, 23, 1, 8))
+        >>> wp2.hours == None
+        True
+
+        Cleanup:
+        >>> tu.clear_database()
+        """
+        return self.timedelta.seconds/3600 if self.timedelta is not None else None
+
+    @property
+    def minutes(self):
+        """
+        Returns the total of hours spent.
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start=datetime(2011, 1, 23, 1, 8), 
+        ...     end=  datetime(2011, 1, 23, 9, 38))
+        >>> wp1.minutes
+        30
+
+        However, it returns the hour only if both start and end moments
+        are still specified for the period. Otherwise it just returns None
+        
+        >>> wp2 = WorkingPeriod(intended_task=task,
+        ...     employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start=datetime(2011, 1, 23, 1, 8))
+        >>> wp2.minutes == None
+        True
+
+        Cleanup:
+        >>> tu.clear_database()
+        """
+        return (self.timedelta.seconds%3600)/60 if self.timedelta is not None else None
+
     def __cmp__(self, other):
         """Required for using TestCase.assertItemsEqual()"""
         return self.id - other.id
