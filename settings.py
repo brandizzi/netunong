@@ -98,3 +98,9 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+######
+### NETUNO NG SPECIFIC CONFIGURATIONS
+#####
+NETUNONG_DATE_FORMAT="%d/%m/%Y"
+NETUNONG_TIME_FORMAT="%Hh%M"

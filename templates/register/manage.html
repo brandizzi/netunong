@@ -6,14 +6,16 @@
 {#    {% csrf_token %} #}
 <table>
     {% for wp in employee.workingperiod_set.all %}
+    <form name="form-wp{{wp.id}}" action="." method="POST">
     <tr>
         <td class="executed">
+            {% csrf_token %}
             <input type="hidden" name="working_period" value="{{wp.id|escape}}" />
-            <input type="text" value="{{wp.last_activity|escape}}" />
+            <input type="text" name="activity" value="{{wp.last_activity|escape}}" />
         </td>
         <td class="task">
             <select name="task" class="task">
-                <option />
+                <option value="0">&nbsp;</option>
                 {% for task in employee.tasks.all %}
                 <option value="{{task.id|escape}}"
                     {% ifequal wp.last_task.id task.id %}
@@ -27,26 +29,35 @@
         </td>
         <td class="start">
             <input type="text" name="start-date" class="start-date"
-                    value="{{wp.start|date:settings.DATE_FORMAT|escape}}" />
+                    value="{{wp.formatted_start_date|escape}}" />
             |
             <input type="text" name="start-time"  class="start-time"
-                    value="{{wp.start|date:settings.TIME_FORMAT|escape}}" />
+                    value="{{wp.formatted_start_time|escape}}" />
         </td>
         <td class="end">
             <input type="text" name="end-date"  class="end-date"
                 {% if wp.end %}
-                    value="{{wp.end|date:settings.DATE_FORMAT|escape}}" 
+                    value="{{wp.formatted_end_date|escape}}" 
                 {% endif %}
             />
             |
             <input type="text" name="end-time"  class="end-date"
                 {% if wp.end %}
-                    value="{{wp.end|date:settings.TIME_FORMAT|escape}}"
+                    value="{{wp.formatted_end_time|escape}}"
                 {% endif %}
             />
         </td>
-        <td class="time">{{wp.total_time|escape}} ({{wp.hours|escape}}h{{wp.minutes|escape}})</td>
+        <td class="time">
+        {% if wp.end %}
+            {{wp.total_time|escape}} ({{wp.hours|escape}}h{{wp.minutes|escape}})
+        {% endif %}
+        </td>
+        <td class="submit">
+            <input type="submit" name="submit{{wp.id}}" 
+                    value="Salvar altera&ccedil;&otilde;es" />
+        </td>
     </tr>
+    </form>
     {% endfor %}
 </table>
 {% endblock %}

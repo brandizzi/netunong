@@ -3,6 +3,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import auth
+from settings import NETUNONG_DATE_FORMAT, NETUNONG_TIME_FORMAT
 
 class Organization(models.Model):
     name = models.CharField(max_length=200)
@@ -145,7 +146,7 @@ class Employee(models.Model):
         >>> tu.clear_database()
         """
         try:
-            return self.workingperiod_set.order_by('-start').latest()
+            return self.workingperiod_set.latest()
         except WorkingPeriod.DoesNotExist:
             return WorkingPeriod.NONE
 
@@ -451,12 +452,101 @@ class WorkingPeriod(models.Model):
         """
         return (self.timedelta.seconds%3600)/60 if self.timedelta is not None else None
 
+    @property
+    def formatted_start_date(self):
+        """
+        Returns a stirng represented the start date according to the 
+        NETUNONG_DATE_FORMAT format.
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start=datetime(2011, 1, 23, 1, 8), 
+        ...     end=  datetime(2011, 1, 23, 9, 38))
+        >>> wp1.formatted_start_date ==  wp1.start.strftime(NETUNONG_DATE_FORMAT)
+        True
+
+        Cleanup    
+        >>> tu.clear_database()
+        """
+        return self.start.strftime(NETUNONG_DATE_FORMAT)
+
+    @property
+    def formatted_end_date(self):
+        """
+        Returns a stirng represented the end date according to the 
+        NETUNONG_DATE_FORMAT format. THANK YOU DDJANGO FOR MAKING DATE
+        READING REALLY DIFFICULT!!
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start=datetime(2011, 1, 23, 1, 8), 
+        ...     end=  datetime(2011, 1, 23, 9, 38))
+        >>> wp1.formatted_end_date ==  wp1.end.strftime(NETUNONG_DATE_FORMAT)
+        True
+
+        Cleanup    
+        >>> tu.clear_database()
+        """
+        return self.end.strftime(NETUNONG_DATE_FORMAT) if self.end else ''
+
+    @property
+    def formatted_start_time(self):
+        """
+        Returns a stirng represented the start time according to the 
+        NETUNONG_TIME_FORMAT format.
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start=datetime(2011, 1, 23, 1, 8), 
+        ...     end=  datetime(2011, 1, 23, 9, 38))
+        >>> wp1.formatted_start_time ==  wp1.start.strftime(NETUNONG_TIME_FORMAT)
+        True
+
+        Cleanup    
+        >>> tu.clear_database()
+        """
+        return self.start.strftime(NETUNONG_TIME_FORMAT)
+
+    @property
+    def formatted_end_time(self):
+        """
+        Returns a stirng represented the end date according to the 
+        NETUNONG_TIME_FORMAT format.
+        
+        >>> import test.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start=datetime(2011, 1, 23, 1, 8), 
+        ...     end=  datetime(2011, 1, 23, 9, 38))
+        >>> wp1.formatted_end_time ==  wp1.end.strftime(NETUNONG_TIME_FORMAT)
+        True
+
+        Cleanup    
+        >>> tu.clear_database()
+        """
+        return self.end.strftime(NETUNONG_TIME_FORMAT) if self.end else ''
+
     def __cmp__(self, other):
         """Required for using TestCase.assertItemsEqual()"""
         return self.id - other.id
 
     class Meta:
-        get_latest_by = "start"
+        get_latest_by = "id"
 
 # Represents the null working period. Better than verifying if the working
 # period is None

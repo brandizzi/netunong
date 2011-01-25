@@ -4,10 +4,12 @@ from test_utilities import ModelTestCase, clear_database, \
 
 from datetime import datetime, timedelta
 
-from register.models import Employee, Organization, Task, Project, WorkingPeriod
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
+
+from register.models import Employee, Organization, Task, Project, WorkingPeriod
+from settings import NETUNONG_DATE_FORMAT, NETUNONG_TIME_FORMAT
 
 class WorkingPeriodTestCase(ModelTestCase):
     def __init__(self, methodName='runTest'):
@@ -82,6 +84,30 @@ class WorkingPeriodTestCase(ModelTestCase):
                 start= datetime.now())
         wp1.save()
 
+    def formatted_time_values(self):
+        wp1 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=self.task,
+                executed="made the employe have it",
+                executed_task=self.task,
+                start=datetime(2011, 1, 23, 1, 8), 
+                end=  datetime(2011, 1, 23, 9, 38))
+        self.assertEqual(wp1.formatted_start_date, 
+                wp1.start.strftime(NETUNONG_DATE_FORMAT))
+        self.assertEqual(wp1.formatted_start_time, 
+                wp1.start.strftime(NETUNONG_TIME_FORMAT))
+        self.assertEqual(wp1.formatted_end_date, 
+                wp1.end.strftime(NETUNONG_DATE_FORMAT))
+        self.assertEqual(wp1.formatted_end_time, 
+                wp1.end.strftime(NETUNONG_TIME_FORMAT))
+
+        wp2 = WorkingPeriod(intended_task=self.task,
+                employee=self.employee,
+                intended="test if employee has working period again",
+                start=datetime(2011, 1, 23, 1, 8))
+        self.assertEqual(wp2.formatted_end_date, '')
+        self.assertEqual(wp2.formatted_end_time, '')
+        
     def tearDown(self):
         clear_database()
 
@@ -90,3 +116,5 @@ workingPeriodTestSuite.addTest(WorkingPeriodTestCase('is_complete'))
 workingPeriodTestSuite.addTest(WorkingPeriodTestCase('save_without_intended_task'))
 workingPeriodTestSuite.addTest(WorkingPeriodTestCase('last_activity_last_task'))
 workingPeriodTestSuite.addTest(WorkingPeriodTestCase('total_time'))
+workingPeriodTestSuite.addTest(WorkingPeriodTestCase('save_without_intended_task'))
+workingPeriodTestSuite.addTest(WorkingPeriodTestCase('formatted_time_values'))
