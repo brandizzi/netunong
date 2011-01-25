@@ -33,15 +33,18 @@ def post_to_index(request):
             })
             return HttpResponse(template.render(context))
         task_id = request.POST['task']
-        if task_id.strip():
-            task = Task.objects.get(id=task_id)
-        else:
+        try:
+            task_id = int(task_id)
+            task = Task.objects.get(id=task_id) if task_id > 0 else None
+        except ValueError:
             task = None
         start = datetime.now()
 
         working_period = WorkingPeriod(intended_task=task, employee=employee,
                 intended=intention, start=start)
         working_period.save()
+        print 'wp: ', working_period.end
+        print 'e.lwp', employee.last_working_period.end
     elif operation == "close":
         execution = request.POST['execution']
         working_period_id = int(request.POST['working_period'])
@@ -57,9 +60,10 @@ def post_to_index(request):
             return HttpResponse(template.render(context))
         working_period.executed = execution
         task_id = request.POST['task']
-        if task_id.strip():
-            task = Task.objects.get(id=task_id)
-        else:
+        try:
+            task_id = int(task_id)
+            task = Task.objects.get(id=task_id) if task_id > 0 else None
+        except ValueError:
             task = None
         working_period.executed_task = task
         end = datetime.now()

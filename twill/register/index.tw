@@ -24,7 +24,7 @@ find '${employee.name}'
 find '<select name="task">'
 # There should be an empty option: task should not be required for working
 # period creation
-find '<option />'
+find '<option value="0">&nbsp;</option>'
 find '<option value="${str(task1.id)}">${task1.name}</option>'
 find '<option value="${str(task2.id)}">${task2.name}</option>'
 # The operation is "open", that is, open a new working period.
@@ -46,14 +46,15 @@ run 'assert wp.intended_task == task1'
 # Validate result
 code 200
 url http://localhost:8000/netunong/register/$
-# The intention of the open period should be presented.
-find 'write a Twill test'
+# The intention of the open period should be presented SPECIALLY in the
+# execution input:
+find '<input +.*name="execution" +.*value="write a Twill test"'
 # Trying to verify if the task really appears as a label and not only as an
 # option.
 find '[^>]${str(task1.name)}[^>]'
 # Also, the tasks should be listed as well
 find '<select name="task">'
-find '<option />'
+find '<option value="0">&nbsp;</option>'
 find '<option value="${str(task1.id)}">${task1.name}</option>'
 find '<option value="${str(task2.id)}">${task2.name}</option>'
 find '<input type="hidden" name="working_period" value="${str(wp.id)}" />'
@@ -71,7 +72,7 @@ code 200
 url http://localhost:8000/netunong/register/$
 find '${employee.name}'
 find '<select name="task">'
-find '<option />'
+find '<option value="0">&nbsp;</option>'
 find '<option value="${str(task1.id)}">${task1.name}</option>'
 find '<option value="${str(task2.id)}">${task2.name}</option>'
 find '<input type="hidden" name="operation" value="open" />'
@@ -134,11 +135,13 @@ find '<input type="hidden" name="operation" value="open" />'
 ################################################################################
 # Starts a period
 fv 1 intention 'write a Twill test for no task'
-fv 1 task ''
+fv 1 task '0'
 submit
 
 # Should have the working period at the database
 run 'wp = employee.last_working_period'
+echo '${str(wp.end)}'
+echo '${str(wp.executed)}'
 run 'assert not wp.is_complete()'
 run 'assert wp.intended_task is None'
 
@@ -154,7 +157,7 @@ notfind '[^>]${str(task2.name)}[^>]'
 find '<input type="hidden" name="operation" value="close" />'
 # Also, the tasks should be listed as well
 find '<select name="task">'
-find '<option />'
+find '<option value="0">&nbsp;</option>'
 find '<option value="${str(task1.id)}">${task1.name}</option>'
 find '<option value="${str(task2.id)}">${task2.name}</option>'
 find '<input type="hidden" name="working_period" value="${str(wp.id)}" />'
@@ -163,7 +166,7 @@ find '<input type="hidden" name="working_period" value="${str(wp.id)}" />'
 #########   CLOSING PERIOD WHITHOUT TASK: ACCEPTABLE                 ###########
 ################################################################################
 fv 1 execution 'write another Twill test for no task'
-fv 1 task ''
+fv 1 task '0'
 submit
 
 # Returns to open page, without any problem

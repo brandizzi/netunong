@@ -17,7 +17,7 @@ Netuno NG - Autentica&ccedil;&atilde;o
 {% endblock %}
 
 {% block content %}
-<form action="." method="POST">
+<form name="login" action="." method="POST">
     {% csrf_token %}
     <input type="hidden" name="next" value="/netunong/register/" />
     <table>

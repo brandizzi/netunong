@@ -9,7 +9,8 @@ Eu vou
     <input type="text" name="intention" /> 
 para avan&ccedil;ar na tarefa de
     <select name="task">
-        <option />
+        <!-- Funny thing: <option> cannot be empty! -->
+        <option value="0">&nbsp;</option>
         {% for task in employee.tasks.all %}
         <option value="{{task.id|escape}}">{{task.name|escape}}</option>
         {% endfor %}

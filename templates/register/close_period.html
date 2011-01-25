@@ -11,10 +11,11 @@ Eu planejava {{working_period.intended|escape}}
 {{working_period.intended_task.name|escape}}{% endif %}. 
 
 O que eu efetivamente fiz foi
-    <input type="text" name="execution" />
+    <input type="text" name="execution" value="{{working_period.intended|escape}}" />
 para adiantar a tarefa de
     <select name="task">
-        <option />
+        <!-- Funny thing: <option> cannot be empty! -->
+        <option value="0">&nbsp;</option> 
         {% for task in employee.tasks.all %}
         <option value="{{task.id}}">{{task.name|escape}}</option>
         {% endfor %}

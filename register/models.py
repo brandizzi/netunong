@@ -145,7 +145,7 @@ class Employee(models.Model):
         >>> tu.clear_database()
         """
         try:
-            return self.workingperiod_set.latest()
+            return self.workingperiod_set.order_by('-start').latest()
         except WorkingPeriod.DoesNotExist:
             return WorkingPeriod.NONE
 
