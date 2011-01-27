@@ -193,6 +193,20 @@ code 200
 run 'wp1 = WorkingPeriod.objects.get(id=${str(wp1.id)})'
 run 'assert wp1.executed_task is None'
 
+################################################################################
+#########   DELETING A TASK                                          ###########
+################################################################################
+# Does nothing, it is just for selecting the form
+aaa
+fv form-wp${str(wp1.id)} activity ''
+submit delete${str(wp1.id)}
+code 200
+
+# Should appear nor in the screen neither in database
+notfind '${wp1.executed}'
+run 'assert wp1 not in WorkingPeriod.objects.all()'
+
+
 # Clean up
-#runfile twill/clean.twi
+runfile twill/clean.twi
 
