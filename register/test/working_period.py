@@ -53,6 +53,26 @@ class WorkingPeriodTestCase(ModelTestCase):
         self.assertEqual(wp2.last_activity, wp2.intended)
         self.assertEqual(wp2.last_task, wp2.intended_task)
 
+    def last_activity_without_end(self):
+        task1 = self.task
+        task2 = Task(name="Another task", project=self.project, 
+            description="Just another task")
+        wp1 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=task1,
+                executed="made the employe have it",
+                executed_task=task2,
+                start= datetime.now(), end=datetime.now())
+        self.assertEqual(wp1.last_activity, wp1.executed)
+        self.assertEqual(wp1.last_task, wp1.executed_task)
+        wp2 = WorkingPeriod(intended_task=task2,
+                employee=self.employee,
+                intended="test if employee has working period again",
+                executed="i tested it", executed_task=task1,
+                start= datetime.now())
+        self.assertEqual(wp2.last_activity, wp2.executed)
+        self.assertEqual(wp2.last_task, wp2.executed_task)
+
     def total_time(self):
         wp1 = WorkingPeriod(employee=self.employee,
                 intended="test if employee has working period",
@@ -115,6 +135,7 @@ workingPeriodTestSuite = unittest.TestSuite()
 workingPeriodTestSuite.addTest(WorkingPeriodTestCase('is_complete'))
 workingPeriodTestSuite.addTest(WorkingPeriodTestCase('save_without_intended_task'))
 workingPeriodTestSuite.addTest(WorkingPeriodTestCase('last_activity_last_task'))
+workingPeriodTestSuite.addTest(WorkingPeriodTestCase('last_activity_without_end'))
 workingPeriodTestSuite.addTest(WorkingPeriodTestCase('total_time'))
 workingPeriodTestSuite.addTest(WorkingPeriodTestCase('save_without_intended_task'))
 workingPeriodTestSuite.addTest(WorkingPeriodTestCase('formatted_time_values'))

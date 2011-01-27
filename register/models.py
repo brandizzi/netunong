@@ -259,7 +259,7 @@ class WorkingPeriod(models.Model):
         Cleanup:
         >>> tu.clear_database()
         """
-        return self.executed if self.is_complete() else self.intended
+        return self.executed if self.executed else self.intended
         
     @property
     def last_task(self):
@@ -287,7 +287,7 @@ class WorkingPeriod(models.Model):
         Cleanup:
         >>> tu.clear_database()
         """
-        return self.executed_task if self.is_complete() else self.intended_task
+        return self.executed_task if self.executed_task else self.intended_task
 
     @property
     def total_time(self):

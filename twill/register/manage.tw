@@ -194,10 +194,9 @@ run 'wp1 = WorkingPeriod.objects.get(id=${str(wp1.id)})'
 run 'assert wp1.executed_task is None'
 
 ################################################################################
-#########   DELETING A TASK                                          ###########
+#########   DELETING A WORKING PERIOD                                ###########
 ################################################################################
 # Does nothing, it is just for selecting the form
-aaa
 fv form-wp${str(wp1.id)} activity ''
 submit delete${str(wp1.id)}
 code 200
@@ -206,6 +205,30 @@ code 200
 notfind '${wp1.executed}'
 run 'assert wp1 not in WorkingPeriod.objects.all()'
 
+################################################################################
+#########   ALTERING INCOMPLETE PERIOD: ACTIVITY                     ###########
+################################################################################
+follow register
+# Starts a new working period
+fv 1 intention 'Testing altering incomplete period'
+fv 1 task ${str(task1.id)}
+submit
+code 200
+notfind '<ul class="errorlist">'
+run 'wp = employee.last_working_period'
+run 'assert wp.intended == "Testing altering incomplete period"'
+
+follow manage
+find ${wp.intended}
+fv form-wp${str(wp.id)} activity 'Altered a incomplete period'
+submit submit${str(wp.id)}
+code 200
+# Find again
+run 'wp = employee.last_working_period'
+notfind ${wp.intended}
+find ${wp.executed}
+# Do not change intended
+run 'assert wp.intended == "Testing altering incomplete period"'
 
 # Clean up
 runfile twill/clean.twi

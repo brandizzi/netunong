@@ -48,9 +48,11 @@ def post_manage(request):
             end = working_period.end
         
         working_period.executed = activity
+        print working_period.executed
         working_period.executed_task = task
         working_period.start = start
         working_period.end = end
+        print working_period.last_activity
         working_period.save()
     elif  request.POST.has_key('delete%s' % working_period_id):
         working_period.delete()
