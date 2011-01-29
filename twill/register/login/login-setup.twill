@@ -1,0 +1,5 @@
+# Create a user
+extend_with 'register.test.test_utilities'
+run 'e = get_employee(username="${username}",password="${password}")'
+run 'e.save()'
+setglobal name ${e.name}

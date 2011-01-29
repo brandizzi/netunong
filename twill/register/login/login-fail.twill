@@ -1,0 +1,9 @@
+# Failed login: non-existent user
+# Authenticate
+fv 1 username FAIL
+fv 1 password FAIL
+submit
+
+code 200
+find '<ul class="errorlist">'
+

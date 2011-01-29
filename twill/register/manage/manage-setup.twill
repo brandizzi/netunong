@@ -1,0 +1,12 @@
+extend_with 'register.test.test_utilities'
+run 'organization, project = get_organization_project()'
+run 'employee = get_employee(organization=organization)'
+run 'task1 = Task(name="Test login screen", project=project, description="Testing the login screen")'
+run 'task1.save()'
+run 'task2 = Task(name="Test index screen", project=project, description="Testing the index screen")'
+run 'task2.save()'
+run 'employee.tasks.add(task1, task2)'
+
+login-ok
+code 200
+notfind '<ul class="errorlist">'

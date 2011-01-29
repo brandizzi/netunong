@@ -1,0 +1,15 @@
+# Access login page
+go http://localhost:8000/netunong/login
+code 200
+notfind '<a +.*href="/netunong/logout/"'
+# Authenticate
+fv 1 username test
+fv 1 password test
+submit
+
+# Validate new page. Should have logout link
+code 200
+url http://localhost:8000/netunong/register/$
+run 'e = Employee.objects.all()[0]'
+find '${e.name}'
+find '<a +.*href="/netunong/logout/"'

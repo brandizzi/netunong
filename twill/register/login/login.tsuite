@@ -1,0 +1,6 @@
+# We want valid HTML
+strict-html
+login-setup
+login-ok
+logout
+login-fail

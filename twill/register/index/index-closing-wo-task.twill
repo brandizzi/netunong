@@ -1,0 +1,20 @@
+################################################################################
+#########   CLOSING PERIOD WHITHOUT TASK: ACCEPTABLE                 ###########
+################################################################################
+fv 1 execution 'write another Twill test for no task'
+fv 1 task '0'
+submit
+
+# Returns to open page, without any problem
+code 200
+url http://localhost:8000/netunong/register/$
+# Operation should be "open"
+find '<input type="hidden" name="operation" value="open" />'
+
+# Working period should be closed
+run 'employee = Employee.objects.all()[0]'
+run 'wp = employee.last_working_period'
+run 'assert wp.is_complete()'
+# No executed task
+run 'assert wp.executed_task == None'
+

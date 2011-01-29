@@ -1,0 +1,23 @@
+################################################################################
+#########   CLOSING THE PERIOD                                       ###########
+################################################################################
+fv 1 execution 'write another Twill test'
+fv 1 task ${str(taskid2)}
+submit
+
+# Returns to open page
+code 200
+url http://localhost:8000/netunong/register/$
+find '<select name="task">'
+find '<option value="0">&nbsp;</option>'
+find '<option value="${str(taskid1)}">${taskname1}</option>'
+find '<option value="${str(taskid2)}">${taskname2}</option>'
+find '<input type="hidden" name="operation" value="open" />'
+
+# Working period should be closed
+run 'employee = Employee.objects.all()[0]'
+run 'task2 = Task.objects.get(id=${taskid2})'
+run 'wp = employee.last_working_period'
+run 'assert wp.is_complete()'
+run 'assert wp.executed_task == task2'
+

@@ -1,0 +1,4 @@
+# We want valid HTML
+config use_tidy 1
+config use_BeautifulSoup 0
+config allow_parse_errors 0

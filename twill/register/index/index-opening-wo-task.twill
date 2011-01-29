@@ -1,0 +1,31 @@
+################################################################################
+#########   OPENING PERIOD WHITHOUT TASK: ACCEPTABLE                 ###########
+################################################################################
+# Starts a period
+fv 1 intention 'write a Twill test for no task'
+fv 1 task '0'
+submit
+
+# Should have the working period at the database
+run 'employee = Employee.objects.all()[0]'
+run 'wp = employee.last_working_period'
+run 'assert not wp.is_complete()'
+run 'assert wp.intended_task is None'
+
+# Validate result
+code 200
+url http://localhost:8000/netunong/register/$
+# The intention of the open period should be presented.
+find 'write a Twill test for no task'
+# No task can appear as a message, only as options in select
+notfind '[^>]${str(taskname1)}[^>]'
+notfind '[^>]${str(taskname2)}[^>]'
+# Opening should be successful: operation now is "close"
+find '<input type="hidden" name="operation" value="close" />'
+# Also, the tasks should be listed as well
+find '<select name="task">'
+find '<option value="0">&nbsp;</option>'
+find '<option value="${str(taskid1)}">${taskname1}</option>'
+find '<option value="${str(taskid2)}">${taskname2}</option>'
+find '<input type="hidden" name="working_period" value="${str(wp.id)}" />'
+

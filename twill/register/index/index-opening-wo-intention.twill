@@ -1,0 +1,15 @@
+################################################################################
+#########   OPENING PERIOD WHITHOUT INTENTION: FAIL                  ###########
+################################################################################
+# Tries to start a period without intention; should fail.
+fv 1 intention ''
+fv 1 task ${str(taskid1)}
+submit
+code 200
+url http://localhost:8000/netunong/register/$
+# Since the period could not be created, the operation is still "open"
+notfind '<input type="hidden" name="operation" value="close" />'
+find '<input type="hidden" name="operation" value="open" />'
+# There is an error message
+find '<ul class="errorlist">'
+

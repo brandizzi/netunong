@@ -1,0 +1,31 @@
+################################################################################
+#########   CLOSING PERIOD WHITHOUT EXECUTION: FAIL                  ###########
+################################################################################
+# Now, effectively starts a period
+fv 1 intention 'write another Twill test'
+fv 1 task ${str(taskid1)}
+submit
+
+code 200
+url http://localhost:8000/netunong/register/$
+find 'write another Twill test'
+find '<input type="hidden" name="operation" value="close" />'
+# Tries to close a period without execution; should fail.
+fv 1 execution ''
+fv 1 task ${str(taskid1)}
+submit
+code 200
+url http://localhost:8000/netunong/register/$
+# Since the period could not be completed, the operation is still "close"
+notfind '<input type="hidden" name="operation" value="open" />'
+find '<input type="hidden" name="operation" value="close" />'
+# There is an error message
+find '<ul class="errorlist">'
+
+# We close the period as a cleanup
+fv 1 execution 'yes, yes, write another Twill test'
+fv 1 task ${str(taskid2)}
+submit
+code 200
+url http://localhost:8000/netunong/register/$
+find '<input type="hidden" name="operation" value="open" />'

@@ -1,0 +1,34 @@
+################################################################################
+#########   OPENING A PERIOD                                         ###########
+################################################################################
+# Starts a period
+fv 1 intention 'write a Twill test'
+fv 1 task ${str(taskid1)}
+submit
+
+# Should have the working period at the database
+run 'employee = Employee.objects.all()[0]'
+run 'task1 = Task.objects.get(id=${taskid1})'
+run 'wp = employee.last_working_period'
+run 'assert not wp.is_complete()'
+run 'assert wp.intended_task == task1'
+
+# Validate result
+code 200
+url http://localhost:8000/netunong/register/$
+notfind errorlist
+# The intention of the open period should be presented SPECIALLY in the
+# execution input:
+find '<input +.*name="execution" +.*value="write a Twill test"'
+# Trying to verify if the task really appears as a label and not only as an
+# option.
+find '[^>]${str(taskname1)}[^>]'
+# Also, the tasks should be listed as well
+find '<select name="task">'
+find '<option value="0">&nbsp;</option>'
+echo '<option value="${str(taskid1)}">${taskname1}</option>'
+find '<option value="${str(taskid1)}">${taskname1}</option>'
+find '<option value="${str(taskid2)}">${taskname2}</option>'
+find '<input type="hidden" name="working_period" value="${str(wp.id)}" />'
+find '<input type="hidden" name="operation" value="close" />'
+

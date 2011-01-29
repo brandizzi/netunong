@@ -1,0 +1,26 @@
+################################################################################
+#########   VERIFY PERIOD REGISTRATION                               ###########
+################################################################################
+follow register
+code 200
+notfind '<ul class="errorlist">'
+# Starts a new working period
+fv 1 intention 'write FIRST twill test'
+fv 1 task ${str(taskid1)}
+submit
+code 200
+notfind '<ul class="errorlist">'
+run 'wp = employee.last_working_period'
+
+follow manage
+extend_with django.utils.dateformat
+extend_with django.conf
+find 'name="working_period" value="${str(wp.id)}"'
+find 'value="${wp.intended}"'
+# There is no sense in validating the task, since all tasks are listed
+# TODO find a way to validate task
+#find '${taskname1}'
+#find 'value="${str(taskid1)}"'
+
+find 'value="${wp.start.strftime(settings.NETUNONG_DATE_FORMAT)}"'
+find 'value="${wp.start.strftime(settings.NETUNONG_TIME_FORMAT)}"'

@@ -1,0 +1,4 @@
+# Cleans the database
+extend_with 'register.test.test_utilities'
+run 'clear_database()'
+
