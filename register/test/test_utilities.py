@@ -28,11 +28,11 @@ def get_organization_project_task():
     task.save()
     return organization, project, task
 
-def get_employee(organization=None):
+def get_employee(organization=None, username="test", password="test"):
     if organization is None: organization = get_organization()
     return Employee.create_employee(organization=organization,
-            username="test", first_name="Test", last_name="Testein",
-            middle_name="Testos", email="test@test.tst", password="test")     
+            username=username, first_name="Test", last_name="Testein",
+            middle_name="Testos", email="test@test.tst", password=password)     
 
 def clear_database():
     for model in Task, Project, User, Employee, Organization:
