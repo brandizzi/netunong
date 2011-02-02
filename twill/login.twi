@@ -1,6 +1,0 @@
-# Access login page
-go http://localhost:8000/netunong/login
-# Authenticate
-fv login username test
-fv login password test
-submit

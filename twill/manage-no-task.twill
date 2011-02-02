@@ -1,0 +1,10 @@
+run 'employee = Employee.objects.all()[0]'
+run 'task1, task2 = Task.objects.all()' 
+run 'wp1, wp2 = employee.workingperiod_set.all()'
+
+fv form-wp${str(wp1.id)} task '0'
+submit submit${str(wp1.id)}
+code 200
+
+run 'wp1 = WorkingPeriod.objects.get(id=${str(wp1.id)})'
+run 'assert wp1.executed_task is None'

@@ -1,0 +1,13 @@
+################################################################################
+#########   DELETING A WORKING PERIOD                                ###########
+################################################################################
+# Does nothing, it is just for selecting the form
+run 'employee = Employee.objects.all()[0]'
+run 'wp1, wp2 = employee.workingperiod_set.all()'
+fv form-wp${str(wp1.id)} activity ''
+submit delete${str(wp1.id)}
+code 200
+
+# Should appear nor in the screen neither in database
+notfind '${wp1.executed}'
+run 'assert wp1 not in WorkingPeriod.objects.all()'
