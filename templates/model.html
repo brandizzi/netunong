@@ -5,7 +5,7 @@
     <body>
         {% block user_options %}
         <div class="user-options">
-            {{employee.name|escape}} | 
+            {{user.get_profile.name|escape}} | 
             <a name="register" href="/netunong/register/">Registrar</a> |
             <a name="manage" href="/netunong/register/manage/">Gerenciar</a> |
             <a name="logout" href="/netunong/logout/">Sair</a>            

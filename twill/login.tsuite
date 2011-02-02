@@ -4,3 +4,4 @@ login-setup
 login-ok
 logout
 login-fail
+login-required

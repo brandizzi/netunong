@@ -99,6 +99,9 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
+LOGIN_URL='/netunong/login/'
+LOGIN_REDIRECT_URL='/netunong/register/'
+AUTH_PROFILE_MODULE='register.Employee'
 ######
 ### NETUNO NG SPECIFIC CONFIGURATIONS
 #####

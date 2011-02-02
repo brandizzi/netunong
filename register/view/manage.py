@@ -5,6 +5,8 @@ from django.template import loader, RequestContext
 from django.shortcuts import render_to_response
 from django.utils.translation import gettext as _
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 
 from register.models import Employee, Task, WorkingPeriod
 
@@ -56,12 +58,13 @@ def post_manage(request):
         working_period.save()
     elif  request.POST.has_key('delete%s' % working_period_id):
         working_period.delete()
-    return HttpResponseRedirect('.')
+    return HttpResponseRedirect(reverse(manage))
 
 functions = {
     'GET'  : get_manage,
     'POST' : post_manage
 }
 
+@login_required
 def manage(request):
     return functions[request.method](request)

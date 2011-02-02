@@ -4,6 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader, RequestContext
 from django.shortcuts import render_to_response
 from django.utils.translation import gettext as _
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 
 from register.models import Employee, Task, WorkingPeriod
     
@@ -70,13 +72,14 @@ def post_to_index(request):
         working_period.end = end
         working_period.save()
         
-    return HttpResponseRedirect('.')
+    return HttpResponseRedirect(reverse(index))
 
 functions = {
     'GET'  : get_index,
     'POST' : post_to_index
 }
 
+@login_required
 def index(request):
     return functions[request.method](request)
     

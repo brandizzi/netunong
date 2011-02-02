@@ -28,7 +28,7 @@ class Task(models.Model):
 
 class Employee(models.Model):
     middle_name = models.CharField(max_length=200)
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     organization = models.ForeignKey(Organization)
     tasks = models.ManyToManyField(Task, null=True)
 
