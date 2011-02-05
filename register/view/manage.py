@@ -1,12 +1,13 @@
 from datetime import datetime
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader, RequestContext
-from django.shortcuts import render_to_response
-from django.utils.translation import gettext as _
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import loader, RequestContext
+from django.utils.translation import gettext as _
 
 from register.models import Employee, Task, WorkingPeriod
 
@@ -50,14 +51,16 @@ def post_manage(request):
             end = working_period.end
         
         working_period.executed = activity
-        print working_period.executed
         working_period.executed_task = task
         working_period.start = start
         working_period.end = end
-        print working_period.last_activity
         working_period.save()
+        # TODO identify the working period
+        messages.success(request, _("The working period was udpated!"))
     elif  request.POST.has_key('delete%s' % working_period_id):
         working_period.delete()
+        # TODO identify the working period
+        messages.success(request, _("The working period was deleted!"))
     return HttpResponseRedirect(reverse(manage))
 
 functions = {

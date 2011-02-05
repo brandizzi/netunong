@@ -8,10 +8,11 @@ Netuno NG - Autentica&ccedil;&atilde;o
 {# There is no sense on user options of a not logged in user #}
 {% endblock %}
 
-{% block errors %}
+{# TODO: how to retrieve login error message?! #}
+{% block messages %}
 {% if form.errors %}
-<ul class="errorlist">
-    <li>A autentica&ccedil;&atilde;o falhou</li>
+<ul class="messages">
+    <li class="error">A autentica&ccedil;&atilde;o falhou</li>
 </ul>
 {% endif %}
 {% endblock %}

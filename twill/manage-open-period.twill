@@ -3,13 +3,13 @@
 ################################################################################
 follow register
 code 200
-notfind '<ul class="errorlist">'
+notfind '<li class="error">'
 # Starts a new working period
 fv 1 intention 'write FIRST twill test'
 fv 1 task ${taskid1}
 submit
 code 200
-notfind '<ul class="errorlist">'
+notfind '<li class="error">'
 run 'employee = Employee.objects.all()[0]'
 run 'wp = employee.last_working_period'
 

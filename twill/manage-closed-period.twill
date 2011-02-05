@@ -3,13 +3,13 @@
 ################################################################################
 follow register
 code 200
-notfind '<ul class="errorlist">'
+notfind '<li class="error">'
 # Close period
 fv 1 execution 'write another Twill test'
 fv 1 task ${str(taskid2)}
 submit
 code 200
-notfind '<ul class="errorlist">'
+notfind '<li class="error">'
 run 'employee = Employee.objects.all()[0]'
 run 'wp = employee.last_working_period'
 

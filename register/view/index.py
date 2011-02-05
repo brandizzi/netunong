@@ -1,11 +1,12 @@
 from datetime import datetime
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader, RequestContext
-from django.shortcuts import render_to_response
-from django.utils.translation import gettext as _
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import loader, RequestContext
+from django.utils.translation import gettext as _
 
 from register.models import Employee, Task, WorkingPeriod
     
@@ -29,12 +30,8 @@ def post_to_index(request):
     if operation == "open":
         intention = request.POST['intention']
         if not intention.strip():
-            errors.append(_("What is your intention?"))
-            template = loader.get_template("register/open_period.html")
-            context = RequestContext(request, {
-                    'employee' : employee, 'errors' : errors
-            })
-            return HttpResponse(template.render(context))
+            messages.error(request, _("What is your intention?"))
+            return HttpResponseRedirect(reverse(index))
         task_id = request.POST['task']
         try:
             task_id = int(task_id)
@@ -46,20 +43,13 @@ def post_to_index(request):
         working_period = WorkingPeriod(intended_task=task, employee=employee,
                 intended=intention, start=start)
         working_period.save()
-        print "??", working_period.is_complete()
     elif operation == "close":
         execution = request.POST['execution']
         working_period_id = int(request.POST['working_period'])
         working_period = WorkingPeriod.objects.get(id=working_period_id)
         if not execution.strip():
-            errors.append(_("What did you do?"))
-            template = loader.get_template("register/close_period.html")
-            context = RequestContext(request, {
-                    'employee' : employee, 
-                    'working_period' : working_period, 
-                    'errors' : errors
-            })
-            return HttpResponse(template.render(context))
+            messages.error(request, _("What did you do?"))
+            return HttpResponseRedirect(reverse(index))
         working_period.executed = execution
         task_id = request.POST['task']
         try:

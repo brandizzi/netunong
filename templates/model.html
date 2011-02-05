@@ -12,11 +12,13 @@
         </div>
         {% endblock %}
 
-        {% block errors %}
-        {% if errors %}
-        <ul class="errorlist">
-            {% for error in errors %}
-            <li>{{error|escape}}</li>
+        {% block messages %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {{message|escape}}
+            </li>
             {% endfor %}
         </ul>
         {% endif %}

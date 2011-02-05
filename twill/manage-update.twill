@@ -15,6 +15,7 @@ fv form-wp${str(wp1.id)} start-date '${newdate.strftime(settings.NETUNONG_DATE_F
 fv form-wp${str(wp1.id)} end-date '${newdate.strftime(settings.NETUNONG_DATE_FORMAT)}'
 submit submit${str(wp1.id)}
 code 200
+find '<li class="success">'
 # wp1 should change date, but not time (that is, the hour and minutes cannot be
 # changed).
 run 'wp1 = WorkingPeriod.objects.get(id=${str(wp1.id)})'
@@ -36,6 +37,7 @@ fv form-wp${str(wp2.id)} start-time '${newdate.strftime(settings.NETUNONG_TIME_F
 fv form-wp${str(wp2.id)} end-time '${newdate.strftime(settings.NETUNONG_TIME_FORMAT)}'
 submit submit${str(wp2.id)}
 code 200
+find '<li class="success">'
 # Now we change time and date should stay unaltered
 run 'wp2 = WorkingPeriod.objects.get(id=${str(wp2.id)})'
 run 'assert wp2.executed == "test hours with a Twill test", "The value was %s" % wp2.executed'

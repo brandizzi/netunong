@@ -5,5 +5,5 @@ fv 1 password FAIL
 submit
 
 code 200
-find '<ul class="errorlist">'
+find '<li class="error">'
 

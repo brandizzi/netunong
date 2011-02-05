@@ -99,6 +99,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 LOGIN_URL='/netunong/login/'
 LOGIN_REDIRECT_URL='/netunong/register/'
 AUTH_PROFILE_MODULE='register.Employee'

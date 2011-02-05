@@ -2,3 +2,4 @@
 .*\.pyc
 .*\.save
 base.db
+err.html

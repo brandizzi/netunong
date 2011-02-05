@@ -11,5 +11,5 @@ url http://localhost:8000/netunong/register/$
 notfind '<input type="hidden" name="operation" value="close" />'
 find '<input type="hidden" name="operation" value="open" />'
 # There is an error message
-find '<ul class="errorlist">'
+find '<li class="error">'
 

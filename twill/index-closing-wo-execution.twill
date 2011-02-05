@@ -20,7 +20,7 @@ url http://localhost:8000/netunong/register/$
 notfind '<input type="hidden" name="operation" value="open" />'
 find '<input type="hidden" name="operation" value="close" />'
 # There is an error message
-find '<ul class="errorlist">'
+find '<li class="error">'
 
 # We close the period as a cleanup
 fv 1 execution 'yes, yes, write another Twill test'
