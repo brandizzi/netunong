@@ -30,7 +30,7 @@ def post_to_index(request):
     if operation == "open":
         intention = request.POST['intention']
         if not intention.strip():
-            messages.error(request, _("What is your intention?"))
+            messages.error(request, _("What do you intend to do?"))
             return HttpResponseRedirect(reverse(index))
         task_id = request.POST['task']
         try:

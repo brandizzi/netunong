@@ -1,0 +1,103 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-02-11 01:08-0200\n"
+"PO-Revision-Date: 2011-02-11 01:06-0300\n"
+"Last-Translator: Adam Victor Nazareth Brandizzi <brandizzi@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: register/view/index.py:33
+msgid "What do you intend to do?"
+msgstr "O que você pretende fazer?"
+
+#: register/view/index.py:51
+msgid "What did you do?"
+msgstr "O que você fez?"
+
+#: register/view/manage.py:59
+msgid "The working period was udpated!"
+msgstr "O período de trabalho foi atualizado!"
+
+#: register/view/manage.py:63
+msgid "The working period was deleted!"
+msgstr "O período de trabalho foi apagado!"
+
+#: templates/model.html:9 templates/register/model.html:11
+msgid "Register"
+msgstr "Registrar"
+
+#: templates/model.html:10
+msgid "Manage"
+msgstr "Genrenciar"
+
+#: templates/model.html:11
+msgid "Log out"
+msgstr "Sair"
+
+#: templates/register/close_period.html:9
+#, fuzzy, python-format
+msgid "I intended to %(working_period.intended|escape)s"
+msgstr "Eu pretendia %(working_period.intended|escape)s."
+
+#: templates/register/close_period.html:11
+#, fuzzy, python-format
+msgid ""
+"I intended to help with the task \"%(working_period.intended_task.name|"
+"escape)s\""
+msgstr ""
+"Eu pretendia ajudar com a tarefa de \"%(working_period.intended_task.name|"
+"escape)s\"."
+
+#: templates/register/close_period.html:14
+msgid "What I effectively did:"
+msgstr "O que eu efetivamente fiz:"
+
+#: templates/register/close_period.html:16
+msgid "Which task I helped:"
+msgstr "Que tarefa eu ajudei:"
+
+#: templates/register/manage.html:3
+msgid "Netuno NG - Manage"
+msgstr "Netuno NG - Gerenciar"
+
+#: templates/register/open_period.html:3
+msgid "Netuno NG - what I will do"
+msgstr "Netuno NG - O que eu vou fazer"
+
+#: templates/register/open_period.html:8
+msgid "What I intend to do:"
+msgstr "O que pretendo fazer:"
+
+#: templates/register/open_period.html:10
+msgid "Which task I intend to help:"
+msgstr "Que tarefa pretendo ajudar"
+
+#: templates/registration/login.html:4
+msgid "Netuno NG - Authentication"
+msgstr "Netuno NG - Autenticação"
+
+#: templates/registration/login.html:15
+msgid "Authentication failed"
+msgstr "A autenticação falhou"
+
+#: templates/registration/login.html:26
+msgid "User"
+msgstr "Usuário"
+
+#: templates/registration/login.html:30
+msgid "Password"
+msgstr "Senha"
+
+#: templates/registration/login.html:35
+msgid "Log me in"
+msgstr "Autentique-me"

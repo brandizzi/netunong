@@ -1,4 +1,5 @@
 {% extends "register/model.html" %}
+{% load i18n %}
 
 {% block title %}Netuno NG - o que eu fiz{% endblock %}
 
@@ -6,13 +7,14 @@
 
 {% block formcontent %}
 
-Eu planejava {{working_period.intended|escape}}
-{% if working_period.intended_task %} para avan&ccedil;ar na tarefa de 
-{{working_period.intended_task.name|escape}}{% endif %}. 
+{% blocktrans with working_period.intended|escape as intention  %}I intended to {{intention}}{% endblocktrans %}.
+{% if working_period.intended_task %}
+{% blocktrans with working_period.intended_task.name|escape as intended_task %}I intended to help with the task "{{intended_task}}"{% endblocktrans %}
+{% endif %}. 
 
-O que eu efetivamente fiz foi
+    {% trans "What I effectively did:" %}
     <input type="text" name="execution" value="{{working_period.intended|escape}}" />
-para adiantar a tarefa de
+    {% trans "Which task I helped:" %}
     <select name="task">
         <!-- Funny thing: <option> cannot be empty! -->
         <option value="0">&nbsp;</option> 

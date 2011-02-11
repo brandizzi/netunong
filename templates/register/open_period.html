@@ -1,13 +1,14 @@
 {% extends "register/model.html" %}
+{% load i18n %}
 
-{% block title %}Netuno NG - o que vou fazer{% endblock %}
+{% block title %}{% trans "Netuno NG - what I will do" %}{% endblock %}
 
 {% block operation %}open{% endblock %}
 
 {% block formcontent %}
-Eu vou 
+    {% trans "What I intend to do:" %}
     <input type="text" name="intention" /> 
-para avan&ccedil;ar na tarefa de
+    {% trans "Which task I intend to help:" %}
     <select name="task">
         <!-- Funny thing: <option> cannot be empty! -->
         <option value="0">&nbsp;</option>

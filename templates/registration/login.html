@@ -1,7 +1,8 @@
 {% extends "model.html" %}
+{% load i18n %}
 
 {% block title %}
-Netuno NG - Autentica&ccedil;&atilde;o 
+    {% trans "Netuno NG - Authentication" %}
 {% endblock %}
 
 {% block user_options %}
@@ -12,7 +13,7 @@ Netuno NG - Autentica&ccedil;&atilde;o
 {% block messages %}
 {% if form.errors %}
 <ul class="messages">
-    <li class="error">A autentica&ccedil;&atilde;o falhou</li>
+    <li class="error">{% trans "Authentication failed" %}</li>
 </ul>
 {% endif %}
 {% endblock %}
@@ -23,15 +24,15 @@ Netuno NG - Autentica&ccedil;&atilde;o
     <input type="hidden" name="next" value="/netunong/register/" />
     <table>
         <tr>
-            <td>Usu&aacute;rio<td>
+            <td>{% trans "User" %}<td>
             <td><input type="text" name="username" />
         </tr>
         <tr>
-            <td>Senha<td>
+            <td>{% trans "Password" %}<td>
             <td><input type="password" name="password" />
         </tr>
     </table>
     <input type="hidden" name="next" value="{{next|escape}}" />
-    <input type="submit" value="Autentique-me" />
+    <input type="submit" value="{% trans "Log me in" %}" />
 </form>
 {% endblock %}

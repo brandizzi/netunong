@@ -1,3 +1,4 @@
+{% load i18n %}
 <html>
     <head>
         <title>{% block title %}Base model for Netuno NG Pages{% endblock %}</title>
@@ -6,9 +7,9 @@
         {% block user_options %}
         <div class="user-options">
             {{user.get_profile.name|escape}} | 
-            <a name="register" href="/netunong/register/">Registrar</a> |
-            <a name="manage" href="/netunong/register/manage/">Gerenciar</a> |
-            <a name="logout" href="/netunong/logout/">Sair</a>            
+            <a name="register" href="/netunong/register/">{% trans "Register" %}</a> |
+            <a name="manage" href="/netunong/register/manage/">{% trans "Manage" %}</a> |
+            <a name="logout" href="/netunong/logout/">{% trans "Log out" %}</a>            
         </div>
         {% endblock %}
 
