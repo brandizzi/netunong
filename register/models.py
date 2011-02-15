@@ -3,16 +3,25 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import auth
+from django.contrib import admin
 from settings import NETUNONG_DATE_FORMAT, NETUNONG_TIME_FORMAT
+
+
 
 class Organization(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
 
+    class Admin:
+        pass
+
 class Project(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     organization = models.ForeignKey(Organization)
+
+    class Admin:
+        pass
 
 class Task(models.Model):
     name = models.CharField(max_length=200)
@@ -25,6 +34,9 @@ class Task(models.Model):
     def __cmp__(self, other):
         """Required for using TestCase.assertItemsEqual()"""
         return self.id - other.id
+
+    class Admin:
+        pass
 
 class Employee(models.Model):
     middle_name = models.CharField(max_length=200)
@@ -192,6 +204,9 @@ class Employee(models.Model):
         >>> tu.clear_database()
         """
         return " ".join([self.first_name, self.middle_name, self.last_name])
+
+    class Admin:
+        pass
         
 class WorkingPeriod(models.Model):
     employee = models.ForeignKey(Employee)
@@ -548,7 +563,10 @@ class WorkingPeriod(models.Model):
     class Meta:
         get_latest_by = "id"
 
+
 # Represents the null working period. Better than verifying if the working
 # period is None
 WorkingPeriod.NONE = WorkingPeriod()
 WorkingPeriod.NONE.is_complete = lambda : True
+
+admin.autodiscover()
