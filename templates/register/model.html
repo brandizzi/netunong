@@ -1,6 +1,10 @@
 {% extends "model.html" %}
 {% load i18n %}
 
+{% block customcss %}
+<link rel="stylesheet" type="text/css" href="/static/register.css" />
+{% endblock %}
+
 {% block content %}
 <form action="." method="POST">
 {% csrf_token %}

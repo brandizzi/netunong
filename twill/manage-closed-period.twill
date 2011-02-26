@@ -29,4 +29,4 @@ find '${wp.end.strftime(settings.NETUNONG_TIME_FORMAT)}'
 # start and end of the periods are very close:
 run 'secs = wp.timedelta.seconds'
 # Funny thing: cannot escape parenthesis
-find '${str(wp.total_time)} .${str(secs/(60*60))}h${str(secs/60)}.'
+find '${"%.2f" % wp.total_time} .*${"%dh%d" % (secs/(60*60), secs/60)}.*'

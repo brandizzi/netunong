@@ -1,0 +1,19 @@
+body {
+    background-image: url(/static/background-login.png);
+    font-size: 1.5em;
+}
+
+form[name=login] {
+    margin: 3em auto 3em auto;
+    text-align:center;
+    width: 30%;
+}
+
+td {
+    padding: .5em .5em .5em .5em;
+    font-size: 1.5em;
+}
+
+input {
+    font-size: 100%;
+}

@@ -48,4 +48,4 @@ find '${wp.end.strftime(settings.NETUNONG_TIME_FORMAT)}'
 # Validating the period total time. For now, a dull validation, since the
 # start and end of the periods are very close:
 run 'secs = wp.timedelta.seconds'
-find '${str(wp.total_time)} .${str(secs/(60*60))}h${str((secs%3600)/60)}.'
+find '${"%.2f" % wp.total_time} .*${"%dh%d" % (secs/(60*60), secs/60)}.*'

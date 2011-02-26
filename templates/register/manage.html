@@ -3,16 +3,31 @@
 
 {% block title %}{% trans "Netuno NG - Manage" %}{% endblock %}
 
+{% block customcss %}
+<link rel="stylesheet" type="text/css" href="/static/manage.css" />
+{% endblock %}
+
+
 {% block content %}
 {#    {% csrf_token %} #}
 <table>
+    <thead>
+        <tr>
+            <th>{% trans "Activity" %}</th>
+            <th>{% trans "Task" %}</th>
+            <th>{% trans "Started at" %}</th>
+            <th>{% trans "Ended at" %}</th>
+            <th>{% trans "Total time" %}</th>
+            <th colspan="2">{% trans "Operations" %}</th>
+        </tr>
+    </thead>
     {% for wp in employee.workingperiod_set.all %}
     <form name="form-wp{{wp.id}}" action="." method="POST">
     <tr>
         <td class="executed">
             {% csrf_token %}
             <input type="hidden" name="working_period" value="{{wp.id|escape}}" />
-            <input type="text" name="activity" value="{{wp.last_activity|escape}}" />
+            <input class="executed" type="text" name="activity" value="{{wp.last_activity|escape}}" />
         </td>
         <td class="task">
             <select name="task" class="task">
@@ -28,21 +43,19 @@
                 {% endfor %}
             </select>
         </td>
-        <td class="start">
-            <input type="text" name="start-date" class="start-date"
+        <td class="start date">
+            <input type="text" name="start-date" class="start-date date"
                     value="{{wp.formatted_start_date|escape}}" />
-            |
-            <input type="text" name="start-time"  class="start-time"
+            <input type="text" name="start-time"  class="start-time time"
                     value="{{wp.formatted_start_time|escape}}" />
         </td>
-        <td class="end">
-            <input type="text" name="end-date"  class="end-date"
+        <td class="end date">
+            <input type="text" name="end-date"  class="end-date date"
                 {% if wp.end %}
                     value="{{wp.formatted_end_date|escape}}" 
                 {% endif %}
             />
-            |
-            <input type="text" name="end-time"  class="end-date"
+            <input type="text" name="end-time"  class="end-time time"
                 {% if wp.end %}
                     value="{{wp.formatted_end_time|escape}}"
                 {% endif %}
@@ -50,15 +63,15 @@
         </td>
         <td class="time">
         {% if wp.end %}
-            {{wp.total_time|escape}} ({{wp.hours|escape}}h{{wp.minutes|escape}})
+            {{wp.total_time|floatformat:"2"}} ({{wp.hours|escape}}h{{wp.minutes|escape}})
         {% endif %}
         </td>
         <td class="submit">
             <input type="submit" name="submit{{wp.id}}" 
-                    value="Salvar altera&ccedil;&otilde;es" />
+                    value="{% trans "Save" %}" />
         </td>
         <td class="submit">
-            <input type="submit" name="delete{{wp.id}}"  value="Apagar" />
+            <input type="submit" name="delete{{wp.id}}"  value="{% trans "Delete" %}" />
         </td>
     </tr>
     </form>

@@ -33,7 +33,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en_US'
+LANGUAGE_CODE = 'pt_BR'
 
 SITE_ID = 1
 
@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
+#    'django.contrib.staticfiles',
     'register',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -113,3 +114,4 @@ AUTH_PROFILE_MODULE='register.Employee'
 #####
 NETUNONG_DATE_FORMAT="%d/%m/%Y"
 NETUNONG_TIME_FORMAT="%Hh%M"
+STATIC_ROOT=os.path.join(CURRENT_DIR, 'static')

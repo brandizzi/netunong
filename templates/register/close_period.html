@@ -7,21 +7,21 @@
 
 {% block formcontent %}
 
-{% blocktrans with working_period.intended|escape as intention  %}I intended to {{intention}}{% endblocktrans %}.
+{% blocktrans with working_period.intended|escape as intention  %}I intended to {{intention}}.{% endblocktrans %}<br/>
 {% if working_period.intended_task %}
-{% blocktrans with working_period.intended_task.name|escape as intended_task %}I intended to help with the task "{{intended_task}}"{% endblocktrans %}
-{% endif %}. 
+{% blocktrans with working_period.intended_task.name|escape as intended_task %}I intended to help with the task "{{intended_task}}".{% endblocktrans %}</br>
+{% endif %}
 
-    {% trans "What I effectively did:" %}
-    <input type="text" name="execution" value="{{working_period.intended|escape}}" />
-    {% trans "Which task I helped:" %}
+    {% trans "What I effectively did:" %}<br/>
+    <input type="text" name="execution" value="{{working_period.intended|escape}}" /></br>
+    {% trans "Which task I helped:" %}<br/>
     <select name="task">
         <!-- Funny thing: <option> cannot be empty! -->
         <option value="0">&nbsp;</option> 
         {% for task in employee.tasks.all %}
         <option value="{{task.id}}">{{task.name|escape}}</option>
         {% endfor %}
-    </select>
+    </select></br>
 <input type="hidden" name="working_period" value="{{working_period.id|escape}}" />
 {% endblock %}
 

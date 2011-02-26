@@ -2,6 +2,8 @@
 <html>
     <head>
         <title>{% block title %}Base model for Netuno NG Pages{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="/static/main.css" />
+        {% block customcss %}{% endblock %}
     </head>
     <body>
         {% block user_options %}
@@ -13,12 +15,13 @@
         </div>
         {% endblock %}
 
+        <div class="content">
         {% block messages %}
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
             <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                {{message|escape}}
+                {{message}}
             </li>
             {% endfor %}
         </ul>
@@ -30,6 +33,6 @@
         in the browser, something is wrong.
         </p>
         {% endblock %}
-        
+        </div>
     </body>
 </html>

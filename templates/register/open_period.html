@@ -6,15 +6,15 @@
 {% block operation %}open{% endblock %}
 
 {% block formcontent %}
-    {% trans "What I intend to do:" %}
-    <input type="text" name="intention" /> 
-    {% trans "Which task I intend to help:" %}
+    {% trans "What I intend to do:" %}<br/>
+    <input type="text" name="intention" /> <br/>
+    {% trans "Which task I intend to help:" %}<br/>
     <select name="task">
         <!-- Funny thing: <option> cannot be empty! -->
         <option value="0">&nbsp;</option>
         {% for task in employee.tasks.all %}
         <option value="{{task.id|escape}}">{{task.name|escape}}</option>
         {% endfor %}
-    </select>
+    </select><br/>
 {% endblock %}
 

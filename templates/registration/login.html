@@ -5,6 +5,10 @@
     {% trans "Netuno NG - Authentication" %}
 {% endblock %}
 
+{% block customcss %}
+<link rel="stylesheet" type="text/css" href="/static/login.css" />
+{% endblock %}
+
 {% block user_options %}
 {# There is no sense on user options of a not logged in user #}
 {% endblock %}
@@ -22,7 +26,7 @@
 <form name="login" action="." method="POST">
     {% csrf_token %}
     <input type="hidden" name="next" value="/netunong/register/" />
-    <table>
+    <table class="login-form-table">
         <tr>
             <td>{% trans "User" %}<td>
             <td><input type="text" name="username" />

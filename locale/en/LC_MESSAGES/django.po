@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-11 01:08-0200\n"
+"POT-Creation-Date: 2011-02-25 22:31-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,70 +32,100 @@ msgstr ""
 msgid "The working period was deleted!"
 msgstr ""
 
-#: templates/model.html:9 templates/register/model.html:11
+#: templates/model.html:12 templates/register/model.html:16
 msgid "Register"
 msgstr ""
 
-#: templates/model.html:10
+#: templates/model.html:13
 msgid "Manage"
 msgstr ""
 
-#: templates/model.html:11
+#: templates/model.html:14
 msgid "Log out"
 msgstr ""
 
-#: templates/register/close_period.html:9
+#: templates/register/close_period.html:10
 #, python-format
-msgid "I intended to %(working_period.intended|escape)s"
+msgid "I intended to %(intention)s."
 msgstr ""
 
-#: templates/register/close_period.html:11
+#: templates/register/close_period.html:12
 #, python-format
-msgid ""
-"I intended to help with the task \"%(working_period.intended_task.name|"
-"escape)s\""
+msgid "I intended to help with the task \"%(intended_task)s\"."
 msgstr ""
 
-#: templates/register/close_period.html:14
+#: templates/register/close_period.html:15
 msgid "What I effectively did:"
 msgstr ""
 
-#: templates/register/close_period.html:16
+#: templates/register/close_period.html:17
 msgid "Which task I helped:"
 msgstr ""
 
-#: templates/register/manage.html:3
+#: templates/register/manage.html:4
 msgid "Netuno NG - Manage"
 msgstr ""
 
-#: templates/register/open_period.html:3
+#: templates/register/manage.html:16
+msgid "Activity"
+msgstr ""
+
+#: templates/register/manage.html:17
+msgid "Task"
+msgstr ""
+
+#: templates/register/manage.html:18
+msgid "Started at"
+msgstr ""
+
+#: templates/register/manage.html:19
+msgid "Ended at"
+msgstr ""
+
+#: templates/register/manage.html:20
+msgid "Total time"
+msgstr ""
+
+#: templates/register/manage.html:21
+msgid "Operations"
+msgstr ""
+
+#: templates/register/manage.html:71
+msgid "Save"
+msgstr ""
+
+#: templates/register/manage.html:74
+msgid "Delete"
+msgstr ""
+
+#: templates/register/open_period.html:4
 msgid "Netuno NG - what I will do"
 msgstr ""
 
-#: templates/register/open_period.html:8
+#: templates/register/open_period.html:9
 msgid "What I intend to do:"
 msgstr ""
 
-#: templates/register/open_period.html:10
+#: templates/register/open_period.html:11
 msgid "Which task I intend to help:"
 msgstr ""
 
-#: templates/registration/login.html:4
+#: templates/registration/login.html:5
 msgid "Netuno NG - Authentication"
 msgstr ""
 
-#: templates/registration/login.html:15
+#: templates/registration/login.html:20
 msgid "Authentication failed"
 msgstr ""
 
-#: templates/registration/login.html:26
+#: templates/registration/login.html:31
 msgid "User"
 msgstr ""
 
-#: templates/registration/login.html:30
+#: templates/registration/login.html:35
 msgid "Password"
 msgstr ""
 
-#: templates/registration/login.html:35
+#: templates/registration/login.html:40
 msgid "Log me in"
 msgstr ""

@@ -1,0 +1,23 @@
+input.date {
+    width: 7em; 
+}
+
+input.time {
+    width: 5em;
+}
+
+input.executed {
+    width: 30em;
+}
+
+select.task {
+    width: 20em;
+}
+
+td {
+    padding: .2em;
+}
+
+th {
+    text-align:left;
+}

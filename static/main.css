@@ -1,0 +1,38 @@
+body {
+    text-align: center;
+    margin: 1em auto 1em auto;
+    width: 90%;
+    background-color: rgb(241,126,21);
+    font-family: Helvetica, Verdana, Arial, Sans;
+}
+
+ul.messages {
+    list-style-type: none;
+}
+
+li.error {
+    background-color: rgb(240,100,0);
+    border-style: solid;
+    border-color: red;
+}
+
+li.success {
+    background-color: cyan;
+    border-style: solid;
+    border-color: rgb(22,154,139);
+}
+
+div.user-options {
+    text-align:right;
+    font-size: medium;
+    border-bottom: 1px solid;
+    margin-bottom: 1em;
+}
+
+select, input {
+    border-style: none;
+}
+
+input[type=button],input[type=submit] {
+    background-color: rgb(241,200,100);
+}
