@@ -107,7 +107,7 @@ AUTHENTICATION_BACKENDS = (
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 LOGIN_URL='/netunong/login/'
-LOGIN_REDIRECT_URL='/netunong/register/'
+LOGIN_REDIRECT_URL='/netunong/'
 AUTH_PROFILE_MODULE='register.Employee'
 ######
 ### NETUNO NG SPECIFIC CONFIGURATIONS

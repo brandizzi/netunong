@@ -11,8 +11,8 @@ import django.views.static
 STATIC_ROOT=    'static'
 patterns_list = [
     # Example:
-    (r'^netunong/$', django.contrib.auth.views.login),
-    (r'^netunong/register/', include('netunong.register.urls')),
+    (r'^netunong/login/$', django.contrib.auth.views.login),
+    (r'^netunong/', include('netunong.register.urls')),
     (r'^netunong/login/(?:\?next=.*)?$', django.contrib.auth.views.login), # (?:...) requird for non grouping
     (r'^accounts/login/(?:\?next=.*)?$', django.contrib.auth.views.login),
     (r'^netunong/logout/$', django.contrib.auth.views.logout, {'next_page': '/netunong/login/'}),

@@ -2,8 +2,8 @@
 #########   VERIFY BASIC NAVIGATION                                  ###########
 ################################################################################
 # FIRST RELEVANT POINT: should have link for management page...
-find '<a +name="manage" +href="/netunong/register/manage/"' 
+find '<a +name="manage" +href="/netunong/manage/"' 
 follow manage
 # ...and link for register page
-find '<a +name="register" +href="/netunong/register/"' 
+find '<a +name="register" +href="/netunong/"' 
 

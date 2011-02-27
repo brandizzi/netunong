@@ -14,7 +14,7 @@ run 'assert wp.intended_task is None'
 
 # Validate result
 code 200
-url http://localhost:8000/netunong/register/$
+url http://localhost:8000/netunong/$
 # The intention of the open period should be presented.
 find 'write a Twill test for no task'
 # No task can appear as a message, only as options in select
