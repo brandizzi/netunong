@@ -1,4 +1,4 @@
-extend_with 'register.test.test_utilities'
+extend_with 'register.tests.test_utilities'
 run 'organization, project = get_organization_project()'
 run 'employee = get_employee(organization=organization)'
 run 'task1 = Task(name="Test login screen", project=project, description="Testing the login screen")'

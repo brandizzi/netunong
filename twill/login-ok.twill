@@ -13,3 +13,8 @@ url http://localhost:8000/netunong/register/$
 run 'e = Employee.objects.all()[0]'
 find '${e.name}'
 find '<a +.*href="/netunong/logout/"'
+
+go http://localhost:8000/netunong/register/
+code 200
+find '${e.name}'
+find '<a +.*href="/netunong/logout/"'
