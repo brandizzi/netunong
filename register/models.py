@@ -50,7 +50,7 @@ class Employee(models.Model):
         """
         Creates a new employee and a correspondent user. If we do:
 
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org = tu.get_organization()
         >>> employee = Employee.create_employee(organization=org,
         ...     username="test", first_name="Test", last_name="Testein",
@@ -97,7 +97,7 @@ class Employee(models.Model):
         """
         Deletes an employee and its user. If we create an employee:
 
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org = tu.get_organization()
         >>> employee = Employee.create_employee(organization=org,
         ...     username="test", first_name="Test", last_name="Testein",
@@ -139,7 +139,7 @@ class Employee(models.Model):
         """
         Get the last working period, ordered by the moment it started.
 
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod( employee=employee,
@@ -167,7 +167,7 @@ class Employee(models.Model):
         """
         Returns the first name which is actually stored at the user:
 
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> employee = tu.get_employee()
         >>> employee.first_name
         'Test'
@@ -182,7 +182,7 @@ class Employee(models.Model):
         """
         Returns the last name which is actually stored at the user:
 
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> employee = tu.get_employee()
         >>> employee.last_name
         'Testein'
@@ -197,7 +197,7 @@ class Employee(models.Model):
         """
         Returns the employee's full name:
 
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> employee = tu.get_employee()
         >>> employee.name
         'Test Testos Testein'
@@ -226,7 +226,7 @@ class WorkingPeriod(models.Model):
         Returns True if the period is complete --- that is, its end field is
         filled; returns False otherwise.
 
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -254,7 +254,7 @@ class WorkingPeriod(models.Model):
         If the working period is complete, return the "executed" field; return
         the "intended" field.
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -282,7 +282,7 @@ class WorkingPeriod(models.Model):
         If the working period is complete, return the executed task; return
         the intended task otherwise.
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -311,7 +311,7 @@ class WorkingPeriod(models.Model):
         (if the period lasted eight hours and thirty minutes, this
         property returns 8.5)
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -342,7 +342,7 @@ class WorkingPeriod(models.Model):
         """
         Returns the timedelta between start and end moments:
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -374,7 +374,7 @@ class WorkingPeriod(models.Model):
         Returs a tuple containing the total of hours spent at the first position
         and the total of minutes which lasted at the second position
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -410,7 +410,7 @@ class WorkingPeriod(models.Model):
         """
         Returns the total of hours spent.
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -441,7 +441,7 @@ class WorkingPeriod(models.Model):
         """
         Returns the total of hours spent.
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -473,7 +473,7 @@ class WorkingPeriod(models.Model):
         Returns a stirng represented the start date according to the 
         NETUNONG_DATE_FORMAT format.
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -496,7 +496,7 @@ class WorkingPeriod(models.Model):
         NETUNONG_DATE_FORMAT format. THANK YOU DDJANGO FOR MAKING DATE
         READING REALLY DIFFICULT!!
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -518,7 +518,7 @@ class WorkingPeriod(models.Model):
         Returns a stirng represented the start time according to the 
         NETUNONG_TIME_FORMAT format.
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,
@@ -540,7 +540,7 @@ class WorkingPeriod(models.Model):
         Returns a stirng represented the end date according to the 
         NETUNONG_TIME_FORMAT format.
         
-        >>> import test.test_utilities as tu
+        >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
         >>> employee = tu.get_employee(org)
         >>> wp1 = WorkingPeriod(employee=employee,

@@ -1,7 +1,7 @@
 import unittest2 as unittest
-from test.employee import employeeTestSuite
-from test.task import taskTestSuite
-from test.working_period import workingPeriodTestSuite
+from employee import employeeTestSuite
+from task import taskTestSuite
+from working_period import workingPeriodTestSuite
 
 def suite():
     s = unittest.TestSuite()
@@ -9,7 +9,5 @@ def suite():
     s.addTest(workingPeriodTestSuite)
     s.addTest(taskTestSuite)
     return s
-
-
 
 
