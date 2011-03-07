@@ -37,6 +37,6 @@ def get_employee(organization=None, username="test", password="test"):
     return employee
 
 def clear_database():
-    for model in Task, Project, User, Employee, Organization:
+    for model in WorkingPeriod, Task, Project, User, Employee, Organization:
         for instance in model.objects.all():
             instance.delete()

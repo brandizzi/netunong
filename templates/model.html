@@ -9,9 +9,9 @@
         {% block user_options %}
         <div class="user-options">
             {{user.get_profile.name|escape}} | 
-            <a id="register" href="/netunong/">{% trans "Register" %}</a> |
-            <a id="manage" href="/netunong/manage/">{% trans "Manage" %}</a> |
-            <a id="logout" href="/netunong/logout/">{% trans "Log out" %}</a>            
+            <a name="register" href="/netunong/">{% trans "Register" %}</a> |
+            <a name="manage" href="/netunong/manage/">{% trans "Manage" %}</a> |
+            <a name="logout" href="/netunong/logout/">{% trans "Log out" %}</a>            
         </div>
         {% endblock %}
 
