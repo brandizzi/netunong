@@ -1,18 +1,27 @@
 import unittest2 as unittest
-from selenium import webdriver
+from . import SeleniumTestCase, ROOT_URL
 
-class SeleniumLoginTestCase(unittest.TestCase):
-
-    def setUp(self):
-        self.browser = webdriver.Chrome()
+class LoginTestCase(SeleniumTestCase):
 
     def loginFailed(self):
-        self.browser.get('http://localhost:8000/netunong/')
-        self.assertTrue(self.browser.find_element_by_name('username') != None)
-        self.assertTrue(self.browser.find_element_by_name('password') != None);
+        #self.load_browser()
+        self.login(username='non-existent user', password='invalid passwerd')
+
+        message = self.browser().find_element_by_class_name('error')
+        self.assertIsNotNone(message)
+        self.assertEqual(self.browser().current_url, ROOT_URL+'login/')
+
+    def loginOk(self):
+        self.load_default_model_values()
+        self.login()
+        self.assertLoginOk()
+        self.logout()
 
     def tearDown(self):
-        self.browser.close()
+        self.clear_database()
+        print " YOU CALL'D?!?!"
+        self._browser.quit()
 
 seleniumLoginTestSuite = unittest.TestSuite()
-seleniumLoginTestSuite.addTest(SeleniumLoginTestCase('loginFailed'))
+seleniumLoginTestSuite.addTest(LoginTestCase('loginFailed'))
+seleniumLoginTestSuite.addTest(LoginTestCase('loginOk'))
