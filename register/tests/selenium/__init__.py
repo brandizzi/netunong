@@ -17,7 +17,6 @@ class SeleniumTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.clear_database()
-        print " YOU CALL'D?!?!"
         self._browser.quit()
 
     def browser(self, browser_class=webdriver.Chrome):

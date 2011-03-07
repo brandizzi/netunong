@@ -17,10 +17,6 @@ class LoginTestCase(SeleniumTestCase):
         self.assertLoginOk()
         self.logout()
 
-    def tearDown(self):
-        self.clear_database()
-        print " YOU CALL'D?!?!"
-        self._browser.quit()
 
 seleniumLoginTestSuite = unittest.TestSuite()
 seleniumLoginTestSuite.addTest(LoginTestCase('loginFailed'))
