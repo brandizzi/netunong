@@ -1,12 +1,16 @@
 import time
+import subprocess
 import unittest2 as unittest
 
 from selenium import webdriver
 from selenium.webdriver.common.exceptions import NoSuchElementException
 
-from register.models import Employee
+from register.models import Organization, Project, Employee, Task, WorkingPeriod
+from django.contrib.auth.models import User
 from register.tests.test_utilities import clear_database,\
          get_organization_project_task, get_employee
+
+import settings
 
 ROOT_URL = 'http://localhost:8000/netunong/'
 
@@ -16,21 +20,21 @@ class SeleniumTestCase(unittest.TestCase):
         self._browser = webdriver.Chrome()
 
     def tearDown(self):
-        self.clear_database()
         self._browser.quit()
 
     def browser(self, browser_class=webdriver.Chrome):
-        #if SeleniumTestCase._browser is None:
-        #    SeleniumTestCase._browser = browser_class()
         return self._browser
 
     def wait(self, seconds):
         time.sleep(seconds)
 
     def load_default_model_values(self):
-        clear_database()
-        self.organization, self.project, self.task = get_organization_project_task()
-        self.employee = get_employee(self.organization)
+        ##clear_database()
+        subprocess.call(['./usertest.py'])
+        self.organization = Organization.objects.all()[0]
+        self.project = Project.objects.all()[0]
+        self.employee = Employee.objects.all()[0]
+        self.task = Task.objects.all()[0]
 
     def clear_database(self):
         clear_database()
@@ -46,9 +50,12 @@ class SeleniumTestCase(unittest.TestCase):
         self.assertIsNotNone(self.password)
         self.assertIsNotNone(self.login_form)
 
-    def login(self, username='test', password='test'):
+    def login(self, username=None, password=None):
         self.load_login_stuff()
-        
+        if username is None:
+            username = self.employee.user.username
+        if password is None:
+            password = 'test'
         self.username.send_keys(username)
         self.password.send_keys(password)
         self.login_form.submit()

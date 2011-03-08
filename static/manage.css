@@ -14,10 +14,58 @@ select.task {
     width: 20em;
 }
 
-td {
-    padding: .2em;
+/* Row sizes */
+
+div.working-periods {
+
 }
 
-th {
+span.date {
+    width: 9em;
+}
+
+span.time {
+    width: 6em;
+}
+
+span.executed {
+    width: 22em;
+}
+
+span.task {
+    width: 14em;
+}
+
+span.operations {
+    width: 9em;
+    /*border: solid 1px;*/
+    text-align:justify;
+    word-spacing: 2em;
+}
+
+/* Spacing */
+
+span.column {
+    display:table-cell;
+    padding: .2em 0em 0em 0em;
+    margin: 0em;
+}
+
+div.row {
+    padding: 0em 0em 0em 0em;
+    margin: 0em 0em 0em 0em;
+}
+
+form.form-wp {
+    padding: 0em 0em 0em 0em;
+    margin: 0em 0em 0em 0em;
+    display: table-row;
+}
+
+.header span.column {
     text-align:left;
+}
+
+.header {
+    font-weight: bold;
 }

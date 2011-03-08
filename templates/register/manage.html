@@ -5,31 +5,31 @@
 
 {% block customcss %}
 <link rel="stylesheet" type="text/css" href="/static/manage.css" />
+<script type="application/javascript" src="/static/jquery-1.5.min.js"></script>
+<!--script type="application/javascript" src="/static/manage.js"></script-->
 {% endblock %}
 
 
 {% block content %}
 {#    {% csrf_token %} #}
-<table>
-    <thead>
-        <tr>
-            <th>{% trans "Activity" %}</th>
-            <th>{% trans "Task" %}</th>
-            <th>{% trans "Started at" %}</th>
-            <th>{% trans "Ended at" %}</th>
-            <th>{% trans "Total time" %}</th>
-            <th colspan="2">{% trans "Operations" %}</th>
-        </tr>
-    </thead>
+<div class="working-periods">
+    <div class="header">
+        <span class="column  executed">{% trans "Activity" %}</span>
+        <span class="column  task">{% trans "Task" %}</span>
+        <span class="column  start date">{% trans "Started at" %}</span>
+        <span class="column  end date">{% trans "Ended at" %}</span>
+        <span class="column  time">{% trans "Total time" %}</span>
+        <span class="column  operations">{% trans "Operations" %}</span>
+    </div>
     {% for wp in employee.workingperiod_set.all %}
-    <form name="form-wp{{wp.id}}" action="." method="POST">
-    <tr>
-        <td class="executed">
+    <div id="row{{wp.id}}" class="row">
+    <form class="form-wp" name="form-wp{{wp.id}}" action="." method="POST">
+        <span class="column  executed">
             {% csrf_token %}
-            <input type="hidden" name="working_period" value="{{wp.id|escape}}" />
+            <input type="hidden" id="working-period" name="working_period" value="{{wp.id|escape}}" />
             <input class="executed" type="text" name="activity" value="{{wp.last_activity|escape}}" />
-        </td>
-        <td class="task">
+        </span>
+        <span class="column  task">
             <select name="task" class="task">
                 <option value="0">&nbsp;</option>
                 {% for task in employee.tasks.all %}
@@ -42,14 +42,14 @@
                 </option>
                 {% endfor %}
             </select>
-        </td>
-        <td class="start date">
+        </span>
+        <span class="column  start date">
             <input type="text" name="start-date" class="start-date date"
                     value="{{wp.formatted_start_date|escape}}" />
             <input type="text" name="start-time"  class="start-time time"
                     value="{{wp.formatted_start_time|escape}}" />
-        </td>
-        <td class="end date">
+        </span>
+        <span class="column  end date">
             <input type="text" name="end-date"  class="end-date date"
                 {% if wp.end %}
                     value="{{wp.formatted_end_date|escape}}" 
@@ -60,22 +60,22 @@
                     value="{{wp.formatted_end_time|escape}}"
                 {% endif %}
             />
-        </td>
-        <td class="time">
+        </span>
+        <span class="column  time">
         {% if wp.end %}
             {{wp.total_time|floatformat:"2"}} ({{wp.hours|escape}}h{{wp.minutes|escape}})
+        {% else %}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         {% endif %}
-        </td>
-        <td class="submit">
+        </span>
+        <span class="column  operations">
             <input type="submit" name="submit{{wp.id}}" 
                     value="{% trans "Save" %}" />
-        </td>
-        <td class="submit">
             <input type="submit" name="delete{{wp.id}}"  value="{% trans "Delete" %}" />
-        </td>
-    </tr>
+        </span>
     </form>
+    </div>
     {% endfor %}
-</table>
+</div>
 {% endblock %}
 

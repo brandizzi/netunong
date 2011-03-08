@@ -3,5 +3,5 @@ from register.models import Employee
 from register.tests.test_utilities import get_organization_project_task, get_employee
 
 organization, project, task = get_organization_project_task()
-test_user = get_employee(organization)
+test_user = get_employee(organization=organization, task=task)
 print "User test created"

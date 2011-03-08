@@ -28,11 +28,13 @@ def get_organization_project_task():
     task.save()
     return organization, project, task
 
-def get_employee(organization=None, username="test", password="test"):
+def get_employee(organization=None, username="test", password="test", task=None):
     if organization is None: organization = get_organization()
     employee = Employee.create_employee(organization=organization,
             username=username, first_name="Test", last_name="Testein",
-            middle_name="Testos", email="test@test.tst", password=password)     
+            middle_name="Testos", email="test@test.tst", password=password)
+    if task:
+        employee.tasks.add(task) 
     employee.save()
     return employee
 
