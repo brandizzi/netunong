@@ -6,7 +6,7 @@
 {% block customcss %}
 <link rel="stylesheet" type="text/css" href="/static/manage.css" />
 <script type="application/javascript" src="/static/jquery-1.5.min.js"></script>
-<!--script type="application/javascript" src="/static/manage.js"></script-->
+<script type="application/javascript" src="/static/manage.js"></script>
 {% endblock %}
 
 
@@ -69,9 +69,10 @@
         {% endif %}
         </span>
         <span class="column  operations">
-            <input type="submit" name="submit{{wp.id}}" 
+            <input type="submit" name="submit{{wp.id}}" class="update-submit"
                     value="{% trans "Save" %}" />
-            <input type="submit" name="delete{{wp.id}}"  value="{% trans "Delete" %}" />
+            <input type="submit" name="delete{{wp.id}}" class="delete-submit"
+                    value="{% trans "Delete" %}" />
         </span>
     </form>
     </div>
