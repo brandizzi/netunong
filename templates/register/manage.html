@@ -11,9 +11,8 @@
 
 
 {% block content %}
-{#    {% csrf_token %} #}
 <div class="working-periods">
-    <div class="header">
+    <div class="header row">
         <span class="column  executed">{% trans "Activity" %}</span>
         <span class="column  task">{% trans "Task" %}</span>
         <span class="column  start date">{% trans "Started at" %}</span>
@@ -77,6 +76,7 @@
     </form>
     </div>
     {% endfor %}
+    <a name="add-period" href="/netunong/add/">{% trans "Add period" %}</a>
 </div>
 {% endblock %}
 

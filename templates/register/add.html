@@ -1,0 +1,31 @@
+{% extends "register/model.html" %}
+{% load i18n %}
+
+{% block title %}Netuno NG - o que eu fiz{% endblock %}
+
+{% block operation %}add{% endblock %}
+
+{% block formcontent %}
+
+    {% trans "What I did:" %}<br/>
+    <input type="text" name="activity" /></br>
+
+    {% trans "Which task I helped:" %}<br/>
+    <select name="task">
+        <!-- Funny thing: <option> cannot be empty! -->
+        <option value="0">&nbsp;</option> 
+        {% for task in employee.tasks.all %}
+        <option value="{{task.id}}">{{task.name|escape}}</option>
+        {% endfor %}
+    </select></br>
+
+    {% trans "Started at" %}<br/>
+    <input type="text" name="start-date" class="start-date date" />
+    <input type="text" name="start-time"  class="start-time time" /><br/>
+
+    {% trans "Ended at" %}
+    <input type="text" name="end-date"  class="end-date date" />
+    <input type="text" name="end-time"  class="end-time time" /><br/>
+
+{% endblock %}
+

@@ -7,7 +7,7 @@ input.time {
 }
 
 input.executed {
-    width: 30em;
+    width: 29em;
 }
 
 select.task {
@@ -25,11 +25,11 @@ span.date {
 }
 
 span.time {
-    width: 6em;
+    width: 8em;
 }
 
 span.executed {
-    width: 22em;
+    width: 20em;
 }
 
 span.task {

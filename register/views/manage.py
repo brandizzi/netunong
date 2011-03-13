@@ -14,7 +14,7 @@ from register.models import Employee, Task, WorkingPeriod
 from settings import NETUNONG_DATE_FORMAT, NETUNONG_TIME_FORMAT
 
 def get_manage(request):
-    employee = Employee.objects.get(user=request.user)
+    employee = request.user.get_profile()
     template = loader.get_template("register/manage.html")
     context = RequestContext(request, {
             'employee' : employee, 'settings' : settings

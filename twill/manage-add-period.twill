@@ -1,0 +1,30 @@
+extend_with datetime
+run 'task1, task2 = Task.objects.all()'
+run 'employee = Employee.objects.all()[0]'
+run 'start = datetime(2000, 12, 31, 8, 31) # Long time ago'
+run 'end = start + timedelta(0, 60*8)'
+
+
+follow manage
+
+follow add-period
+
+fv 1 activity 'Add period through manage interface'
+fv 1 task ${str(task1.id)}
+fv 1 start-date '${start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 start-time '${start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+fv 1 end-date '${end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 end-time '${end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+submit
+code 200
+url http://localhost:8000/netunong/manage/
+notfind '<li class="error">'
+find '<li class="success">'
+find 'Add period through manage interface'
+find '${start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+find '${end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+
+run 'wp = employee.last_working_period'
+run 'assert wp.last_activity == "Add period through manage interface", "no?"'

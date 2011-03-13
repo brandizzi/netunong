@@ -11,7 +11,7 @@ from django.utils.translation import gettext as _
 from register.models import Employee, Task, WorkingPeriod
     
 def get_index(request):
-    employee = Employee.objects.get(user=request.user)
+    employee = request.user.get_profile()
     working_period = employee.last_working_period
     print 'wp', working_period.intended
     if working_period.is_complete():
@@ -24,8 +24,7 @@ def get_index(request):
     return HttpResponse(template.render(context))
 
 def post_to_index(request):
-    errors = []
-    employee = Employee.objects.get(user=request.user)
+    employee = request.user.get_profile()
     operation = request.POST['operation']
     if operation == "open":
         intention = request.POST['intention']
