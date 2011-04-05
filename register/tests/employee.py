@@ -159,6 +159,27 @@ class EmployeeTestCase(ModelTestCase):
                 username="test", first_name="Test", last_name="Testein",
                 middle_name="Testos", email="test@test.tst", password="test")
 
+    """def save(self):
+        employee = Employee(username='test', password='test', first_name='Test', 
+            middle_name='Testos', last_name='Testein', email="test@test.tst",
+            organization=self.organization)
+        employee.save()
+
+        
+        user = auth.authenticate(username='test', password='test')
+        self.assertIsNotNone(user, "User should be created")
+
+        self.assertEqual(user.first_name, "Test")
+        self.assertEqual(user.last_name, "Testein")
+        self.assertEqual(user.email, "test@test.tst")
+
+        employee = Employee.objects.get(user=user)
+        self.assertIsNotNone(employee, "Employee should be found")
+        self.assertEqual(employee.middle_name, "Testos")
+
+        self.assertEqual(employee.user, user)"""
+
+
     def tearDown(self):
         clear_database()
 
@@ -173,3 +194,4 @@ employeeTestSuite.addTest(EmployeeTestCase('has_working_periods'))
 employeeTestSuite.addTest(EmployeeTestCase('last_working_period'))
 employeeTestSuite.addTest(EmployeeTestCase('last_working_period_none_found'))
 employeeTestSuite.addTest(EmployeeTestCase('name_properties'))
+#employeeTestSuite.addTest(EmployeeTestCase('save'))

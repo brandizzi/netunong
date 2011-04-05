@@ -14,15 +14,19 @@ def get_organization():
     organization.save()
     return organization
 
-def get_organization_project():
-    organization = get_organization()
+def get_organization_project(organization=None):
+    if not organization:
+        organization = get_organization()
     project = Project(organization=organization, name="NetunoNG", 
                 description="Netuno Nova Geracao (NetunoNG)")
     project.save()
     return organization, project
 
-def get_organization_project_task():
-    organization, project = get_organization_project()
+def get_organization_project_task(organization=None, project=None):
+    if not organization:
+        organization = get_organization()
+    if not project:
+        _, project = get_organization_project(organization)
     task = Task(name="Test employee", project=project, 
             description="Testing the Employee model")
     task.save()

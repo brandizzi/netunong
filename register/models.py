@@ -569,4 +569,9 @@ class WorkingPeriod(models.Model):
 WorkingPeriod.NONE = WorkingPeriod()
 WorkingPeriod.NONE.is_complete = lambda : True
 
+#admin.site.register(Organization)
+#admin.site.register(Employee)
+#admin.site.register(Task)
+#admin.site.register(Project)
+
 admin.autodiscover()

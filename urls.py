@@ -19,6 +19,7 @@ patterns_list = [
     (r'^admin/', include(django.contrib.admin.site.urls)),
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    (r'^netunong/reports/', include('netunong.reports.urls')),
 ]
 
 if settings.DEBUG:

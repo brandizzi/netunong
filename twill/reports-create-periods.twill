@@ -1,0 +1,39 @@
+# Starts a period
+fv 1 intention 'write a Twill test'
+fv 1 task ${str(taskid1)}
+submit
+# Validate result
+code 200
+url http://localhost:8000/netunong/$
+notfind errorlist
+
+fv 1 execution 'write another Twill test'
+fv 1 task ${str(taskid2)}
+submit
+
+
+# Starts a period
+fv 1 intention 'write some Twill test'
+fv 1 task ${str(taskid1)}
+submit
+# Validate result
+code 200
+url http://localhost:8000/netunong/$
+notfind errorlist
+
+fv 1 execution 'write another Twill test'
+fv 1 task ${str(taskid1)}
+submit
+
+# Starts a period
+fv 1 intention 'write a Twill test'
+fv 1 task ${str(taskid1)}
+submit
+# Validate result
+code 200
+url http://localhost:8000/netunong/$
+notfind errorlist
+
+fv 1 execution 'write another Twill test'
+fv 1 task ${str(taskid2)}
+submit
