@@ -15,46 +15,36 @@ class ContractTestCase(ContractModelTestCase):
 
     def setUp(self):
         self.employee = get_employee()
-
-    def create_contract(self):
-        contract = Contract(employee=self.employee, workload=8)
+        self.contract = Contract(employee=self.employee, workload=8)
 
     def time_worked(self):
         organization, project, task = get_organization_project_task()
-
-        contract = Contract(employee=self.employee, workload=8)
-        #contract.save()
-
         wps = self.get_working_periods()
         
         start=datetime(2011, 4, 1)
         end=datetime(2011, 4, 30)
         
-        time_worked = contract.time_worked(start, end)
+        time_worked = self.contract.time_worked(start, end)
         self.assertEqual(time_worked, 8-4 + 18-14 + 8-4 + 18-13)
 
     def time_worked_ignore_those_out_the_interval(self):
         organization, project, task = get_organization_project_task()
-
-        contract = Contract(employee=self.employee, workload=8)
-
         wps = self.get_working_periods(only_april=False)
         for wp in wps: wp.save()
         
         start=datetime(2011, 4, 1)
         end=datetime(2011, 4, 30)
         
-        time_worked = contract.time_worked(start, end)
+        time_worked = self.contract.time_worked(start, end)
         self.assertEqual(time_worked, 8-4 + 18-14 + 8-4 + 18-13)
 
     def due_payment(self):
         organization, project, task = get_organization_project_task()
-        contract = Contract(employee=self.employee, workload=8)
         start=datetime(2011, 4, 1)
         end=datetime(2011, 4, 30)
         
         with self.assertRaises(NotImplementedError):
-            due_payment = contract.due_payment(start, end)
+            due_payment = self.contract.due_payment(start, end)
             
 
     def tearDown(self):
