@@ -51,7 +51,6 @@ class ContractTestCase(ContractModelTestCase):
         self.employee.delete_with_user()        
 
 contractTestSuite = unittest.TestSuite()
-contractTestSuite.addTest(ContractTestCase('create_contract'))
 contractTestSuite.addTest(ContractTestCase('time_worked'))
 contractTestSuite.addTest(ContractTestCase('time_worked_ignore_those_out_the_interval'))
 contractTestSuite.addTest(ContractTestCase('due_payment'))
