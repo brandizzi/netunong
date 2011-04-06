@@ -3,6 +3,10 @@ from django.db import models
 from register.models import Employee, WorkingPeriod
 
 class Contract(models.Model):
+    """
+    Abstract representation of contracts. All contracts to be reported should
+    extend this class.
+    """
     employee = models.ForeignKey(Employee)
     workload = models.DecimalField(max_digits=4, decimal_places=2)
 
@@ -66,3 +70,16 @@ class Contract(models.Model):
 
     class Meta:
         abstract=True
+        db_tablespace='netunong_reports'
+
+class PJContract(Contract):
+    """
+    Contract of "Pessoa Juridica" kind. The employee provides service to the
+    employer through an individual, barebone company used only for burocratic
+    necessity.
+    """
+    hour_value = models.DecimalField(max_digits=12, decimal_places=2)
+
+    def due_payment(self, start, end):
+        return self.time_worked(start, end)*self.hour_value
+
