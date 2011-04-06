@@ -5,7 +5,6 @@ from register.models import Employee, WorkingPeriod
 class Contract(models.Model):
     employee = models.ForeignKey(Employee)
     workload = models.DecimalField(max_digits=4, decimal_places=2)
-    salary = models.DecimalField(max_digits=12, decimal_places=2)
 
     def time_worked(self, start, end):
         """
@@ -18,7 +17,7 @@ class Contract(models.Model):
         >>> from datetime import datetime
         >>> clear_database()
         >>> employee = get_employee()
-        >>> contract = Contract(employee=employee, workload=8, salary=2000)
+        >>> contract = Contract(employee=employee, workload=8)
 
         ...and its employee has the following working periods:
         
@@ -60,6 +59,10 @@ class Contract(models.Model):
         time_worked = sum(period.total_time for period in working_peridos)
 
         return time_worked
+
+    def due_payment(self, start, end):
+        raise NotImplementedError("Contract.due_payment() not implemented. "
+                "Your subclass of Contract should implement it.")
 
     class Meta:
         abstract=True

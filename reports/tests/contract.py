@@ -16,12 +16,12 @@ class ContractTestCase(ModelTestCase):
         self.employee = get_employee()
 
     def create_contract(self):
-        contract = Contract(employee=self.employee, workload=8, salary=2000)
+        contract = Contract(employee=self.employee, workload=8)
 
     def time_worked(self):
         organization, project, task = get_organization_project_task()
 
-        contract = Contract(employee=self.employee, workload=8, salary=2000)
+        contract = Contract(employee=self.employee, workload=8)
         #contract.save()
 
         wps = [
@@ -57,7 +57,7 @@ class ContractTestCase(ModelTestCase):
     def time_worked_ignore_those_out_the_interval(self):
         organization, project, task = get_organization_project_task()
 
-        contract = Contract(employee=self.employee, workload=8, salary=2000)
+        contract = Contract(employee=self.employee, workload=8)
 
         wps = [
             # Out the interval
@@ -112,6 +112,16 @@ class ContractTestCase(ModelTestCase):
         time_worked = contract.time_worked(start, end)
         self.assertEqual(time_worked, 8-4 + 18-14 + 8-4 + 18-13)
 
+    def due_payment(self):
+        organization, project, task = get_organization_project_task()
+        contract = Contract(employee=self.employee, workload=8)
+        start=datetime(2011, 4, 1)
+        end=datetime(2011, 4, 30)
+        
+        with self.assertRaises(NotImplementedError):
+            due_payment = contract.due_payment(start, end)
+            
+
     def tearDown(self):
         self.employee.delete_with_user()        
 
@@ -119,5 +129,6 @@ contractTestSuite = unittest.TestSuite()
 contractTestSuite.addTest(ContractTestCase('create_contract'))
 contractTestSuite.addTest(ContractTestCase('time_worked'))
 contractTestSuite.addTest(ContractTestCase('time_worked_ignore_those_out_the_interval'))
+contractTestSuite.addTest(ContractTestCase('due_payment'))
 
 
