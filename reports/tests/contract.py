@@ -1,16 +1,17 @@
 from datetime import datetime
 import unittest2 as unittest
 
-from register.tests.test_utilities import ModelTestCase, clear_database, \
+from register.tests.test_utilities import clear_database, \
         get_employee, get_organization_project_task
+from reports.tests.test_utilities import ContractModelTestCase
 
 from register.models import WorkingPeriod
 from reports.models import Contract
 
-class ContractTestCase(ModelTestCase):
+class ContractTestCase(ContractModelTestCase):
 
     def __init__(self, methodName):
-        ModelTestCase.__init__(self, methodName)
+        ContractModelTestCase.__init__(self, methodName)
 
     def setUp(self):
         self.employee = get_employee()
@@ -24,29 +25,7 @@ class ContractTestCase(ModelTestCase):
         contract = Contract(employee=self.employee, workload=8)
         #contract.save()
 
-        wps = [
-            WorkingPeriod(employee=self.employee,
-                executed="made the employe have it",
-                executed_task=task,
-                start=datetime(2011, 4, 4, 8, 0, 0),
-                end=datetime(2011, 4, 4, 12, 0, 0)),
-            WorkingPeriod(employee=self.employee,
-                executed="test if employee has working period again",
-                executed_task=task,
-                start=datetime(2011, 4, 4, 14, 0, 0),
-                end=datetime(2011, 4, 4, 18, 0, 0)),
-            WorkingPeriod(employee=self.employee,
-                executed="made the employe have it",
-                executed_task=task,
-                start=datetime(2011, 4, 5, 8, 0, 0),
-                end=datetime(2011, 4, 5, 12, 0, 0)),
-            WorkingPeriod(employee=self.employee,
-                executed="made the employe have it",
-                executed_task=task,
-                start=datetime(2011, 4, 5, 13, 0, 0),
-                end=datetime(2011, 4, 5, 18, 0, 0)),
-        ]
-        for wp in wps: wp.save()
+        wps = self.get_working_periods()
         
         start=datetime(2011, 4, 1)
         end=datetime(2011, 4, 30)
@@ -59,51 +38,7 @@ class ContractTestCase(ModelTestCase):
 
         contract = Contract(employee=self.employee, workload=8)
 
-        wps = [
-            # Out the interval
-            WorkingPeriod(employee=self.employee,
-                executed="made the employe have it",
-                executed_task=task,
-                start=datetime(2011, 3, 31, 8, 0, 0),
-                end=datetime(2011, 3, 31, 12, 0, 0)),
-            WorkingPeriod(employee=self.employee,
-                executed="test if employee has working period again",
-                executed_task=task,
-                start=datetime(2011, 3, 31, 14, 0, 0),
-                end=datetime(2011, 3, 31, 18, 0, 0)),
-            # in the interval
-            WorkingPeriod(employee=self.employee,
-                executed="made the employe have it",
-                executed_task=task,
-                start=datetime(2011, 4, 4, 8, 0, 0),
-                end=datetime(2011, 4, 4, 12, 0, 0)),
-            WorkingPeriod(employee=self.employee,
-                executed="test if employee has working period again",
-                executed_task=task,
-                start=datetime(2011, 4, 4, 14, 0, 0),
-                end=datetime(2011, 4, 4, 18, 0, 0)),
-            WorkingPeriod(employee=self.employee,
-                executed="made the employe have it",
-                executed_task=task,
-                start=datetime(2011, 4, 5, 8, 0, 0),
-                end=datetime(2011, 4, 5, 12, 0, 0)),
-            WorkingPeriod(employee=self.employee,
-                executed="made the employe have it",
-                executed_task=task,
-                start=datetime(2011, 4, 5, 13, 0, 0),
-                end=datetime(2011, 4, 5, 18, 0, 0)),
-            #out the interval
-            WorkingPeriod(employee=self.employee,
-                executed="made the employe have it",
-                executed_task=task,
-                start=datetime(2011, 5, 1, 8, 0, 0),
-                end=datetime(2011, 5, 1, 12, 0, 0)),
-            WorkingPeriod(employee=self.employee,
-                executed="test if employee has working period again",
-                executed_task=task,
-                start=datetime(2011, 5, 1, 14, 0, 0),
-                end=datetime(2011, 5, 1, 18, 0, 0)),
-        ]
+        wps = self.get_working_periods(only_april=False)
         for wp in wps: wp.save()
         
         start=datetime(2011, 4, 1)
