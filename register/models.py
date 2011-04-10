@@ -12,6 +12,9 @@ class Organization(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
 
+    def __str__(self):
+        return self.name
+
     class Admin:
         pass
 
@@ -19,6 +22,10 @@ class Project(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     organization = models.ForeignKey(Organization)
+
+
+    def __str__(self):
+        return self.name
 
     class Admin:
         pass
@@ -29,7 +36,7 @@ class Task(models.Model):
     project = models.ForeignKey(Project)
 
     def __str__(self):
-        return "Task(name=%s)" % self.name
+        return "%s@%s" % (self.name, self.project.name)
 
     def __cmp__(self, other):
         """Required for using TestCase.assertItemsEqual()"""
@@ -205,9 +212,13 @@ class Employee(models.Model):
         """
         return " ".join([self.first_name, self.middle_name, self.last_name])
 
+    def __str__(self):
+        return self.name
+
     class Admin:
         pass
-        
+
+       
 class WorkingPeriod(models.Model):
     employee = models.ForeignKey(Employee)
 
@@ -569,9 +580,3 @@ class WorkingPeriod(models.Model):
 WorkingPeriod.NONE = WorkingPeriod()
 WorkingPeriod.NONE.is_complete = lambda : True
 
-#admin.site.register(Organization)
-#admin.site.register(Employee)
-#admin.site.register(Task)
-#admin.site.register(Project)
-
-admin.autodiscover()

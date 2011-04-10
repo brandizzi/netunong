@@ -9,6 +9,7 @@ import django.views.static
 # from django.contrib import admin
 # admin.autodiscover()
 STATIC_ROOT=    'static'
+django.contrib.admin.autodiscover()
 patterns_list = [
     # Example:
     (r'^netunong/login/$', django.contrib.auth.views.login),
