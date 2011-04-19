@@ -3,3 +3,4 @@
 .*\.save
 base.db
 err.html
+reports.tar.gz

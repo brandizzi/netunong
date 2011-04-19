@@ -1,7 +1,0 @@
-find '<a +.*href="/netunong/reports/"'
-follow reports
-code 200
-
-follow register
-code 200
-url http://localhost:8000/netunong/$
