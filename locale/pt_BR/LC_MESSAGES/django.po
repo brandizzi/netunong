@@ -7,28 +7,55 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-25 22:31-0600\n"
+"POT-Creation-Date: 2011-04-18 22:00-0500\n"
 "PO-Revision-Date: 2011-02-11 01:06-0300\n"
 "Last-Translator: Adam Victor Nazareth Brandizzi <brandizzi@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: register/view/index.py:33
-msgid "What do you intend to do?"
-msgstr "O que você pretende fazer?"
-
-#: register/view/index.py:51
+#: register/views/add.py:25 register/views/index.py:50
 msgid "What did you do?"
 msgstr "O que você fez?"
 
-#: register/view/manage.py:59
+#: register/views/add.py:31
+#, fuzzy
+msgid "What task did you help?"
+msgstr "O que você fez?"
+
+#: register/views/add.py:40
+msgid "When did you start this period?"
+msgstr "Quando este período começou?"
+
+#: register/views/add.py:44
+#, fuzzy
+msgid "When did you end this period?"
+msgstr "O que você pretende fazer?"
+
+#: register/views/add.py:51
+msgid "Your start date or time is invalid."
+msgstr "A data ou o momento do início do período é inválido"
+
+#: register/views/add.py:58
+msgid "Your end date or time is invalid."
+msgstr "A data ou momento do término do período é invalido"
+
+#: register/views/add.py:63
+msgid "Period registered."
+msgstr "Período registrado"
+
+#: register/views/index.py:32
+msgid "What do you intend to do?"
+msgstr "O que você pretende fazer?"
+
+#: register/views/manage.py:59
 msgid "The working period was udpated!"
 msgstr "O período de trabalho foi atualizado!"
 
-#: register/view/manage.py:63
+#: register/views/manage.py:63
 msgid "The working period was deleted!"
 msgstr "O período de trabalho foi apagado!"
 
@@ -40,9 +67,26 @@ msgstr "Registrar"
 msgid "Manage"
 msgstr "Gerenciar"
 
-#: templates/model.html:14
+#: templates/model.html:15
 msgid "Log out"
 msgstr "Sair"
+
+#: templates/register/add.html:10
+#, fuzzy
+msgid "What I did:"
+msgstr "O que eu fiz:"
+
+#: templates/register/add.html:13 templates/register/close_period.html:17
+msgid "Which task I helped:"
+msgstr "Que tarefa eu ajudei:"
+
+#: templates/register/add.html:22 templates/register/manage.html:18
+msgid "Started at"
+msgstr "Iniciada em"
+
+#: templates/register/add.html:26 templates/register/manage.html:19
+msgid "Ended at"
+msgstr "Terminada em"
 
 #: templates/register/close_period.html:10
 #, fuzzy, python-format
@@ -52,17 +96,11 @@ msgstr "Eu pretendia %(working_period.intended|escape)s."
 #: templates/register/close_period.html:12
 #, fuzzy, python-format
 msgid "I intended to help with the task \"%(intended_task)s\"."
-msgstr ""
-"Eu pretendia ajudar com a tarefa de \"%(working_period.intended_task.name|"
-"escape)s\"."
+msgstr "Eu pretendia ajudar com a tarefa de \"%(working_period.intended_task.name|escape)s\"."
 
 #: templates/register/close_period.html:15
 msgid "What I effectively did:"
 msgstr "O que eu efetivamente fiz:"
-
-#: templates/register/close_period.html:17
-msgid "Which task I helped:"
-msgstr "Que tarefa eu ajudei:"
 
 #: templates/register/manage.html:4
 msgid "Netuno NG - Manage"
@@ -76,14 +114,6 @@ msgstr "Atividade"
 msgid "Task"
 msgstr "Tarefa"
 
-#: templates/register/manage.html:18
-msgid "Started at"
-msgstr "Iniciada em"
-
-#: templates/register/manage.html:19
-msgid "Ended at"
-msgstr "Terminada em"
-
 #: templates/register/manage.html:20
 msgid "Total time"
 msgstr "Tempo total"
@@ -92,13 +122,17 @@ msgstr "Tempo total"
 msgid "Operations"
 msgstr "Operações"
 
-#: templates/register/manage.html:71
+#: templates/register/manage.html:72
 msgid "Save"
 msgstr "Salvar"
 
 #: templates/register/manage.html:74
 msgid "Delete"
 msgstr "Apagar"
+
+#: templates/register/manage.html:79
+msgid "Add period"
+msgstr "Adicionar novo período"
 
 #: templates/register/open_period.html:4
 msgid "Netuno NG - what I will do"
@@ -131,3 +165,8 @@ msgstr "Senha"
 #: templates/registration/login.html:40
 msgid "Log me in"
 msgstr "Autentique-me"
+
+#: templates/reports/index.html:4
+#, fuzzy
+msgid "Netuno NG - Reports"
+msgstr "Netuno NG - Gerenciar"
