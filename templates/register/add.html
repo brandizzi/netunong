@@ -5,6 +5,18 @@
 
 {% block operation %}add{% endblock %}
 
+{% block customcss %}
+<link rel="stylesheet" type="text/css" href="/static/register.css" />
+<link type="text/css" href="/static/css/custom-theme/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+
+<script type="application/javascript" src="/static/jquery-1.5.min.js"></script>
+<script type="application/javascript" src="/static/jquery.ui.core.js"></script>
+<script type="application/javascript" src="/static/jquery-ui-1.8.12.custom.js"></script>
+<script type="application/javascript" src="/static/jquery.ui.datepicker.js"></script>
+<script type="application/javascript" src="/static/dateinput.js"></script>
+{% endblock %}
+
+
 {% block formcontent %}
 
     {% trans "What I did:" %}<br/>
@@ -23,7 +35,7 @@
     <input type="text" name="start-date" class="start-date date" />
     <input type="text" name="start-time"  class="start-time time" /><br/>
 
-    {% trans "Ended at" %}
+    {% trans "Ended at" %}<br />
     <input type="text" name="end-date"  class="end-date date" />
     <input type="text" name="end-time"  class="end-time time" /><br/>
 
