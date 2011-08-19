@@ -13,7 +13,6 @@ from register.models import Employee, Task, WorkingPeriod
 def get_index(request):
     employee = request.user.get_profile()
     working_period = employee.last_working_period
-    print 'wp', working_period.intended
     if working_period.is_complete():
         template = loader.get_template("register/open_period.html")
     else:
@@ -38,7 +37,6 @@ def post_to_index(request):
         except ValueError:
             task = None
         start = datetime.now()
-
         working_period = WorkingPeriod(intended_task=task, employee=employee,
                 intended=intention, start=start)
         working_period.save()

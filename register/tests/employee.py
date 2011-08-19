@@ -1,7 +1,7 @@
 import unittest2 as unittest
 from test_utilities import ModelTestCase, clear_database
 
-from datetime import datetime
+from datetime import datetime, time
 
 from register.models import Employee, Organization, Task, Project, WorkingPeriod
 from django.contrib import auth
@@ -153,6 +153,12 @@ class EmployeeTestCase(ModelTestCase):
         self.assertEqual(employee.name, "%s %s %s" % ( 
                     employee.first_name, employee.middle_name, employee.last_name
              ))
+
+    def has_timezone(self):
+        employee = self.get_default_employee()
+        self.assertEqual(employee.timezone, time.timezone)
+        employee.timezone = 0
+
         
     def get_default_employee(self):
         return Employee.create_employee(organization=self.organization,
