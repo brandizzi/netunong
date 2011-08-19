@@ -17,27 +17,31 @@ select.task {
 /* Row sizes */
 
 div.working-periods {
-
+    display: table;
 }
 
-span.date {
+.start, .end {
     width: 9em;
 }
 
-span.time {
-    width: 8em;
+.date, .time {
+    width: 4.5em;
 }
 
-span.executed {
+.time-delta {
+    min-width: 8em;
+}
+
+.executed {
     width: 20em;
 }
 
-span.task {
+.task {
     width: 14em;
 }
 
-span.operations {
-    width: 9em;
+.operations {
+    width: 4.5em;
     /*border: solid 1px;*/
     text-align:justify;
     word-spacing: 2em;
@@ -45,13 +49,13 @@ span.operations {
 
 /* Spacing */
 
-span.column {
+.column {
     display:table-cell;
     padding: .1em 0em 0em 0em;
     margin: 0em;
 }
 
-div.row {
+.row {
     padding: 0em 0em 0em 0em;
     margin: 0em 0em 0em 0em;
 }
@@ -62,7 +66,7 @@ form.form-wp {
     display: table-row;
 }
 
-.header span.column {
+.header {
     text-align:left;
 }
 

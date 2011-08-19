@@ -20,12 +20,12 @@
 {% block content %}
 <div class="working-periods">
     <div class="header row">
-        <span class="column  executed">{% trans "Activity" %}</span>
-        <span class="column  task">{% trans "Task" %}</span>
-        <span class="column  start date">{% trans "Started at" %}</span>
-        <span class="column  end date">{% trans "Ended at" %}</span>
-        <span class="column  time">{% trans "Total time" %}</span>
-        <span class="column  operations">{% trans "Operations" %}</span>
+        <span class="column executed">{% trans "Activity" %}</span>
+        <span class="column task">{% trans "Task" %}</span>
+        <span class="column start">{% trans "Started at" %}</span>
+        <span class="column end">{% trans "Ended at" %}</span>
+        <span class="column time-delta">{% trans "Total time" %}</span>
+        <span class="column operations">{% trans "Operations" %}</span>
     </div>
     {% for wp in employee.workingperiod_set.all %}
     <div id="row{{wp.id}}" class="row">
@@ -49,34 +49,40 @@
                 {% endfor %}
             </select>
         </span>
-        <span class="column  start date">
+        <span class="column start date">
             <input type="text" name="start-date" class="start-date date"
                     value="{{wp.formatted_start_date|escape}}" />
+        </span>
+        <span class="column start time">
             <input type="text" name="start-time"  class="start-time time"
                     value="{{wp.formatted_start_time|escape}}" />
         </span>
-        <span class="column  end date">
+        <span class="column end date">
             <input type="text" name="end-date"  class="end-date date"
                 {% if wp.end %}
                     value="{{wp.formatted_end_date|escape}}" 
                 {% endif %}
             />
+        </span>
+        <span class="column  end time">
             <input type="text" name="end-time"  class="end-time time"
                 {% if wp.end %}
                     value="{{wp.formatted_end_time|escape}}"
                 {% endif %}
             />
         </span>
-        <span class="column  time">
+        <span class="column time-delta">
         {% if wp.end %}
             {{wp.total_time|floatformat:"2"}} ({{wp.hours|escape}}h{{wp.minutes|escape}})
         {% else %}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         {% endif %}
         </span>
-        <span class="column  operations">
+        <span class="column operations save">
             <input type="submit" name="submit{{wp.id}}" class="update-submit"
                     value="{% trans "Save" %}" />
+        </span>
+        <span class="column operations delete">
             <input type="submit" name="delete{{wp.id}}" class="delete-submit"
                     value="{% trans "Delete" %}" />
         </span>
