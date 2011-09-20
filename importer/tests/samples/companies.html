@@ -1,0 +1,476 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+	<meta name="Description" content="dotProject Default Style">
+	<meta name="Version" content="2.1-rc2">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Netuno - Gerenciamento de Projetos</title>
+	<link rel="stylesheet" type="text/css" href="empresas_arquivos/main.css" media="all">
+	<style type="text/css" media="all">@import "./style/sea/main.css";</style>
+	<link rel="shortcut icon" href="https://www.seatecnologia.com.br/netuno/style/sea/images/logoSEA.ico" type="image/ico">
+	<script type="text/javascript" src="empresas_arquivos/base.js"></script>
+<script type="text/javascript" src="empresas_arquivos/collapse.js"></script>
+<script type="text/javascript" src="empresas_arquivos/overlib.js"></script>
+</head>
+
+<body onload="this.focus();">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tbody><tr>
+	<td><table border="0" cellpadding="3" cellspacing="0" width="100%"><tbody><tr>
+	<th class="banner" background="empresas_arquivos/titlegrad.jpg" align="left"><strong><a style="color: white;" href="http://www.seatecnologia.com.br/netuno"><font face="Arial" size="6">Netuno</font></a><br><font size="2">Gerenciamento de projetos</font></strong></th> 
+	<th align="right" width="50"><a href="http://www.seatecnologia.com.br/"><img src="empresas_arquivos/logoSEA1.png" border="0"></a></th>
+	</tr></tbody></table></td>
+</tr>
+<tr>
+	<td class="nav" align="left">
+	<table cellpadding="3" cellspacing="0" width="100%">
+	<tbody><tr>
+		<td>
+		<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies">Empresas</a> | <a href="https://www.seatecnologia.com.br/netuno/index.php?m=projects">Projetos</a> | <a href="https://www.seatecnologia.com.br/netuno/index.php?m=tasks">Tarefas</a> | <a href="https://www.seatecnologia.com.br/netuno/index.php?m=timesheet">Timesheet</a>
+		</td>
+		<form name="frm_new" method="GET" action="./index.php"></form>
+        <td align="right" nowrap="nowrap">
+<select name="m" style="font-size:10px" onchange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();">
+	<option value="" "="" selected="selected">- Novo Item - </option>
+</select>
+        <input name="a" value="addedit" type="hidden">
+		</td>
+		
+	</tr>
+	</tbody></table>
+	</td>
+</tr>
+<tr>
+	<td>
+		<table border="0" cellpadding="3" cellspacing="0" width="100%">
+		<tbody><tr>
+			<td width="100%">Bem-vindo Adam Victor Nazareth Brandizzi</td>
+			<td nowrap="nowrap">
+				<a href="#" onclick="javascript:window.open('?m=help&amp;dialog=1&amp;hid=', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')">Ajuda</a> |
+				<a href="https://www.seatecnologia.com.br/netuno/index.php?m=admin&amp;a=viewuser&amp;user_id=111">Meus dados</a> |
+                              <b><a href="https://www.seatecnologia.com.br/netuno/index.php?m=tasks&amp;a=todo">A Fazer</a></b> |
+				<a href="https://www.seatecnologia.com.br/netuno/index.php?m=calendar&amp;a=day_view&amp;date=20110901">Hoje</a> |
+				<a href="https://www.seatecnologia.com.br/netuno/index.php?logout=-1">Sair do sistema</a>
+			</td>
+		</tr>
+		</tbody></table>
+	</td>
+</tr>
+</tbody></table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="100%">
+<tbody><tr>
+<td align="left" valign="top" width="98%">
+
+<table border="0" cellpadding="1" cellspacing="1" width="100%">
+<tbody><tr>
+<td width="42"><img src="empresas_arquivos/handshake.png" border="0"></td>
+<td align="left" nowrap="nowrap" width="100%"><h1>Empresas</h1></td>
+<td align="right" nowrap="nowrap">
+	<form name="searchform" action="?m=companies&amp;search_string=" method="post">
+						<table>
+							<tbody><tr>
+                      			<td>
+                                    <strong>Procura</strong>
+                                    <input class="text" name="search_string" type="text"><br>
+						<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;search_string=-1">Reiniciar Pesquisa</a></td>
+								<td valign="top">
+									<strong>Filtro de Responsável</strong> 
+<select name="owner_filter_id" class="text" onchange="javascript:document.searchform.submit()">
+	<option value="0" "="" selected="selected">Todos</option>
+	<option value="111">Brandizzi, Adam Victor Nazareth</option>
+</select>
+
+								</td>
+							</tr>
+						</tbody></table>
+                      </form>
+</td><td align="right" nowrap="nowrap" width="20">
+	<a href="#companies.index" onclick="javascript:window.open('?m=help&amp;dialog=1&amp;hid=companies.index', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')" title="Ajuda">
+		<img src="empresas_arquivos/stock_help-16.png" alt="Ajuda" border="0" height="16" width="16">
+	</a>
+</td>
+</tr>
+</tbody></table><table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tbody><tr>
+<td nowrap="nowrap"><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;tab=0">por aba</a> : <a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;tab=-1">por lista</a></td>
+
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td height="28" valign="middle" width="3"><img src="empresas_arquivos/tabSelectedLeft.png" alt="" border="0" height="28" width="3"></td><td id="toptab_0" background="empresas_arquivos/tabSelectedBg.png" nowrap="nowrap" valign="middle">&nbsp;<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;tab=0">Todas Empresas</a>&nbsp;</td><td valign="middle" width="3"><img src="empresas_arquivos/tabSelectedRight.png" alt="" border="0" height="28" width="3"></td><td class="tabsp" width="3"><img src="empresas_arquivos/shim.gif" height="1" width="3"></td><td height="28" valign="middle" width="3"><img src="empresas_arquivos/tabLeft.png" alt="" border="0" height="28" width="3"></td><td id="toptab_1" background="empresas_arquivos/tabBg.png" nowrap="nowrap" valign="middle">&nbsp;<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;tab=1">Cliente</a>&nbsp;</td><td valign="middle" width="3"><img src="empresas_arquivos/tabRight.png" alt="" border="0" height="28" width="3"></td><td class="tabsp" width="3"><img src="empresas_arquivos/shim.gif" height="1" width="3"></td><td height="28" valign="middle" width="3"><img src="empresas_arquivos/tabLeft.png" alt="" border="0" height="28" width="3"></td><td id="toptab_2" background="empresas_arquivos/tabBg.png" nowrap="nowrap" valign="middle">&nbsp;<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;tab=2">Fabricante</a>&nbsp;</td><td valign="middle" width="3"><img src="empresas_arquivos/tabRight.png" alt="" border="0" height="28" width="3"></td><td class="tabsp" width="3"><img src="empresas_arquivos/shim.gif" height="1" width="3"></td><td height="28" valign="middle" width="3"><img src="empresas_arquivos/tabLeft.png" alt="" border="0" height="28" width="3"></td><td id="toptab_3" background="empresas_arquivos/tabBg.png" nowrap="nowrap" valign="middle">&nbsp;<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;tab=3">Fornecedor</a>&nbsp;</td><td valign="middle" width="3"><img src="empresas_arquivos/tabRight.png" alt="" border="0" height="28" width="3"></td><td class="tabsp" width="3"><img src="empresas_arquivos/shim.gif" height="1" width="3"></td><td height="28" valign="middle" width="3"><img src="empresas_arquivos/tabLeft.png" alt="" border="0" height="28" width="3"></td><td id="toptab_4" background="empresas_arquivos/tabBg.png" nowrap="nowrap" valign="middle">&nbsp;<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;tab=4">Consultor</a>&nbsp;</td><td valign="middle" width="3"><img src="empresas_arquivos/tabRight.png" alt="" border="0" height="28" width="3"></td><td class="tabsp" width="3"><img src="empresas_arquivos/shim.gif" height="1" width="3"></td><td height="28" valign="middle" width="3"><img src="empresas_arquivos/tabLeft.png" alt="" border="0" height="28" width="3"></td><td id="toptab_5" background="empresas_arquivos/tabBg.png" nowrap="nowrap" valign="middle">&nbsp;<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;tab=5">Governo</a>&nbsp;</td><td valign="middle" width="3"><img src="empresas_arquivos/tabRight.png" alt="" border="0" height="28" width="3"></td><td class="tabsp" width="3"><img src="empresas_arquivos/shim.gif" height="1" width="3"></td><td height="28" valign="middle" width="3"><img src="empresas_arquivos/tabLeft.png" alt="" border="0" height="28" width="3"></td><td id="toptab_6" background="empresas_arquivos/tabBg.png" nowrap="nowrap" valign="middle">&nbsp;<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;tab=6">Interno</a>&nbsp;</td><td valign="middle" width="3"><img src="empresas_arquivos/tabRight.png" alt="" border="0" height="28" width="3"></td><td class="tabsp" width="3"><img src="empresas_arquivos/shim.gif" height="1" width="3"></td><td height="28" valign="middle" width="3"><img src="empresas_arquivos/tabLeft.png" alt="" border="0" height="28" width="3"></td><td id="toptab_7" background="empresas_arquivos/tabBg.png" nowrap="nowrap" valign="middle">&nbsp;<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;tab=7">Não aplicável</a>&nbsp;</td><td valign="middle" width="3"><img src="empresas_arquivos/tabRight.png" alt="" border="0" height="28" width="3"></td><td class="tabsp" width="3"><img src="empresas_arquivos/shim.gif" height="1" width="3"></td></tr></tbody></table></td></tr><tr><td colspan="33" class="tabox" width="100%"><table class="tbl" border="0" cellpadding="2" cellspacing="1" width="100%">
+<tbody><tr>
+	<td align="right" nowrap="nowrap" width="60">&nbsp;selecionar por:&nbsp;</td>
+	<th nowrap="nowrap">
+		<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;orderby=company_name" class="hdr">Nome da Empresa</a>
+	</th>
+	<th nowrap="nowrap">
+		<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;orderby=countp" class="hdr">Projetos Ativos</a>
+	</th>
+	<th nowrap="nowrap">
+		<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;orderby=inactive" class="hdr">Proj. Arquivados</a>
+	</th>
+	<th nowrap="nowrap">
+		<a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;orderby=company_type" class="hdr">Tipo</a>
+	</th>
+</tr>
+
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=4" title="">Ambar Tec</a></td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Consultor</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=16" title="Katia Sitta Fortini
+Coordenadora de Atendimento e Relacionamento ANPROTEC
+telefone 8427.1420">Anprotec</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=28" title="Arranjo Produtivo Local de Tecnologia da Informação do Distrito Federal">APLTIC</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Não aplicável</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=19" title="A BRISA é uma organização sólida, com mais de 15 anos de uma existência dedicada a apoiar empresas e governos a alcançar seus objetivos, através do uso da tecnologia da informação e das telecomunicações.
+
+Dedica-se, atualmente, ao desenvolvimento de projetos de P&amp;D, ao desenvolvimento de governo eletrônico (nas 3 esferas de administração) e à realização de consultorias tecnológicas e de consultorias de gestão. Também dedica-se ao desenvolvimento institucional e a atividades filantrópicas relacionadas à inclusão digital.
+
+Na área de P&amp;D, encontra-se credenciada pelo MCT tanto em São Paulo, quanto no Norte-Nordeste-Centro-Oeste.
+
+Na área de governo eletrônico, tem se destacado no planejamento de implantação de serviços on-line, com comprovadas experiências junto ao governo federal, governos estaduais e municipais.
+
+A BRISA desenvolveu e dispõe de soluções e produtos que podem ajudar a sua organização a se destacar frente a concorrência.">BRISA</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Não aplicável</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=20" title="">CAPES</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=5" title="Centro de Computação da Aeronáutica de Brasília">CCA BR</a></td>
+<td align="center" nowrap="nowrap" width="125">4</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=6" title="CDS - Centro de Desenvolvimento de Sistemas do Exército Brasileiro">CDS Exército</a></td>
+<td align="center" nowrap="nowrap" width="125">3</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=45" title="">Certisign</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Não aplicável</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=37" title="Conselho Federal de Administração">CFA</a></td>
+<td align="center" nowrap="nowrap" width="125">4</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Não aplicável</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=11" title="CFC - Conselho Federal de Contabilidade
+
+Setor de Autarquias Sul, quadra 5
+
+Itamar : 3314-9605">CFC</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=44" title="">CLDF</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Não aplicável</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=2" title="Companhia de Desenvolvimento do Vale do São Francisco">Codevasf</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=35" title="">COFECON</a></td>
+<td align="center" nowrap="nowrap" width="125">2</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=8" title="Centro Tecnológico Software Livre
+
+SHCGN 716 Bl H entrada 36 conjunto 201">CTSL</a></td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=14" title="CNPJ: 07.282.374/0001-96
+
+Inscrição Estadual: 07.464.698/001-03
+
+Antônio Jorge Soares de Souza
+
+Sócio Diretor
+
+SHS Quadra 06 conjunto - A - Bloco “ C ” 
+
+Brasil XXI - Business Center Tower
+
+Brasilia DF – Brasil - CEP   70.316-901
+
+Phone: (61) 3226-7505">EAD Training Tecnologia da Informação LTDA</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=40" title="">EBC</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=7" title="SAIN parque rural edifício embrapa subsolo
+
+CEP: 70.770-901">Embrapa</a></td>
+<td align="center" nowrap="nowrap" width="125">3</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=34" title="">Gaterlist</a></td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=39" title="Projeto de implantação do Portal Liferay, desenvolvimento de portlets e criação da interface
+
+Contatos:
+
+Jose Guedes - Diretor Técnico (21) 2142-0942 (jose.guedes@ibge.gov.br)
+Paulo Mitchell (paulo.mitchell@ibge.gov.br) Gerente de documentação
+José Luis - Tecnologia (Banco de dados, Novas tecnologias)
+Bruno Gonçalves - Suporte e produção (Servidores, sistemas operacionais)
+Nelson Resende - Redes (Telecom, redes, links.
+Ana Maria - Gerente CPD de suporte e rede
+Valkyrie - Gerente de desenvolvimento">IBGE</a></td>
+<td align="center" nowrap="nowrap" width="125">2</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=24" title="">INEP</a></td>
+<td align="center" nowrap="nowrap" width="125">3</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=15" title="Instrumental Científico Aparelhos para Laboratório Ltda.
+
+• CNPJ - 24.910.648/0001-63
+
+• Insc. Estadual - 07.330.552/001-18
+
+• Endereço - SGO/N Qd.03 Bloco B Lotes 267/268 - Asa Norte. Brasília-DF
+
+• CEP - 70.600-000 
+
+">Instrumental Científico</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=41" title="">Ministério do Trabalho e Emprego - MTE</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=33" title="Polícia Militar do Distrito Federal">PMDF</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=36" title="">POUPEX</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=27" title="">Presidência da República</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=23" title="">RedHat do Brasil</a></td>
+<td align="center" nowrap="nowrap" width="125">10</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Não aplicável</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=1" title="">SEA Tecnologia</a></td>
+<td align="center" nowrap="nowrap" width="125">21</td>
+<td align="center" nowrap="nowrap" width="125">5</td>
+<td align="center" nowrap="nowrap" width="125">Interno</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=10" title="Empresa de treinamento pertencente ao grupo SEA Tecnologia.">SEA Training</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Interno</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=9" title="SIA Trecho 2
+Lote 1130">Sesi/Senai</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=18" title="Razão Social: Central das Coop. de Crédito do DF Ltda. - Sicoob
+Central DF
+CNPJ: 00.692.214/0001-76
+Inscr. Estadual: Isento
+Endereço: SCS Quadra 06 Ed. Sofia 5º andar – Sala 501 -
+Brasília DF
+Contato Financeiro: Elivânia
+Telefone: 61 3204-5000
+E-mail: setec@sicoobdf.coop.br">Sicoob</a></td>
+<td align="center" nowrap="nowrap" width="125">6</td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=38" title="">SixPro</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Não aplicável</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=25" title="Tribunal de Contas do Distrito Federal (e Territórios?)">TCDF</a></td>
+<td align="center" nowrap="nowrap" width="125">2</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Governo</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=29" title="">Telemikro</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=42" title="">TJPR</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Não aplicável</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=46" title="">TRT - Rondônia</a></td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Não aplicável</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=43" title="">TRT-14</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=47" title="TRT de Campinas">TRT-15</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=13" title="">TST</a></td>
+<td align="center" nowrap="nowrap" width="125">4</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=30" title="">Type</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=22" title="Universidade de Brasília">UnB</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Interno</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=31" title="Emanoel.">Visent</a></td>
+<td align="center" nowrap="nowrap" width="125">2</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Não aplicável</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td><a href="https://www.seatecnologia.com.br/netuno/index.php?m=companies&amp;a=view&amp;company_id=26" title="">Zilics</a></td>
+<td align="center" nowrap="nowrap" width="125">1</td>
+<td align="center" nowrap="nowrap" width="125">0</td>
+<td align="center" nowrap="nowrap" width="125">Cliente</td>
+</tr>
+</tbody></table>
+</td></tr></tbody></table><iframe name="thread" src="empresas_arquivos/index.html" frameborder="0" height="0" width="0"></iframe>	</td>
+</tr>
+</tbody></table>
+
+</body></html>
