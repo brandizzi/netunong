@@ -20,14 +20,14 @@ class OrganizationParserTestCase(ParserTestCase):
         self.assertEquals(len(organizations), 42)
 
         organization = organizations[0]
-        self.assertEquals(organization.name, "Ambar Tec")
-        self.assertEquals(organization.original_id, 4)
-        self.assertEquals(organization.description, "")
+        self.assertEquals(organization['name'], "Ambar Tec")
+        self.assertEquals(organization['original_id'], 4)
+        self.assertEquals(organization['description'], "")
 
         organization = organizations[1]
-        self.assertEquals(organization.name, "Anprotec")
-        self.assertEquals(organization.original_id, 16)
-        self.assertEquals(organization.description, """Katia Sitta Fortini
+        self.assertEquals(organization['name'], "Anprotec")
+        self.assertEquals(organization['original_id'], 16)
+        self.assertEquals(organization['description'], """Katia Sitta Fortini
 Coordenadora de Atendimento e Relacionamento ANPROTEC
 telefone 8427.1420""")
         
