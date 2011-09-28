@@ -1,14 +1,18 @@
+from urlparse import urlparse, parse_qs
+
 from BeautifulSoup import BeautifulSoup
 
 COMPANY_LINK = 'https://www.seatecnologia.com.br/netuno/index.php?m=companies&a=view&company_id='
 
 def get_company_id_from_url(url):
-    # TODO: use a URL lib
-    return int(url.split('=').pop())
+    parsed_url = urlparse(url)
+    parsed_qs = parse_qs(parsed_url.query)
+    return int(parsed_qs['company_id'].pop())
 
 def get_project_id_from_url(url):
-    # TODO: use a URL lib
-    return int(url.split('=').pop())
+    parsed_url = urlparse(url)
+    parsed_qs = parse_qs(parsed_url.query)
+    return int(parsed_qs['project_id'].pop())
 
 def get_companies(content):
     soup = BeautifulSoup(content)
