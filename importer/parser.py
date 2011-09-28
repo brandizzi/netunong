@@ -35,6 +35,7 @@ def get_projects(content):
 
     project_table = soup.find('table', {'class':'tbl'})
     project_rows = project_table.findAll('tr')[2:-1]
+
     projects = []
     for row in project_rows:
         (

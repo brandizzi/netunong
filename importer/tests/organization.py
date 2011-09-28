@@ -22,14 +22,9 @@ class OrganizationSavingTestCase(unittest.TestCase):
             self.assertEquals('company', entity.get_category_display())
             self.assertEquals(company['original_id'], entity.original_id)
 
-    def f():
             organization = Organization.objects.get(id=entity.new_id)
             self.assertEquals(company['name'], organization.name)
             self.assertEquals(company['description'], organization.description)
-        
-
 
 testSuite = unittest.TestSuite()
 testSuite.addTest(OrganizationSavingTestCase('save_companies_as_organizations'))
-#testSuite.addTest(OrganizationSavingTestCase('get_first_organizations'))
-#testSuite.addTest(OrganizationSavingTestCase('get_last_organization'))
