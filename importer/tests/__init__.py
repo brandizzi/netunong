@@ -1,7 +1,7 @@
 import unittest2 as unittest
 
 import company_parser, project_parser, task_parser
-import organization, project
+import organization, project, task
 
 def suite():
     s = unittest.TestSuite()
@@ -10,6 +10,7 @@ def suite():
     s.addTest(task_parser.testSuite)
     s.addTest(organization.testSuite)
     s.addTest(project.testSuite)
+    s.addTest(task.testSuite)
     return s
 
 

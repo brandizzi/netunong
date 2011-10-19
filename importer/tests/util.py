@@ -2,7 +2,7 @@ import os.path
 
 import unittest2 as unittest
 from importer.models import ImportedEntity
-from register.models import Organization, Project
+from register.models import Organization, Project, Task
 
 SAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'samples')
 
@@ -18,5 +18,5 @@ class ImportedEntityTestCase(unittest.TestCase):
         unittest.TestCase.__init__(self, s)
 
     def setUp(self):
-        for model in [ImportedEntity, Organization, Project]:
+        for model in [ImportedEntity, Organization, Project, Task]:
             model.objects.all().delete()
