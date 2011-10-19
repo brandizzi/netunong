@@ -40,8 +40,7 @@ class ImportedEntity(models.Model):
 
     @staticmethod
     def import_task(task_dict):
-        if task_dict['type'] == 'parent':
-            raise SavingParentTask()
+        if task_dict['type'] == 'parent': raise SavingParentTask()
         project_entity = ImportedEntity.objects.get(category='P',
                 original_id=task_dict['project_id'])
         project = Project.objects.get(id=project_entity.new_id)
