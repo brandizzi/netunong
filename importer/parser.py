@@ -14,6 +14,11 @@ def get_project_id_from_url(url):
     parsed_qs = parse_qs(parsed_url.query)
     return int(parsed_qs['project_id'].pop())
 
+def get_task_id_from_url(url):
+    parsed_url = urlparse(url)
+    parsed_qs = parse_qs(parsed_url.query)
+    return int(parsed_qs['task_id'].pop())
+
 def get_companies(content):
     soup = BeautifulSoup(content)
 
@@ -60,26 +65,40 @@ def get_projects(content):
     return projects
 
 def get_task(content):
-    # Supporing only leaf tasks (tasks that does not have subtasks) for now
-    task_type =  'leaf'
-
     soup = BeautifulSoup(content)
+    # Is a leaf tasks (tasks that does not have subtasks) or a parent task
+    # (a task with subtasks)?
+    is_parent = soup.findAll('table')[14].findAll('td')[2].a.text == 'Tarefas Filho'
+    if not is_parent:
+        task_type =  'leaf'
+    else:
+        task_type =  'parent'
+
     # Getting name
     task_supertable = soup.find('table', {'class':'std'})
     task_table = task_supertable.findAll('table')[0]
     name_row = task_table.findAll('tr')[2]
     name_cell = name_row.findAll('td')[1]
     name = name_cell.strong.text
-    # Getting project id
+    # Getting original id
     ids_table = soup.findAll('table')[6]
+    task_url = ids_table.findAll('a')[2]['href']
+    original_id = get_task_id_from_url(task_url)
+    # Getting project id
     project_url = ids_table.findAll('a')[1]['href']
     project_id = get_project_id_from_url(project_url)
-
-    
+    # Getting subtasks ids
+    if is_parent:
+        subtasks_ids = [get_task_id_from_url(tr.a['href'])
+                for tr in soup.findAll('table')[16].findAll('tr')[1:]]
+    else:
+        subtasks_ids = []
     return {
             'type' : task_type, 
             'name' : name, 
+            'original_id' : original_id,
             'project_id' : project_id,
-            'description' : ''
+            'description' : '',
+            'subtasks_ids' : subtasks_ids
     }
 
