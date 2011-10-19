@@ -58,3 +58,28 @@ def get_projects(content):
             'description' : ''
         })
     return projects
+
+def get_task(content):
+    # Supporing only leaf tasks (tasks that does not have subtasks) for now
+    task_type =  'leaf'
+
+    soup = BeautifulSoup(content)
+    # Getting name
+    task_supertable = soup.find('table', {'class':'std'})
+    task_table = task_supertable.findAll('table')[0]
+    name_row = task_table.findAll('tr')[2]
+    name_cell = name_row.findAll('td')[1]
+    name = name_cell.strong.text
+    # Getting project id
+    ids_table = soup.findAll('table')[6]
+    project_url = ids_table.findAll('a')[1]['href']
+    project_id = get_project_id_from_url(project_url)
+
+    
+    return {
+            'type' : task_type, 
+            'name' : name, 
+            'project_id' : project_id,
+            'description' : ''
+    }
+

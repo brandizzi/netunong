@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta name="Description" content="dotProject Default Style" />
+	<meta name="Version" content="2.1-rc2" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<title>Netuno - Gerenciamento de Projetos</title>
+	<link rel="stylesheet" type="text/css" href="./style/sea/main.css" media="all" />
+	<style type="text/css" media="all">@import "./style/sea/main.css";</style>
+	<link rel="shortcut icon" href="./style/sea/images/logoSEA.ico" type="image/ico" />
+	<script type="text/javascript" src="http://www.seatecnologia.com.br/netuno/js/base.js"></script>
+<script type="text/javascript" src="http://www.seatecnologia.com.br/netuno/js/collapse.js"></script>
+<script type="text/javascript" src="http://www.seatecnologia.com.br/netuno/lib/overlib/overlib.js"></script>
+<script type="text/javascript" src="http://www.seatecnologia.com.br/netuno/modules/tasks/view.js"></script>
+</head>
+
+<body onload="this.focus();">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+	<td><table width='100%' cellpadding=3 cellspacing=0 border=0><tr>
+	<th background="style/sea/images/titlegrad.jpg" class="banner" align="left"><strong><a style='color: white' href='http://www.seatecnologia.com.br/netuno'><font face='Arial'size='6'>Netuno</font></a><br><font size="2">Gerenciamento de projetos</font></strong></th> 
+	<th align="right" width='50'><a href='http://www.seatecnologia.com.br/' ><img src="style/sea/images/logoSEA1.png" border=0></a></th>
+	</tr></table></td>
+</tr>
+<tr>
+	<td class="nav" align="left">
+	<table width="100%" cellpadding="3" cellspacing="0" width="100%">
+	<tr>
+		<td>
+		<a href="?m=companies">Empresas</a> | <a href="?m=projects">Projetos</a> | <a href="?m=tasks">Tarefas</a> | <a href="?m=timesheet">Timesheet</a>
+		</td>
+		<form name="frm_new" method=GET action="./index.php">
+        <td nowrap="nowrap" align="right">
+<select name="m" style="font-size:10px" onChange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();">
+	<option value=""" selected="selected">- Novo Item - </option>
+</select>
+        <input type="hidden" name="a" value="addedit" />
+		</td>
+		</form>
+	</tr>
+	</table>
+	</td>
+</tr>
+<tr>
+	<td>
+		<table cellspacing="0" cellpadding="3" border="0" width="100%">
+		<tr>
+			<td width="100%">Bem-vindo Adam Victor Nazareth Brandizzi</td>
+			<td nowrap="nowrap">
+				<a href="#" onClick="javascript:window.open('?m=help&amp;dialog=1&amp;hid=', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')">Ajuda</a> |
+				<a href="./index.php?m=admin&a=viewuser&user_id=111">Meus dados</a> |
+                              <b><a href="./index.php?m=tasks&a=todo">A Fazer</a></b> |
+				<a href="./index.php?m=calendar&a=day_view&date=20111019">Hoje</a> |
+				<a href="./index.php?logout=-1">Sair do sistema</a>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+
+<table width="100%" cellspacing="0" cellpadding="4" border="0">
+<tr>
+<td valign="top" align="left" width="98%">
+
+<table width="100%" border="0" cellpadding="1" cellspacing="1">
+<tr>
+<td width="42"><img src="./modules/tasks/images/applet-48.png"  border="0"></td>
+<td align="left" width="100%" nowrap="nowrap"><h1>Visualizar Tarefa</h1></td>
+<td align="right" nowrap="nowrap">&nbsp;
+</td>
+<form action="?m=tasks&a=addedit&task_project=108&task_parent=2207" method="post">
+<td align="right" nowrap="nowrap">
+	<input type="submit" class="button" value="nova tarefa">
+</td>
+</form>
+<form action="?m=files&a=addedit&project_id=108&file_task=2207" method="post">
+<td align="right" nowrap="nowrap">
+	<input type="submit" class="button" value="novo arquivo">
+</td>
+</form><td nowrap="nowrap" width="20" align="right">
+	<a href="#tasks.view" onClick="javascript:window.open('?m=help&dialog=1&hid=tasks.view', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')" title="Ajuda">
+		<img src="./images/icons/stock_help-16.png"  width="16" height="16" alt="Ajuda" border="0">
+	</a>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="4" cellspacing="0" width="100%">
+<tr>
+	<td nowrap="nowrap">
+		<a href="?m=tasks">lista de tarefas</a> <strong>:</strong> <a href="?m=projects&a=view&project_id=108">visualizar este projeto</a> <strong>:</strong> <a href="?m=tasks&a=addedit&task_id=2207">editar esta tarefa</a>
+	</td>
+</tr>
+</table>
+<script language="JavaScript">
+var calendarField = '';
+
+function popCalendar( field ){
+	calendarField = field;
+	idate = eval( 'document.editFrm.task_' + field + '.value' );
+	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=250, height=270, scrollbars=no' );
+}
+
+/**
+ *	@param string Input date in the format YYYYMMDD
+ *	@param string Formatted date
+ */
+function setCalendar( idate, fdate ) {
+	fld_date = eval( 'document.editFrm.task_' + calendarField );
+	fld_fdate = eval( 'document.editFrm.' + calendarField );
+	fld_date.value = idate;
+	fld_fdate.value = fdate;
+}
+
+
+function updateTask() {
+	var f = document.editFrm;
+	if (f.task_log_description.value.length < 1) {
+		alert( "Por favor, insira um comentário." );
+		f.task_log_description.focus();
+	} else if (isNaN( parseInt( f.task_percent_complete.value+0 ) )) {
+		alert( "Para informar uma porcentagem completada do trabalho, informe um número inteiro" );
+		f.task_percent_complete.focus();
+	} else if(f.task_percent_complete.value  < 0 || f.task_percent_complete.value > 100) {
+		alert( "A porcentagem completada do trabalho deve ser um número entre 0 e 100." );
+		f.task_percent_complete.focus();
+	} else {
+		f.submit();
+	}
+}
+function delIt() {
+	if (confirm( "Tem certeza de que deseja apagar este Tarefa?" )) {
+		document.frmDelete.submit();
+	}
+}
+</script>
+
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
+
+<form name="frmDelete" action="./index.php?m=tasks" method="post">
+	<input type="hidden" name="dosql" value="do_task_aed">
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="task_id" value="2207" />
+</form>
+
+<tr valign="top">
+	<td width="50%">
+		<table width="100%" cellspacing="1" cellpadding="2">
+		<tr>
+			<td nowrap="nowrap" colspan=2><strong>Detalhes</strong></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Projeto:</td>
+			<td style="background-color:#339900">
+				<font color="#ffffff">
+					Eplamtax				</font>
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Tarefa:</td>
+			<td class="hilite"><strong>1o Sprint</strong></td>
+		</tr>
+				<tr>
+			<td align="right" nowrap="nowrap">Respons&aacute;vel:</td>
+			<td class="hilite"> rwilli</td>
+		</tr>				<tr>
+			<td align="right" nowrap="nowrap">Prioridade:</td>
+			<td class="hilite">
+		normal			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Endere&ccedil;o da web:</td>
+			<td class="hilite" width="300"><a href="" target="task2207"></a></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Marco:</td>
+			<td class="hilite" width="300">N&atilde;o</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Progresso:</td>
+			<td class="hilite" width="300">100%</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Tempo Trabalhado:</td>
+			<td class="hilite" width="300">272.66</td>
+		</tr>
+		<tr>
+			<td nowrap="nowrap" colspan=2><strong>Datas e Previs&otilde;es</strong></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Dia de In&iacute;cio:</td>
+			<td class="hilite" width="300">24/11/2008 17:00:00</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Data de Encerramento:</td>
+			<td class="hilite" width="300">08/12/2008 23:00:00</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap" valign="top">Dura&ccedil;&atilde;o Prevista:</td>
+			<td class="hilite" width="300">3 horas</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Or&ccedil;amento Previsto R$:</td>
+			<td class="hilite" width="300">0.00</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Tipo da tarefa :</td>
+			<td class="hilite" width="300">Unknown</td>
+		</tr>
+
+		</table>
+	</td>
+
+	<td width="50%">
+		<table cellspacing="1" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td colspan="3"><strong>Usu&aacute;rios Associados</strong></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+			<table width="100%" cellspacing=1 bgcolor="black"><tr><td class="hilite">Renato Willi</td><td class="hilite"><a href="mailto:renato.willi@seatecnologia.com.br">renato.willi@seatecnologia.com.br</a></td></tr></table>			</td>
+		</tr>
+
+				<tr>
+			<td colspan="3"><strong>Depend&ecirc;ncias</strong></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+			<table width="100%" cellspacing=1 bgcolor="black"><tr><td bgcolor=#ffffff>nenhum</td></tr></table>			</td>
+		</tr>
+                		<tr>
+			<td colspan="3"><strong>Tarefas dependendo desta tarefa</strong></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+			<table width="100%" cellspacing=1 bgcolor="black"><tr><td bgcolor=#ffffff>nenhum</td></tr></table>			</td>
+		</tr>
+		<tr>
+		  <td colspan='3' nowrap="nowrap">
+		     <strong>Descri&ccedil;&atilde;o</strong><br />
+		  </td>
+		 </tr>
+		 <tr>
+		  <td class='hilite' colspan='3'>
+						  </td>
+		</tr>
+	 		</td>
+	 	</tr>
+		</table>
+	</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tr>
+<td nowrap="nowrap"><a href="?m=tasks&a=view&task_id=2207&tab=0">por aba</a> : <a href="?m=tasks&a=view&task_id=2207&tab=-1">por lista</a></td>
+
+</tr>
+</table>
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="0"><td height="28" valign="middle" width="3"><img src="./style/sea/images/tabSelectedLeft.png" width="3" height="28" border="0" alt="" /></td><td id="toptab_0" valign="middle" nowrap="nowrap" background="./style/sea/images/tabSelectedBg.png">&nbsp;<a href="?m=tasks&a=view&task_id=2207&tab=0">Tarefas Filho</a>&nbsp;</td><td valign="middle" width="3"><img src="./style/sea/images/tabSelectedRight.png" width="3" height="28" border="0" alt="" /></td><td width="3" class="tabsp"><img src="./images/shim.gif" height="1" width="3" /></td></table></td></tr><tr><td width="100%" colspan="5" class="tabox">
+<script type="text/JavaScript">
+function toggle_users(id){
+  var element = document.getElementById(id);
+  element.style.display = (element.style.display == '' || element.style.display == "none") ? "inline" : "none";
+}
+
+</script>
+
+
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<tr>
+  <th width="10">&nbsp;</th>
+  <th width="10">Marca</th>
+  <th width="10">Novo Registro</th>
+  <th width="20">Trabalho</th>
+  <th align="center"><a href="./index.php?m=tasks&a=view&task_id=2207&task_sort_item1=task_priority&task_sort_type1=1&task_sort_order1=4&task_sort_item2=&task_sort_type2=&task_sort_order2=0" class="hdr">P</a></th>
+  <th width="200"><a href="./index.php?m=tasks&a=view&task_id=2207&task_sort_item1=task_name&task_sort_type1=2&task_sort_order1=4&task_sort_item2=&task_sort_type2=&task_sort_order2=0" class="hdr">Nome da tarefa</a></th>
+  <th nowrap="nowrap"><a href="./index.php?m=tasks&a=view&task_id=2207&task_sort_item1=user_username&task_sort_type1=2&task_sort_order1=4&task_sort_item2=&task_sort_type2=&task_sort_order2=0" class="hdr">Criador da Tarefa</a></th>
+  <th nowrap="nowrap">Usu&aacute;rios Associados</th>
+  <th nowrap="nowrap"><a href="./index.php?m=tasks&a=view&task_id=2207&task_sort_item1=task_start_date&task_sort_type1=1&task_sort_order1=4&task_sort_item2=&task_sort_type2=&task_sort_order2=0" class="hdr">Dia de In&iacute;cio</a></th>
+  <th nowrap="nowrap"><a href="./index.php?m=tasks&a=view&task_id=2207&task_sort_item1=task_duration&task_sort_type1=1&task_sort_order1=4&task_sort_item2=&task_sort_type2=&task_sort_order2=0" class="hdr">Dura&ccedil;&atilde;o</a>&nbsp;&nbsp;</th>
+  <th nowrap="nowrap"><a href="./index.php?m=tasks&a=view&task_id=2207&task_sort_item1=task_end_date&task_sort_type1=1&task_sort_order1=4&task_sort_item2=&task_sort_type2=&task_sort_order2=0" class="hdr">Data de Encerramento</a></th>
+  <th nowrap="nowrap"><a href="./index.php?m=tasks&a=view&task_id=2207&task_sort_item1=last_update&task_sort_type1=1&task_sort_order1=4&task_sort_item2=&task_sort_type2=&task_sort_order2=0" class="hdr">&Uacute;ltima Atualiza&ccedil;&atilde;o</a></th>
+  </tr>
+
+<tr>
+	<td>
+		<a href="?m=tasks&a=addedit&task_id=2208">
+			<img src="./images/icons/pencil.gif" alt="Editar Tarefa" border="0" width="12" height="12">
+		</a>
+	</td>
+	<td>
+		<a href="?m=tasks&pin=1&task_id=2208">
+			<img src="./images/icons/unpin.gif" alt="unpin Task" border="0" width="12" height="12">
+		</a>
+	</td>
+	<td><a href="?m=tasks&a=view&task_id=2208&tab=1">Registro</a></td>
+	<td align="right">100%</td>
+	<td align='center' nowrap='nowrap'></td><td width="90%"><img src="./images/corner-dots.gif" width="16" height="12" border="0">&nbsp;<a href="./index.php?m=tasks&a=view&task_id=2208" onmouseover="return overlib( '&lt;div&gt;&lt;p&gt;5 PONTOS</p></div>', STICKY, CAPTION, 'Descri&ccedil;&atilde;o', CENTER);" onmouseout="nd();">Listagem das Missões</a></td><td nowrap="nowrap" align="center"><a href='?m=admin&a=viewuser&user_id=12'>rwilli</a></td><td align="center" nowrap="nowrap"><a href='?m=admin&a=viewuser&user_id=49'title="Extent of Assignment:%; Free Capacity:%">acarolina (100%)</a> <a href="javascript: void(0);"  onClick="toggle_users('users_2208');" title="">(+3)</a><span style="display: none" id="users_2208"><br /><a href="?m=admin&a=viewuser&user_id=108" title="Extent of Assignment:%; Free Capacity:%">paulo.mota (100%)</a><br /><a href="?m=admin&a=viewuser&user_id=111" title="Extent of Assignment:%; Free Capacity:%">adam.brandizzi (100%)</a><br /><a href="?m=admin&a=viewuser&user_id=123" title="Extent of Assignment:%; Free Capacity:%">pedro.dias (100%)</a></span></td><td nowrap="nowrap" align="center" style="background-color:#aaddaa; color:#00000">24/11/2008 17:00:00</td><td align="center" nowrap="nowrap" style="background-color:#aaddaa; color:#00000">1 horas</td><td nowrap="nowrap" align="center" style="background-color:#aaddaa; color:#00000">05/12/2008 23:00:00</td><td nowrap="nowrap" align="center" style="background-color:#aaddaa; color:#00000">-</td></tr>
+<tr>
+	<td>
+		<a href="?m=tasks&a=addedit&task_id=2209">
+			<img src="./images/icons/pencil.gif" alt="Editar Tarefa" border="0" width="12" height="12">
+		</a>
+	</td>
+	<td>
+		<a href="?m=tasks&pin=1&task_id=2209">
+			<img src="./images/icons/unpin.gif" alt="unpin Task" border="0" width="12" height="12">
+		</a>
+	</td>
+	<td><a href="?m=tasks&a=view&task_id=2209&tab=1">Registro</a></td>
+	<td align="right">100%</td>
+	<td align='center' nowrap='nowrap'></td><td width="90%"><img src="./images/corner-dots.gif" width="16" height="12" border="0">&nbsp;<a href="./index.php?m=tasks&a=view&task_id=2209" onmouseover="return overlib( '&lt;div&gt;&lt;p&gt;3 PONTOS</p></div>', STICKY, CAPTION, 'Descri&ccedil;&atilde;o', CENTER);" onmouseout="nd();">Alteração da Descrição Evento</a></td><td nowrap="nowrap" align="center"><a href='?m=admin&a=viewuser&user_id=12'>rwilli</a></td><td align="center" nowrap="nowrap"><a href='?m=admin&a=viewuser&user_id=49'title="Extent of Assignment:%; Free Capacity:%">acarolina (100%)</a> <a href="javascript: void(0);"  onClick="toggle_users('users_2209');" title="">(+3)</a><span style="display: none" id="users_2209"><br /><a href="?m=admin&a=viewuser&user_id=108" title="Extent of Assignment:%; Free Capacity:%">paulo.mota (100%)</a><br /><a href="?m=admin&a=viewuser&user_id=111" title="Extent of Assignment:%; Free Capacity:%">adam.brandizzi (100%)</a><br /><a href="?m=admin&a=viewuser&user_id=123" title="Extent of Assignment:%; Free Capacity:%">pedro.dias (100%)</a></span></td><td nowrap="nowrap" align="center" style="background-color:#aaddaa; color:#00000">25/11/2008 17:00:00</td><td align="center" nowrap="nowrap" style="background-color:#aaddaa; color:#00000">1 horas</td><td nowrap="nowrap" align="center" style="background-color:#aaddaa; color:#00000">08/12/2008 23:00:00</td><td nowrap="nowrap" align="center" style="background-color:#aaddaa; color:#00000">-</td></tr>
+<tr>
+	<td>
+		<a href="?m=tasks&a=addedit&task_id=2210">
+			<img src="./images/icons/pencil.gif" alt="Editar Tarefa" border="0" width="12" height="12">
+		</a>
+	</td>
+	<td>
+		<a href="?m=tasks&pin=1&task_id=2210">
+			<img src="./images/icons/unpin.gif" alt="unpin Task" border="0" width="12" height="12">
+		</a>
+	</td>
+	<td><a href="?m=tasks&a=view&task_id=2210&tab=1">Registro</a></td>
+	<td align="right">100%</td>
+	<td align='center' nowrap='nowrap'></td><td width="90%"><img src="./images/corner-dots.gif" width="16" height="12" border="0">&nbsp;<a href="./index.php?m=tasks&a=view&task_id=2210" onmouseover="return overlib( '&lt;div&gt;&lt;p&gt;3 PONTOS</p></div>', STICKY, CAPTION, 'Descri&ccedil;&atilde;o', CENTER);" onmouseout="nd();">Cálculo Missão/Evento/Trânsito</a></td><td nowrap="nowrap" align="center"><a href='?m=admin&a=viewuser&user_id=12'>rwilli</a></td><td align="center" nowrap="nowrap"><a href='?m=admin&a=viewuser&user_id=49'title="Extent of Assignment:%; Free Capacity:%">acarolina (100%)</a> <a href="javascript: void(0);"  onClick="toggle_users('users_2210');" title="">(+3)</a><span style="display: none" id="users_2210"><br /><a href="?m=admin&a=viewuser&user_id=108" title="Extent of Assignment:%; Free Capacity:%">paulo.mota (100%)</a><br /><a href="?m=admin&a=viewuser&user_id=111" title="Extent of Assignment:%; Free Capacity:%">adam.brandizzi (100%)</a><br /><a href="?m=admin&a=viewuser&user_id=123" title="Extent of Assignment:%; Free Capacity:%">pedro.dias (100%)</a></span></td><td nowrap="nowrap" align="center" style="background-color:#aaddaa; color:#00000">26/11/2008 17:00:00</td><td align="center" nowrap="nowrap" style="background-color:#aaddaa; color:#00000">1 horas</td><td nowrap="nowrap" align="center" style="background-color:#aaddaa; color:#00000">05/12/2008 23:00:00</td><td nowrap="nowrap" align="center" style="background-color:#aaddaa; color:#00000">-</td></tr></table>
+<table>
+<tr>
+  <td>Chave:</td>
+  <td>&nbsp; &nbsp;</td>
+  <td bgcolor="#ffffff">&nbsp; &nbsp;</td>
+  <td>=Tarefa Futura</td>
+  <td>&nbsp; &nbsp;</td>
+  <td bgcolor="#e6eedd">&nbsp; &nbsp;</td>
+  <td>=Iniciadas e no prazo</td>
+  <td bgcolor="#ffeebb">&nbsp; &nbsp;</td>
+  <td>=Deveriam ter iniciado</td>
+  <td>&nbsp; &nbsp;</td>
+  <td bgcolor="#CC6666">&nbsp; &nbsp;</td>
+  <td>=Atraso</td>
+  <td>&nbsp; &nbsp;</td>
+  <td bgcolor="#aaddaa">&nbsp; &nbsp;</td>
+  <td>=Feito		&nbsp;&nbsp;<a href="index.php?m=tasks&a=view&task_id=2207&open_task_all=1">Open</a> : 
+	<a href="index.php?m=tasks&a=view&task_id=2207&close_task_all=1">Close All Tasks</a> 
+		</td>
+</tr>
+</table>
+</td></tr></table><iframe name="thread" src="http://www.seatecnologia.com.br/netuno/modules/index.html" width="0" height="0" frameborder="0"></iframe>	</td>
+</tr>
+</table>
+</body>
+</html>

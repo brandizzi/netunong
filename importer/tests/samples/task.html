@@ -1,0 +1,1024 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta name="Description" content="dotProject Default Style" />
+	<meta name="Version" content="2.1-rc2" />
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<title>Netuno - Gerenciamento de Projetos</title>
+	<link rel="stylesheet" type="text/css" href="./style/sea/main.css" media="all" />
+	<style type="text/css" media="all">@import "./style/sea/main.css";</style>
+	<link rel="shortcut icon" href="./style/sea/images/logoSEA.ico" type="image/ico" />
+	<script type="text/javascript" src="http://www.seatecnologia.com.br/netuno/js/base.js"></script>
+<script type="text/javascript" src="http://www.seatecnologia.com.br/netuno/js/collapse.js"></script>
+<script type="text/javascript" src="http://www.seatecnologia.com.br/netuno/lib/overlib/overlib.js"></script>
+<script type="text/javascript" src="http://www.seatecnologia.com.br/netuno/modules/tasks/view.js"></script>
+</head>
+
+<body onload="this.focus();">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+	<td><table width='100%' cellpadding=3 cellspacing=0 border=0><tr>
+	<th background="style/sea/images/titlegrad.jpg" class="banner" align="left"><strong><a style='color: white' href='http://www.seatecnologia.com.br/netuno'><font face='Arial'size='6'>Netuno</font></a><br><font size="2">Gerenciamento de projetos</font></strong></th> 
+	<th align="right" width='50'><a href='http://www.seatecnologia.com.br/' ><img src="style/sea/images/logoSEA1.png" border=0></a></th>
+	</tr></table></td>
+</tr>
+<tr>
+	<td class="nav" align="left">
+	<table width="100%" cellpadding="3" cellspacing="0" width="100%">
+	<tr>
+		<td>
+		<a href="?m=companies">Empresas</a> | <a href="?m=projects">Projetos</a> | <a href="?m=tasks">Tarefas</a> | <a href="?m=timesheet">Timesheet</a>
+		</td>
+		<form name="frm_new" method=GET action="./index.php">
+        <td nowrap="nowrap" align="right">
+<select name="m" style="font-size:10px" onChange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();">
+	<option value=""" selected="selected">- Novo Item - </option>
+</select>
+        <input type="hidden" name="a" value="addedit" />
+		</td>
+		</form>
+	</tr>
+	</table>
+	</td>
+</tr>
+<tr>
+	<td>
+		<table cellspacing="0" cellpadding="3" border="0" width="100%">
+		<tr>
+			<td width="100%">Bem-vindo Adam Victor Nazareth Brandizzi</td>
+			<td nowrap="nowrap">
+				<a href="#" onClick="javascript:window.open('?m=help&amp;dialog=1&amp;hid=', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')">Ajuda</a> |
+				<a href="./index.php?m=admin&a=viewuser&user_id=111">Meus dados</a> |
+                              <b><a href="./index.php?m=tasks&a=todo">A Fazer</a></b> |
+				<a href="./index.php?m=calendar&a=day_view&date=20111019">Hoje</a> |
+				<a href="./index.php?logout=-1">Sair do sistema</a>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+
+<table width="100%" cellspacing="0" cellpadding="4" border="0">
+<tr>
+<td valign="top" align="left" width="98%">
+
+<table width="100%" border="0" cellpadding="1" cellspacing="1">
+<tr>
+<td width="42"><img src="./modules/tasks/images/applet-48.png"  border="0"></td>
+<td align="left" width="100%" nowrap="nowrap"><h1>Visualizar Tarefa</h1></td>
+<td align="right" nowrap="nowrap">&nbsp;
+</td>
+<form action="?m=tasks&a=addedit&task_project=151&task_parent=2832" method="post">
+<td align="right" nowrap="nowrap">
+	<input type="submit" class="button" value="nova tarefa">
+</td>
+</form>
+<form action="?m=files&a=addedit&project_id=151&file_task=2832" method="post">
+<td align="right" nowrap="nowrap">
+	<input type="submit" class="button" value="novo arquivo">
+</td>
+</form><td nowrap="nowrap" width="20" align="right">
+	<a href="#tasks.view" onClick="javascript:window.open('?m=help&dialog=1&hid=tasks.view', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')" title="Ajuda">
+		<img src="./images/icons/stock_help-16.png"  width="16" height="16" alt="Ajuda" border="0">
+	</a>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="4" cellspacing="0" width="100%">
+<tr>
+	<td nowrap="nowrap">
+		<a href="?m=tasks">lista de tarefas</a> <strong>:</strong> <a href="?m=projects&a=view&project_id=151">visualizar este projeto</a> <strong>:</strong> <a href="?m=tasks&a=addedit&task_id=2832">editar esta tarefa</a>
+	</td>
+</tr>
+</table>
+<script language="JavaScript">
+var calendarField = '';
+
+function popCalendar( field ){
+	calendarField = field;
+	idate = eval( 'document.editFrm.task_' + field + '.value' );
+	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=250, height=270, scrollbars=no' );
+}
+
+/**
+ *	@param string Input date in the format YYYYMMDD
+ *	@param string Formatted date
+ */
+function setCalendar( idate, fdate ) {
+	fld_date = eval( 'document.editFrm.task_' + calendarField );
+	fld_fdate = eval( 'document.editFrm.' + calendarField );
+	fld_date.value = idate;
+	fld_fdate.value = fdate;
+}
+
+
+function updateTask() {
+	var f = document.editFrm;
+	if (f.task_log_description.value.length < 1) {
+		alert( "Por favor, insira um comentário." );
+		f.task_log_description.focus();
+	} else if (isNaN( parseInt( f.task_percent_complete.value+0 ) )) {
+		alert( "Para informar uma porcentagem completada do trabalho, informe um número inteiro" );
+		f.task_percent_complete.focus();
+	} else if(f.task_percent_complete.value  < 0 || f.task_percent_complete.value > 100) {
+		alert( "A porcentagem completada do trabalho deve ser um número entre 0 e 100." );
+		f.task_percent_complete.focus();
+	} else {
+		f.submit();
+	}
+}
+function delIt() {
+	if (confirm( "Tem certeza de que deseja apagar este Tarefa?" )) {
+		document.frmDelete.submit();
+	}
+}
+</script>
+
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
+
+<form name="frmDelete" action="./index.php?m=tasks" method="post">
+	<input type="hidden" name="dosql" value="do_task_aed">
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="task_id" value="2832" />
+</form>
+
+<tr valign="top">
+	<td width="50%">
+		<table width="100%" cellspacing="1" cellpadding="2">
+		<tr>
+			<td nowrap="nowrap" colspan=2><strong>Detalhes</strong></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Projeto:</td>
+			<td style="background-color:#009966">
+				<font color="#ffffff">
+					Portal CLDF				</font>
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Tarefa:</td>
+			<td class="hilite"><strong>OS02 - Arquitetura da Informação e Identidade Visual</strong></td>
+		</tr>
+				<tr>
+			<td align="right" nowrap="nowrap">Respons&aacute;vel:</td>
+			<td class="hilite"> vinicius.botelho</td>
+		</tr>				<tr>
+			<td align="right" nowrap="nowrap">Prioridade:</td>
+			<td class="hilite">
+		normal			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Endere&ccedil;o da web:</td>
+			<td class="hilite" width="300"><a href="" target="task2832"></a></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Marco:</td>
+			<td class="hilite" width="300">N&atilde;o</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Progresso:</td>
+			<td class="hilite" width="300">50%</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Tempo Trabalhado:</td>
+			<td class="hilite" width="300">263.22</td>
+		</tr>
+		<tr>
+			<td nowrap="nowrap" colspan=2><strong>Datas e Previs&otilde;es</strong></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Dia de In&iacute;cio:</td>
+			<td class="hilite" width="300">02/06/2011 09:00:00</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Data de Encerramento:</td>
+			<td class="hilite" width="300">15/08/2011 23:00:00</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap" valign="top">Dura&ccedil;&atilde;o Prevista:</td>
+			<td class="hilite" width="300">1 horas</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Or&ccedil;amento Previsto R$:</td>
+			<td class="hilite" width="300">0.00</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">Tipo da tarefa :</td>
+			<td class="hilite" width="300">Unknown</td>
+		</tr>
+
+		</table>
+	</td>
+
+	<td width="50%">
+		<table cellspacing="1" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td colspan="3"><strong>Usu&aacute;rios Associados</strong></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+			<table width="100%" cellspacing=1 bgcolor="black"><tr><td class="hilite">Bruna Sodré</td><td class="hilite"><a href="mailto:bruna.sodre@seatecnologia.com.br">bruna.sodre@seatecnologia.com.br</a></td></tr><tr><td class="hilite">Jhony Buril Cardozo de Oliveira</td><td class="hilite"><a href="mailto:jhony.buril@seatecnologia.com.br">jhony.buril@seatecnologia.com.br</a></td></tr><tr><td class="hilite">Leonardo Antonialli</td><td class="hilite"><a href="mailto:leonardo.antonialli@seatecnologia.com.br">leonardo.antonialli@seatecnologia.com.br</a></td></tr><tr><td class="hilite">Wesley Rocha</td><td class="hilite"><a href="mailto:wesley.rocha@seatecnologia.com.br">wesley.rocha@seatecnologia.com.br</a></td></tr></table>			</td>
+		</tr>
+
+				<tr>
+			<td colspan="3"><strong>Depend&ecirc;ncias</strong></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+			<table width="100%" cellspacing=1 bgcolor="black"><tr><td bgcolor=#ffffff>nenhum</td></tr></table>			</td>
+		</tr>
+                		<tr>
+			<td colspan="3"><strong>Tarefas dependendo desta tarefa</strong></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+			<table width="100%" cellspacing=1 bgcolor="black"><tr><td bgcolor=#ffffff>nenhum</td></tr></table>			</td>
+		</tr>
+		<tr>
+		  <td colspan='3' nowrap="nowrap">
+		     <strong>Descri&ccedil;&atilde;o</strong><br />
+		  </td>
+		 </tr>
+		 <tr>
+		  <td class='hilite' colspan='3'>
+						  </td>
+		</tr>
+	 		</td>
+	 	</tr>
+		</table>
+	</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tr>
+<td nowrap="nowrap"><a href="?m=tasks&a=view&task_id=2832&tab=0">por aba</a> : <a href="?m=tasks&a=view&task_id=2832&tab=-1">por lista</a></td>
+
+</tr>
+</table>
+<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td><table border="0" cellpadding="0" cellspacing="0"><td height="28" valign="middle" width="3"><img src="./style/sea/images/tabSelectedLeft.png" width="3" height="28" border="0" alt="" /></td><td id="toptab_0" valign="middle" nowrap="nowrap" background="./style/sea/images/tabSelectedBg.png">&nbsp;<a href="?m=tasks&a=view&task_id=2832&tab=0">Registros de tarefas</a>&nbsp;</td><td valign="middle" width="3"><img src="./style/sea/images/tabSelectedRight.png" width="3" height="28" border="0" alt="" /></td><td width="3" class="tabsp"><img src="./images/shim.gif" height="1" width="3" /></td><td height="28" valign="middle" width="3"><img src="./style/sea/images/tabLeft.png" width="3" height="28" border="0" alt="" /></td><td id="toptab_1" valign="middle" nowrap="nowrap" background="./style/sea/images/tabBg.png">&nbsp;<a href="?m=tasks&a=view&task_id=2832&tab=1">Novo Registro</a>&nbsp;</td><td valign="middle" width="3"><img src="./style/sea/images/tabRight.png" width="3" height="28" border="0" alt="" /></td><td width="3" class="tabsp"><img src="./images/shim.gif" height="1" width="3" /></td></table></td></tr><tr><td width="100%" colspan="9" class="tabox"><script language="JavaScript">
+function delIt2(id) {
+	if (confirm( "Tem certeza de que deseja apagar este Registro de Tarefas?" )) {
+		document.frmDelete2.task_log_id.value = id;
+		document.frmDelete2.submit();
+	}
+}
+</script>
+
+<table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">
+<form name="frmDelete2" action="./index.php?m=tasks" method="post">
+	<input type="hidden" name="dosql" value="do_updatetask">
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="task_log_id" value="0" />
+</form>
+
+<tr>
+	<th></th>
+	<th>Data</th>
+        <th title="Refer&ecirc;ncia">Ref.</th>
+	<th width="100">Sum&aacute;rio</th>
+    <th>URL</th>
+	<th width="100">Usu&aacute;rio</th>
+	<th width="100">Horas</th>
+	<th width="100">C&oacute;digo de Custo</th>
+	<th width="100%">Coment&aacute;rios</th>
+	<th></th>
+</tr>
+<tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=38995#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">22/07/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">wrocha</td><td width="100" align="right">4.33<br />(4:19)</td><td width="100"></td><td><a name="tasklog38995"></a>13:40 as 18:00 Reunião e avaliação das condições do projeto CLDF, Card Sorting e tirando dúvidas</td>
+	<td>
+		<a href="javascript:delIt2(38995);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=38996#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">22/07/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">wrocha</td><td width="100" align="right">2.83<br />(2:49)</td><td width="100"></td><td><a name="tasklog38996"></a>09:30 as 12:20 avaliando material do Leo para gerar cartões para o card sorting. recortando papeis e escrevendo conteúdo para a dinamica.</td>
+	<td>
+		<a href="javascript:delIt2(38996);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=38908#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">22/07/2011 12:22:40</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">jhony.buril</td><td width="100" align="right">6.50<br />(6:30)</td><td width="100"></td><td><a name="tasklog38908"></a>12h - 13h30 / 14h - 19h -&gt; Analisando material disponibilizado pelo Léo referente a metodologia utilizada até então e os resultados obtidos, aplicando card-sorting referente a internet e intranet com a CCS e agendando aplicação do Card-Sorting com a ouvidoria.</td>
+	<td>
+		<a href="javascript:delIt2(38908);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=38929#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">25/07/2011 20:47:38</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">jhony.buril</td><td width="100" align="right">4.00<br />(4:00)</td><td width="100"></td><td><a name="tasklog38929"></a>14h - 18h -&gt; Aplicando Card-Sorting referente a Internet e Intranet com o setor de Ouvidoria da CLDF.</td>
+	<td>
+		<a href="javascript:delIt2(38929);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39766#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">01/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39766"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39766);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39821#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">01/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39821"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39821);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39122#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">02/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">wrocha</td><td width="100" align="right">1.50<br />(1:30)</td><td width="100"></td><td><a name="tasklog39122"></a>avaliando materail levantado na camara.</td>
+	<td>
+		<a href="javascript:delIt2(39122);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39768#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">02/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39768"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39768);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39769#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">02/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39769"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39769);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39770#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">03/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39770"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39770);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39771#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">03/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39771"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39771);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39772#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">04/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">4.00<br />(4:00)</td><td width="100"></td><td><a name="tasklog39772"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39772);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39773#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">04/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">4.00<br />(4:00)</td><td width="100"></td><td><a name="tasklog39773"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39773);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39258#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">05/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">wrocha</td><td width="100" align="right">2.00<br />(2:00)</td><td width="100"></td><td><a name="tasklog39258"></a>reunião com o cliente para ajustar levantamento realizado e marcar reunião com o Comitê.</td>
+	<td>
+		<a href="javascript:delIt2(39258);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39774#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">05/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39774"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39774);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39777#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">05/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39777"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39777);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39158#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">05/08/2011 09:36:17</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">jhony.buril</td><td width="100" align="right">2.00<br />(2:00)</td><td width="100"></td><td><a name="tasklog39158"></a>10h30 - 12h30 -&gt; Auxiliando Wesley e Bruna na criação da navegabilidade para a Intranet e para a Internet da CLDF.</td>
+	<td>
+		<a href="javascript:delIt2(39158);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39261#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">08/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">wrocha</td><td width="100" align="right">2.00<br />(2:00)</td><td width="100"></td><td><a name="tasklog39261"></a>Revisão do material que será apresentado na reunião de terça com o comitê. Ajustando AI e navegabilidade.</td>
+	<td>
+		<a href="javascript:delIt2(39261);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39794#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">08/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39794"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39794);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39796#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">08/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39796"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39796);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39264#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">09/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">wrocha</td><td width="100" align="right">4.30<br />(4:17)</td><td width="100"></td><td><a name="tasklog39264"></a>Reunião para aprovação a AI com o grupo gestor. Foi feito deliberações e alterações na proposta até fechar o que deveria ter sido aprovado, mas o grupo que estava presente informou que isso não seria possível devido a falta do restante do grupo para aprovação, foi remarcado para a próxima quinta a aprovação com a presença de todos.</td>
+	<td>
+		<a href="javascript:delIt2(39264);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39799#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">09/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39799"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39799);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39801#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">09/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39801"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39801);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39803#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">10/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39803"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39803);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39804#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">10/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39804"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39804);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39806#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">11/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39806"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39806);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39827#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">11/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39827"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39827);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39808#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">12/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39808"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39808);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39811#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">12/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39811"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39811);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39813#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">15/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39813"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39813);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39814#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">15/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39814"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39814);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39816#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">16/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39816"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39816);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39817#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">16/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39817"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39817);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39818#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">17/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39818"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39818);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39819#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">17/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39819"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39819);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39461#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">18/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39461"></a>Layout Intranet</td>
+	<td>
+		<a href="javascript:delIt2(39461);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39462#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">18/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.50<br />(5:30)</td><td width="100"></td><td><a name="tasklog39462"></a>Layout Intranet</td>
+	<td>
+		<a href="javascript:delIt2(39462);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39463#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">19/08/2011 16:12:31</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">2.25<br />(2:15)</td><td width="100"></td><td><a name="tasklog39463"></a>Layout Intranet e Internet</td>
+	<td>
+		<a href="javascript:delIt2(39463);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39465#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">19/08/2011 16:14:05</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">1.50<br />(1:30)</td><td width="100"></td><td><a name="tasklog39465"></a>Atualização de wireframes, anotações de ajustes para o scrumy e organização das próximas tarefas</td>
+	<td>
+		<a href="javascript:delIt2(39465);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39483#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">22/08/2011 13:48:13</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">1.00<br />(1:00)</td><td width="100"></td><td><a name="tasklog39483"></a>Layout e Documentação da CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39483);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39507#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">22/08/2011 17:17:17</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">6.00<br />(6:00)</td><td width="100"></td><td><a name="tasklog39507"></a>Layout CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39507);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39514#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">23/08/2011 15:33:36</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">2.00<br />(2:00)</td><td width="100"></td><td><a name="tasklog39514"></a>Finalizações de layout CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39514);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39516#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">23/08/2011 16:46:55</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39516"></a>Ajustes de Layout CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39516);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39541#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">24/08/2011 16:14:06</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">1.50<br />(1:30)</td><td width="100"></td><td><a name="tasklog39541"></a>Planejamento da implementação de layout CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39541);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39542#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">24/08/2011 16:14:43</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">6.50<br />(6:30)</td><td width="100"></td><td><a name="tasklog39542"></a>Instalação do Liferay e início da produção do plugin de tema (estudo)</td>
+	<td>
+		<a href="javascript:delIt2(39542);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39557#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">25/08/2011 14:17:51</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">2.00<br />(2:00)</td><td width="100"></td><td><a name="tasklog39557"></a>Implementação de layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39557);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39560#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">25/08/2011 16:16:18</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">6.00<br />(6:00)</td><td width="100"></td><td><a name="tasklog39560"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39560);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39566#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">26/08/2011 12:47:40</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">2.00<br />(2:00)</td><td width="100"></td><td><a name="tasklog39566"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39566);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39569#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">26/08/2011 17:25:55</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">6.00<br />(6:00)</td><td width="100"></td><td><a name="tasklog39569"></a>Implementação de Layout - CLDF e Dojo</td>
+	<td>
+		<a href="javascript:delIt2(39569);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39604#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">29/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">6.00<br />(6:00)</td><td width="100"></td><td><a name="tasklog39604"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39604);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39574#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">29/08/2011 13:53:14</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">2.00<br />(2:00)</td><td width="100"></td><td><a name="tasklog39574"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39574);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39610#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">30/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">1.00<br />(1:00)</td><td width="100"></td><td><a name="tasklog39610"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39610);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39611#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">30/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">6.50<br />(6:30)</td><td width="100"></td><td><a name="tasklog39611"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39611);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39677#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">31/08/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">wrocha</td><td width="100" align="right">1.50<br />(1:30)</td><td width="100"></td><td><a name="tasklog39677"></a>Ajudando a Bruna com as configurações do Liferay para a criação do theme.</td>
+	<td>
+		<a href="javascript:delIt2(39677);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39631#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">31/08/2011 16:37:46</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">2.50<br />(2:30)</td><td width="100"></td><td><a name="tasklog39631"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39631);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39632#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">31/08/2011 16:38:05</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.50<br />(5:30)</td><td width="100"></td><td><a name="tasklog39632"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39632);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39767#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">01/09/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39767"></a>Estudando Liferay</td>
+	<td>
+		<a href="javascript:delIt2(39767);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39651#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">01/09/2011 13:45:46</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">jhony.buril</td><td width="100" align="right">1.00<br />(1:00)</td><td width="100"></td><td><a name="tasklog39651"></a>18h - 19h - Auxiliando Bruna a resolver problemas com &quot;cache&quot; e estilizar o titulo dos portlets.</td>
+	<td>
+		<a href="javascript:delIt2(39651);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39649#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">01/09/2011 17:34:52</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">1.75<br />(1:45)</td><td width="100"></td><td><a name="tasklog39649"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39649);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39650#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">01/09/2011 17:35:29</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">6.25<br />(6:15)</td><td width="100"></td><td><a name="tasklog39650"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39650);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39709#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">02/09/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">2.50<br />(2:30)</td><td width="100"></td><td><a name="tasklog39709"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39709);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39710#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">02/09/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.50<br />(5:30)</td><td width="100"></td><td><a name="tasklog39710"></a>Implementação de Layout - CLDF e dojo</td>
+	<td>
+		<a href="javascript:delIt2(39710);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39738#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">02/09/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">wrocha</td><td width="100" align="right">2.00<br />(2:00)</td><td width="100"></td><td><a name="tasklog39738"></a>Ajudando a Bruna com o projeto do CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39738);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39741#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">05/09/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">wrocha</td><td width="100" align="right">1.00<br />(1:00)</td><td width="100"></td><td><a name="tasklog39741"></a>Ajudando a Bruna.</td>
+	<td>
+		<a href="javascript:delIt2(39741);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39711#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">05/09/2011 17:49:56</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">1.00<br />(1:00)</td><td width="100"></td><td><a name="tasklog39711"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39711);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39712#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">05/09/2011 17:50:27</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">7.00<br />(7:00)</td><td width="100"></td><td><a name="tasklog39712"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39712);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39831#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">06/09/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">2.50<br />(2:30)</td><td width="100"></td><td><a name="tasklog39831"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39831);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39832#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">06/09/2011 00:00:00</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.50<br />(5:30)</td><td width="100"></td><td><a name="tasklog39832"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39832);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39844#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">08/09/2011 18:10:37</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">1.00<br />(1:00)</td><td width="100"></td><td><a name="tasklog39844"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39844);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39845#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">08/09/2011 18:10:53</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">6.50<br />(6:30)</td><td width="100"></td><td><a name="tasklog39845"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39845);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39857#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">09/09/2011 16:40:29</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">3.00<br />(3:00)</td><td width="100"></td><td><a name="tasklog39857"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39857);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top">
+	<td>
+		<a href="?m=tasks&a=view&task_id=2832&tab=1&task_log_id=39858#log">
+			<img src="./images/icons/stock_edit-16.png"  width="16" height="16" border="0">
+		</a>
+	</td><td nowrap="nowrap">09/09/2011 16:40:51</td><td align="center" valign="middle">-</td><td width="30%" style="">OS02 - Arquitetura da Informação e Identidade Visual</td><td></td><td width="100">bruna.sodre</td><td width="100" align="right">5.00<br />(5:00)</td><td width="100"></td><td><a name="tasklog39858"></a>Implementação de Layout - CLDF</td>
+	<td>
+		<a href="javascript:delIt2(39858);" title="delete log">
+			<img src="./images/icons/stock_delete-16.png"  width="16" height="16" border="0">
+		</a>
+	</td></tr><tr bgcolor="white" valign="top"><td colspan="6" align="right">Horas Totais =</td><td align="right">263.22</td><td align="right" colspan="3"><form action="?m=tasks&a=view&tab=1&task_id=2832" method="post"><input type="submit" class="button" value="new log"></form></td></tr></table>
+<table>
+<tr>
+	<td>Chave:</td>
+	<td>&nbsp; &nbsp;</td>
+	<td bgcolor="#ffffff">&nbsp; &nbsp;</td>
+	<td>=Registro Registro</td>
+	<td bgcolor="#CC6666">&nbsp; &nbsp;</td>
+	<td>=Relatar Problema</td>
+</tr>
+</table>
+</td></tr></table><iframe name="thread" src="http://www.seatecnologia.com.br/netuno/modules/index.html" width="0" height="0" frameborder="0"></iframe>	</td>
+</tr>
+</table>
+</body>
+</html>
