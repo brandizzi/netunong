@@ -1,6 +1,9 @@
+import itertools
 from urlparse import urlparse, parse_qs
 
 from BeautifulSoup import BeautifulSoup
+
+import settings
 
 COMPANY_LINK = 'https://www.seatecnologia.com.br/netuno/index.php?m=companies&a=view&company_id='
 
@@ -18,6 +21,11 @@ def get_task_id_from_url(url):
     parsed_url = urlparse(url)
     parsed_qs = parse_qs(parsed_url.query)
     return int(parsed_qs['task_id'].pop())
+
+def get_user_id_from_url(url):
+    parsed_url = urlparse(url)
+    parsed_qs = parse_qs(parsed_url.query)
+    return int(parsed_qs['user_id'].pop())
 
 def get_companies(content):
     soup = BeautifulSoup(content)
@@ -110,3 +118,37 @@ def get_list_of_partial_tasks(content):
     return [{'type' : 'partial', 'original_id' : int(task_id)}
             for task_id in tasks_ids]
 
+def get_users(content):
+    soup = BeautifulSoup(content)
+
+    company_url = soup.find('td', {'id':'toptab_0'}).a['href']
+    company_id = get_company_id_from_url(company_url)
+
+    users_trs = [a.parent.parent 
+                for a in soup.findAll('a') 
+                if 'index.php?m=admin&a=viewuser&' in  a['href']][1:]
+
+    users = []
+    for tr in users_trs:
+        user_id = get_user_id_from_url(tr.a['href'])
+        name = tr.findAll('td')[1].text
+        splitted_name = name.split(",")
+        splitted_name = [name 
+                for name in " ".join(reversed(splitted_name)).split() 
+                if name]
+        first_name = splitted_name[0]
+        last_name = splitted_name[-1]
+        middle_name = " ".join(splitted_name[1:-1])
+        username = tr.a.text
+        email = "@".join([username, settings.NETUNONG_EMAIL_DOMAIN])
+        users.append({
+            'original_id' : user_id,
+            'first_name' : first_name,
+            'middle_name' : middle_name,
+            'last_name' : last_name,
+            'username' : username,
+            'company_id' : company_id,
+            'email' : email,
+            'password' : username
+        })
+    return users

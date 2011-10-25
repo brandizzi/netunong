@@ -116,4 +116,7 @@ AUTH_PROFILE_MODULE='register.Employee'
 #####
 NETUNONG_DATE_FORMAT="%d/%m/%Y"
 NETUNONG_TIME_FORMAT="%Hh%M"
+NETUNONG_EMAIL_DOMAIN='seatecnologia.com.br'
+
+## SHOULD CHANGE
 STATIC_ROOT=os.path.join(CURRENT_DIR, 'static')
