@@ -42,9 +42,23 @@ class UserParserTestCase(ParserTestCase):
         self.assertEquals(user['password'], 'danilo.avila')
         self.assertEquals(user['company_id'], 1)
 
+    def get_last_user(self):
+        users_page = self.get_sample_content('company_users.html');
+        users = parser.get_users(users_page)
+
+        self.assertEquals(len(users), 60)
+
+        user = users[-1]
+        self.assertEquals(user['username'], "msousa")
+        self.assertEquals(user['original_id'], 6)
+        self.assertEquals(user['first_name'], 'Marcelo')
+        self.assertEquals(user['middle_name'], "")
+        self.assertEquals(user['last_name'], 'Zouza')
+        self.assertEquals(user['email'], 'msousa@'+settings.NETUNONG_EMAIL_DOMAIN)
+        self.assertEquals(user['password'], 'msousa')
+        self.assertEquals(user['company_id'], 1)
 
 testSuite = unittest.TestSuite()
 testSuite.addTest(UserParserTestCase('get_something'))
 testSuite.addTest(UserParserTestCase('get_first_users'))
-#testSuite.addTest(TaskParserTestCase('get_subtask'))
-#testSuite.addTest(TaskParserTestCase('get_task_list'))
+testSuite.addTest(UserParserTestCase('get_last_user'))
