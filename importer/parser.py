@@ -102,3 +102,11 @@ def get_task(content):
             'subtasks_ids' : subtasks_ids
     }
 
+def get_list_of_partial_tasks(content):
+    soup = BeautifulSoup(content)
+    tasks_table = soup.find('table', {'class':'tbl'})
+    tasks_ids = [get_task_id_from_url(img.parent['href'])
+                for img in tasks_table.findAll('img', {'alt':'Editar Tarefa'})]
+    return [{'type' : 'partial', 'original_id' : int(task_id)}
+            for task_id in tasks_ids]
+

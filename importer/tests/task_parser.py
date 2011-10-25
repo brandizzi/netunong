@@ -38,10 +38,28 @@ class TaskParserTestCase(ParserTestCase):
         self.assertEqual(task['name'], u'Listagem das Missões')
         self.assertEqual(task['original_id'], 2208)
         self.assertEqual(task['project_id'], 108)
-        self.assertEqual(task['description'], '')  
+        self.assertEqual(task['description'], '') 
 
+    def get_task_list(self):
+        task_page = self.get_sample_content('tasks.html')
+        tasks = parser.get_list_of_partial_tasks(task_page)
+
+        self.assertEqual(len(tasks), 914)
+
+        task = tasks[0]
+        self.assertEqual(task['type'], 'partial')
+        self.assertEqual(task['original_id'], 2376)
+
+        task = tasks[44]
+        self.assertEqual(task['type'], 'partial')
+        self.assertEqual(task['original_id'], 2228)
+
+        task = tasks[913]
+        self.assertEqual(task['type'], 'partial')
+        self.assertEqual(task['original_id'], 2114)
 
 testSuite = unittest.TestSuite()
 testSuite.addTest(TaskParserTestCase('get_leaf_task'))
 testSuite.addTest(TaskParserTestCase('get_parent_task'))
 testSuite.addTest(TaskParserTestCase('get_subtask'))
+testSuite.addTest(TaskParserTestCase('get_task_list'))
