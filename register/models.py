@@ -6,8 +6,6 @@ from django.contrib import auth
 from django.contrib import admin
 from settings import NETUNONG_DATE_FORMAT, NETUNONG_TIME_FORMAT
 
-
-
 class Organization(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -211,6 +209,32 @@ class Employee(models.Model):
         >>> tu.clear_database()
         """
         return " ".join([self.first_name, self.middle_name, self.last_name])
+
+    @property
+    def username(self):
+        """
+        Returns the employee's username:
+
+        >>> import tests.test_utilities as tu
+        >>> employee = tu.get_employee()
+        >>> employee.username
+        'test'
+        >>> tu.clear_database()
+        """
+        return self.user.username
+
+    @property
+    def email(self):
+        """
+        Returns the employee's email:
+
+        >>> import tests.test_utilities as tu
+        >>> employee = tu.get_employee()
+        >>> employee.email
+        'test@test.tst'
+        >>> tu.clear_database()
+        """
+        return self.user.email
 
     def __str__(self):
         return self.name

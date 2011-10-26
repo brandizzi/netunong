@@ -1,12 +1,13 @@
 from django.db import models
 
-from register.models import Organization, Project, Task
+from register.models import Organization, Project, Task, Employee
 
 class ImportedEntity(models.Model):
     CATEGORIES = (
         ('C', 'company'),
         ('P', 'project'),
-        ('T', 'task')
+        ('T', 'task'),
+        ('U', 'user')
     )
     category = models.CharField(max_length=1, choices=CATEGORIES)
     original_id = models.IntegerField()
@@ -52,6 +53,24 @@ class ImportedEntity(models.Model):
                 category='T', original_id=task_dict['original_id'],
                 new_id=task.id)
         entity.save()
+
+    @staticmethod
+    def import_users_as_employees(users):
+        for user_dict in users:
+            company_entity = ImportedEntity.objects.get(category='C',
+                    original_id=user_dict['company_id'])
+            organization = Organization.objects.get(id=company_entity.new_id)
+            employee = Employee.create_employee(
+                    organization=organization, username=user_dict['username'],
+                    password=user_dict['password'], 
+                    first_name=user_dict['first_name'], 
+                    middle_name=user_dict['middle_name'],
+                    last_name=user_dict['last_name'], email=user_dict['email'])
+            entity = ImportedEntity(
+                    category='U', original_id=user_dict['original_id'],
+                    new_id=employee.id)
+            entity.save()
+
 
 class SavingParentTask(Exception):
     pass

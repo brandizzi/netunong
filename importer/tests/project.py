@@ -2,7 +2,7 @@ import os.path
 
 import unittest2 as unittest
 
-from register.models import Project
+from register.models import Project, Organization
 from importer.models import ImportedEntity
 
 from importer.tests.util import ImportedEntityTestCase
@@ -12,15 +12,15 @@ class ProjectSavingTestCase(ImportedEntityTestCase):
     def save_projects(self):
         # needed
         companies = [
-            {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
-            {'name': 'org2', 'original_id': 2, 'description': 'Organization 2'},
+            {'name': 'org1', 'original_id': 4, 'description': 'Organization 1'},
+            {'name': 'org2', 'original_id': 8, 'description': 'Organization 2'},
         ]
         ImportedEntity.import_companies_as_organizations(companies)
 
         projects = [
-            {'name': 'proj1', 'original_id': 1, 'company_id': 1, 'description': ''},
-            {'name': 'proj2', 'original_id': 2, 'company_id': 1, 'description': ''},
-            {'name': 'proj3', 'original_id': 3, 'company_id': 2, 'description': ''},
+            {'name': 'proj1', 'original_id': 1, 'company_id': 4, 'description': ''},
+            {'name': 'proj2', 'original_id': 2, 'company_id': 4, 'description': ''},
+            {'name': 'proj3', 'original_id': 3, 'company_id': 8, 'description': ''},
         ]
         ImportedEntity.import_projects(projects)
         
@@ -34,7 +34,10 @@ class ProjectSavingTestCase(ImportedEntityTestCase):
             project = Project.objects.get(id=entity.new_id)
             self.assertEquals(project_dict['name'], project.name)
             self.assertEquals(project_dict['description'], project.description)
-            self.assertEquals(project_dict['company_id'], project.organization.id)
+            company_entity = ImportedEntity.objects.get(
+                    category='C', original_id=project_dict['company_id'])
+            organization = Organization.objects.get(id=company_entity.new_id)
+            self.assertEquals(organization, project.organization)
 
 testSuite = unittest.TestSuite()
 testSuite.addTest(ProjectSavingTestCase('save_projects'))
