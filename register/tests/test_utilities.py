@@ -8,6 +8,9 @@ class ModelTestCase(unittest.TestCase):
     def __init__(self, methodName='runTest'):
         unittest.TestCase.__init__(self, methodName)
 
+    def tearDown(self):
+        clear_database()
+
 def get_organization():
     organization = Organization(name="SEA Tecnologia",
             description="Criadora do Netuno Nova Geracao (NetunoNG)")
