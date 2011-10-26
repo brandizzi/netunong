@@ -20,10 +20,10 @@ class Project(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     organization = models.ForeignKey(Organization)
-    archived = models.BooleanField()
+    completed = models.BooleanField()
 
-    def archive(self):
-        self.archived = True
+    def complete(self):
+        self.completed = True
 
     def __str__(self):
         return self.name
@@ -35,6 +35,10 @@ class Task(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     project = models.ForeignKey(Project)
+    done = models.BooleanField()
+
+    def mark_as_done(self):
+        self.done = True
 
     def __str__(self):
         return "%s@%s" % (self.name, self.project.name)

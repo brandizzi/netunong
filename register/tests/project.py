@@ -12,24 +12,24 @@ class ProjectTestCase(ModelTestCase):
         ) = get_organization_project()
         self.employee = get_employee(self.organization)
 
-    def is_archivable(self):
-        self.assertFalse(self.project.archived)
-        self.project.archive()
-        self.assertTrue(self.project.archived)
+    def is_completable(self):
+        self.assertFalse(self.project.completed)
+        self.project.complete()
+        self.assertTrue(self.project.completed)
 
-    def save_archived_status(self):
-        self.assertFalse(self.project.archived)
-        self.project.archive()
-        self.assertTrue(self.project.archived)
+    def save_completed_status(self):
+        self.assertFalse(self.project.completed)
+        self.project.complete()
+        self.assertTrue(self.project.completed)
 
         project = Project.objects.get(id=self.project.id)
-        self.assertFalse(project.archived)
-        self.project.archive()
+        self.assertFalse(project.completed)
+        self.project.complete()
         self.project.save()
 
         project = Project.objects.get(id=self.project.id)
-        self.assertTrue(project.archived)
+        self.assertTrue(project.completed)
 
 projectTestSuite = unittest.TestSuite()
-projectTestSuite.addTest(ProjectTestCase('is_archivable'))
-projectTestSuite.addTest(ProjectTestCase('save_archived_status'))
+projectTestSuite.addTest(ProjectTestCase('is_completable'))
+projectTestSuite.addTest(ProjectTestCase('save_completed_status'))
