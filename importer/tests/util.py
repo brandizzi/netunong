@@ -1,8 +1,11 @@
 import os.path
 
 import unittest2 as unittest
+
+from django.contrib.auth.models import User
+
 from importer.models import ImportedEntity
-from register.models import Organization, Project, Task
+from register.models import Organization, Project, Task, Employee
 
 SAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'samples')
 
@@ -18,5 +21,5 @@ class ImportedEntityTestCase(unittest.TestCase):
         unittest.TestCase.__init__(self, s)
 
     def setUp(self):
-        for model in [ImportedEntity, Organization, Project, Task]:
+        for model in [ImportedEntity, Organization, Project, Task, Employee, User]:
             model.objects.all().delete()

@@ -75,6 +75,7 @@ class ImportedEntity(models.Model):
 
     @staticmethod
     def import_users_as_employees(users):
+        users = get_not_imported_ones('U', users)
         for user_dict in users:
             company_entity = ImportedEntity.objects.get(category='C',
                     original_id=user_dict['company_id'])
