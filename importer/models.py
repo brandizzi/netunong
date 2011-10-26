@@ -2,6 +2,23 @@ from django.db import models
 
 from register.models import Organization, Project, Task, Employee
 
+def get_original_ids_from_dicts(dicts):
+    return (d['original_id'] for d in dicts)
+
+def get_original_ids_from_entities(entities):
+    return (entity.original_id for entity in entities)
+
+def get_original_ids_from_already_imported(category, dicts):
+    ids = get_original_ids_from_dicts(dicts)
+    already_imported = ImportedEntity.objects.filter(category=category,
+            original_id__in=ids)
+    return get_original_ids_from_entities(already_imported)
+
+def get_not_imported_ones(category, dicts):
+    already_imported_ids = get_original_ids_from_already_imported(category,
+                dicts)
+    return [d for d in dicts if d['original_id'] not in already_imported_ids]
+
 class ImportedEntity(models.Model):
     CATEGORIES = (
         ('C', 'company'),
@@ -15,12 +32,8 @@ class ImportedEntity(models.Model):
 
     @staticmethod
     def import_companies_as_organizations(companies):
-        ids = [company['original_id'] for company in companies]
-        already_imported = ImportedEntity.objects.filter(category='C',
-            original_id__in=ids)
-        already_imported_ids = [entity.original_id for entity in already_imported]
+        companies = get_not_imported_ones('C', companies)
         for company in companies:
-            if company['original_id'] in already_imported_ids: continue
             organization = Organization(
                     name=company['name'], description=company['description'])
             organization.save()
@@ -31,6 +44,7 @@ class ImportedEntity(models.Model):
 
     @staticmethod
     def import_projects(projects):
+        projects = get_not_imported_ones('P', projects)
         for project_dict in projects:
             company_entity = ImportedEntity.objects.get(category='C',
                     original_id=project_dict['company_id'])
