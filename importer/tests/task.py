@@ -69,7 +69,45 @@ class TaskSavingTestCase(ImportedEntityTestCase):
         entities = ImportedEntity.objects.filter(category='T')
         self.assertEquals(0, len(entities))
 
+    def save_only_once(self):
+        # Setting up
+        companies = [
+            {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
+        ]
+        ImportedEntity.import_companies_as_organizations(companies)
+        projects = [
+            {'name': 'proj1', 'original_id': 1, 'company_id': 1, 'description': ''},
+        ]
+        ImportedEntity.import_projects(projects)
+
+        # Not let us go!
+        task_dict = {
+                'type' : 'leaf', 'name' : 'Leaf Task', 'original_id' : 33,
+                'project_id' : projects[0]['original_id'],
+                'description' : '', 'subtasks_ids' : []
+        }
+        ImportedEntity.import_task(task_dict)
+        # As usual
+        entities = ImportedEntity.objects.filter(category='T')
+        self.assertEquals(1, len(entities))
+        entity = entities[0]
+        self.assertEquals('T', entity.category)
+        self.assertEquals('task', entity.get_category_display())
+        self.assertEquals(task_dict['original_id'], entity.original_id)
+
+        task = Task.objects.get(id=entity.new_id)
+        self.assertEquals(task_dict['name'], task.name)
+        self.assertEquals(task_dict['description'], task.description)
+        self.assertEquals(task_dict['project_id'], task.project.id)
+        # import again
+        ImportedEntity.import_task(task_dict)
+        # Should be still only 1
+        entities = ImportedEntity.objects.filter(category='T')
+        self.assertEquals(1, len(entities))
+        # Should be equal to previous
+        self.assertEquals(entity, entities[0])
 
 testSuite = unittest.TestSuite()
 testSuite.addTest(TaskSavingTestCase('save_leaf_task'))
 testSuite.addTest(TaskSavingTestCase('do_not_save_parent_task'))
+testSuite.addTest(TaskSavingTestCase('save_only_once'))
