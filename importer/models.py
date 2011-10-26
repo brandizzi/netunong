@@ -15,7 +15,12 @@ class ImportedEntity(models.Model):
 
     @staticmethod
     def import_companies_as_organizations(companies):
+        ids = [company['original_id'] for company in companies]
+        already_imported = ImportedEntity.objects.filter(category='C',
+            original_id__in=ids)
+        already_imported_ids = [entity.original_id for entity in already_imported]
         for company in companies:
+            if company['original_id'] in already_imported_ids: continue
             organization = Organization(
                     name=company['name'], description=company['description'])
             organization.save()
