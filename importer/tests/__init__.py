@@ -2,6 +2,7 @@ import unittest2 as unittest
 
 import company_parser, project_parser, task_parser, user_parser
 import organization, project, task, user
+import crawler
 
 def suite():
     s = unittest.TestSuite()
@@ -13,6 +14,7 @@ def suite():
     s.addTest(project.testSuite)
     s.addTest(task.testSuite)
     s.addTest(user.testSuite)
+    s.addTest(crawler.testSuite)
     return s
 
 
