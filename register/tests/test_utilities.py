@@ -1,7 +1,17 @@
+import sys
+import os
+import os.path
+import time
 import unittest2 as unittest
+from multiprocessing import Process
 
-from register.models import Task, Project, Employee, Organization, WorkingPeriod
 from django.contrib.auth.models import User
+from django.contrib.auth.models import User
+from django.core.management import execute_manager
+from splinter.browser import Browser
+
+import settings
+from register.models import Task, Project, Employee, Organization, WorkingPeriod
 
 class ModelTestCase(unittest.TestCase):
 
@@ -10,6 +20,27 @@ class ModelTestCase(unittest.TestCase):
 
     def tearDown(self):
         clear_database()
+
+class SplinterTestCase(ModelTestCase):
+
+    def __init__(self, methodName='runTest'):
+        ModelTestCase.__init__(self, methodName)
+        self.port = '32198'
+        self.home = 'http://localhost:%s/netunong' % self.port
+        self.process = Process(target=self.startNetunoNG)
+
+    def setUp(self):
+        self.process.start()
+        self.browser = Browser()
+
+    def tearDown(self):
+        self.browser.quit()
+        self.process.terminate()
+
+    def startNetunoNG(self):
+        sys.stdout = sys.stderr = open('netunong.log', 'w')
+        sys.argv = [os.path.join(os.getcwd(), 'manage.py'), 'runserver', self.port]
+        execute_manager(settings)
 
 def get_organization():
     organization = Organization(name="SEA Tecnologia",
