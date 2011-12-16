@@ -26,22 +26,44 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
 
         
-        if 'logout' in params:
-            IndexRequestHandler.logged_in = False
 
         if not IndexRequestHandler.logged_in:
             self.wfile.write(self.read_html_file('login.html'))
-            return
-
-        self.wfile.write(self.read_html_file('index.html'))
+        elif 'logout' in params:
+            IndexRequestHandler.logged_in = False
+            self.wfile.write(self.read_html_file('login.html'))
+        elif 'm' in params:
+            if 'companies' in params.get('m'):
+                self.list_companies(params)
+        else:
+            self.wfile.write(self.read_html_file('index.html'))
 
     def do_POST(self):
         environment = {
             'REQUEST_METHOD':'POST',
             'CONTENT_TYPE':self.headers['Content-Type']
         }
+        url = urlparse(self.path)
+        params = parse_qs(url.query)
+
         form = FieldStorage(fp=self.rfile, headers=self.headers,
                 environ=environment)
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        if set(['username', 'password']).issubset(set(form)):
+            self.do_login(form)
+        elif 'm' in params:
+            if 'companies' in params.get('m'):
+                self.list_companies(params, form)
+
+    def list_companies(self, params, form=None):
+        if form and form['owner_filter_id'].value == '0':
+            self.wfile.write(self.read_html_file('companies_all.html'))
+        else:
+            self.wfile.write(self.read_html_file('companies.html'))
+
+    def do_login(self, form):
         if form['username'].value == 'adam' and form['password'].value == 'senha':
             IndexRequestHandler.logged_in = True
             self.wfile.write(self.read_html_file('index.html'))
@@ -65,4 +87,7 @@ def print_debug(info):
 def run_server():
     server = HTTPServer(ADDRESS, IndexRequestHandler)
     server.serve_forever()
+
+if __name__ == "__main__":
+    run_server()
     
