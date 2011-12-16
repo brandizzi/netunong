@@ -29,12 +29,5 @@ class RegisterAppTestCase(SplinterTestCase):
         self.assertTrue(self.browser.is_element_present_by_name("username"))
         self.assertTrue(self.browser.is_element_present_by_name("password"))
         
-
-
-    def f(s):
-        self.browser.type('intention', 'Write Splinter tests')
-        self.browser.select('task', str(self.task.id))
-        
-
 registerAppTestSuite = unittest.TestSuite()
 registerAppTestSuite.addTest(RegisterAppTestCase('login'))
