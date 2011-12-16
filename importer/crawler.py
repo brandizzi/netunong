@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
+from cStringIO import StringIO
 
-from twill import commands, get_browser, set_output
+#from twill import commands, get_browser, set_output
+import mechanize
 
 def greeting():
     return u'Bem-vind'
@@ -9,20 +11,43 @@ def greeting():
 class NetunoCrawler(object):
 
     def __init__(self, url):
-        set_output(file(os.devnull, 'w'))
+        #set_output(file(os.devnull, 'w'))
         self.logged_in = False
         self.url = url
-        self.browser = get_browser()
+        self.browser = mechanize.Browser()
+        self.content = ''
 
     def login(self, username, password):
-        commands.go(self.url)
+        """commands.go(self.url)
         commands.fv('loginform', 'username', username)  
         commands.fv('loginform', 'password', password)      
         commands.submit()
         if greeting() in self.browser.get_html().decode('utf-8'):
+            self.logged_in = True"""
+        self.browser.open(self.url)
+        self.browser.select_form(name="loginform")
+        self.browser['username'] = username
+        self.browser['password'] = password
+        response = self.browser.submit()
+        self.content = response.read().decode('utf-8')
+        if greeting() in self.content:
             self.logged_in = True
 
     def logout(self):
-        commands.go(self.url+'/index.php?logout=-1')
+        """commands.go(self.url+'/index.php?logout=-1')
         if 'loginform' in self.browser.get_html().decode('utf-8'):
+            self.logged_in = False"""
+        response = self.browser.open(self.url+'/index.php?logout=-1')
+        self.content = response.read().decode('utf-8')
+        if 'loginform' in self.content:
             self.logged_in = False
+
+    def go_to_all_companies(self):
+        self.browser.open(self.url)
+        link = next(self.browser.links(text_regex='Empresas'))
+        response = self.browser.follow_link(link)
+        self.browser.select_form('searchform')
+        self.browser['owner_filter_id'] = ['0']
+        response = self.browser.submit()
+        self.content = response.read().decode('utf-8')
+        

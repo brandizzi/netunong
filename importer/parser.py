@@ -27,12 +27,31 @@ def get_user_id_from_url(url):
     parsed_qs = parse_qs(parsed_url.query)
     return int(parsed_qs['user_id'].pop())
 
+class ElementNofFoundException(Exception):
+    pass
+
+def get_parent_by_tagname(element, tagname):
+    try:
+        name = element.name
+    except AttributeError:
+        name = None
+
+    if name == tagname:
+        return element
+    elif name != 'html':
+        return get_parent_by_tagname(element.parent, tagname)
+    else:
+        raise ElementNofFoundException(
+            'No parent element of time <%s> found for %s' % (tagname, element))
+
 def get_companies(content):
     soup = BeautifulSoup(content)
 
-    company_table = soup.contents[2].contents[2].contents[3]
+    some_cell = soup.find(text='Nome da Empresa')
+    company_table = get_parent_by_tagname(some_cell, 'table')
     company_links = (a for a in company_table.findAll('a') 
-                       if a['href'].startswith(COMPANY_LINK))
+                       if 'm=companies' in a['href'] and
+                            'a=view' in a['href'] )
     companies = [{
             'name' : a.string.strip(),
             'original_id' : get_company_id_from_url(a['href']),
