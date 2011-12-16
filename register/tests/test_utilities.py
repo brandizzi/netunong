@@ -4,7 +4,7 @@ import os.path
 import time
 import unittest2 as unittest
 import subprocess
-import atexit
+import psi.process
 import signal
 
 from django.contrib.auth.models import User
@@ -38,7 +38,11 @@ class SplinterTestCase(ModelTestCase):
     def tearDown(self):
         self.browser.quit()
         self.process.terminate()
-        self.process.kill()
+        processes = psi.process.ProcessTable().values()
+        fingerprint = 'runserver %s' % self.port
+        netuno_ng_process = next(
+                proc for proc in processes if fingerprint in proc.command)
+        os.kill(netuno_ng_process.pid, signal.SIGTERM)
 
     def start_netuno_ng(self):
         stdout = stderr = open('netunong.log', 'w')
@@ -46,8 +50,6 @@ class SplinterTestCase(ModelTestCase):
             os.path.join(os.getcwd(), 'manage.py'), 'runserver', self.port,
         ]
         process = subprocess.Popen(argv, stdout=stdout, stderr=stderr)
-        atexit.register(process.terminate)
-        atexit.register(process.kill)
         return process
         
 
