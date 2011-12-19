@@ -139,14 +139,11 @@ def get_list_of_partial_tasks(content):
 
 def get_users(content):
     soup = BeautifulSoup(content)
-
-    company_url = soup.find('td', {'id':'toptab_0'}).a['href']
+    company_url = soup.find('td', {'id':'toptab_0'}).find('a')['href']
     company_id = get_company_id_from_url(company_url)
-
     users_trs = [a.parent.parent 
                 for a in soup.findAll('a') 
-                if 'index.php?m=admin&a=viewuser&' in  a['href']][1:]
-
+                if '?m=admin&a=viewuser&' in  a['href']][1:]
     users = []
     for tr in users_trs:
         user_id = get_user_id_from_url(tr.a['href'])

@@ -18,12 +18,6 @@ class NetunoCrawler(object):
         self.content = ''
 
     def login(self, username, password):
-        """commands.go(self.url)
-        commands.fv('loginform', 'username', username)  
-        commands.fv('loginform', 'password', password)      
-        commands.submit()
-        if greeting() in self.browser.get_html().decode('utf-8'):
-            self.logged_in = True"""
         self.browser.open(self.url)
         self.browser.select_form(name="loginform")
         self.browser['username'] = username
@@ -34,9 +28,6 @@ class NetunoCrawler(object):
             self.logged_in = True
 
     def logout(self):
-        """commands.go(self.url+'/index.php?logout=-1')
-        if 'loginform' in self.browser.get_html().decode('utf-8'):
-            self.logged_in = False"""
         response = self.browser.open(self.url+'/index.php?logout=-1')
         self.content = response.read().decode('utf-8')
         if 'loginform' in self.content:
@@ -49,5 +40,10 @@ class NetunoCrawler(object):
         self.browser.select_form('searchform')
         self.browser['owner_filter_id'] = ['0']
         response = self.browser.submit()
+        self.content = response.read().decode('utf-8')
+
+    def go_to_users_from_company(self, company_id):
+        url = self.url+'?m=companies&a=view&company_id=%s&tab=3'%company_id
+        response = self.browser.open(url)
         self.content = response.read().decode('utf-8')
         

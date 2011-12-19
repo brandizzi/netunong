@@ -34,7 +34,7 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.read_html_file('login.html'))
         elif 'm' in params:
             if 'companies' in params.get('m'):
-                self.list_companies(params)
+                self.show_companies(params)
         else:
             self.wfile.write(self.read_html_file('index.html'))
 
@@ -55,10 +55,19 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
             self.do_login(form)
         elif 'm' in params:
             if 'companies' in params.get('m'):
-                self.list_companies(params, form)
+                self.show_companies(params, form)
 
-    def list_companies(self, params, form=None):
-        if form and form['owner_filter_id'].value == '0':
+    def show_companies(self, params, form=None):
+        if 'company_id' in params:
+            if 'tab' in params and '3' in params['tab']:
+                company_id = params['company_id']
+                doc = self.read_html_file('company%s-users.html'%company_id[0])
+                self.wfile.write(doc)
+            else:
+                company_id = params['company_id']
+                doc = self.read_html_file('company%s.html'%company_id[0])
+                self.wfile.write(doc)
+        elif form and form['owner_filter_id'].value == '0':
             self.wfile.write(self.read_html_file('companies_all.html'))
         else:
             self.wfile.write(self.read_html_file('companies.html'))
