@@ -2,7 +2,6 @@
 import os
 from cStringIO import StringIO
 
-#from twill import commands, get_browser, set_output
 import mechanize
 
 def greeting():
@@ -34,9 +33,7 @@ class NetunoCrawler(object):
             self.logged_in = False
 
     def go_to_all_companies(self):
-        self.browser.open(self.url)
-        link = next(self.browser.links(text_regex='Empresas'))
-        response = self.browser.follow_link(link)
+        self.browser.open(self.url+'?m=companies')
         self.browser.select_form('searchform')
         self.browser['owner_filter_id'] = ['0']
         response = self.browser.submit()
@@ -45,5 +42,12 @@ class NetunoCrawler(object):
     def go_to_users_from_company(self, company_id):
         url = self.url+'?m=companies&a=view&company_id=%s&tab=3'%company_id
         response = self.browser.open(url)
+        self.content = response.read().decode('utf-8')
+
+    def go_to_all_projects(self):
+        self.browser.open(self.url+'?m=projects')
+        self.browser.select_form('pickCompany')
+        self.browser['department'] = ['company_0']
+        response = self.browser.submit()
         self.content = response.read().decode('utf-8')
         

@@ -4,7 +4,7 @@ import time
 import unittest2 as unittest
 
 from importer.crawler import NetunoCrawler
-from importer.parser import get_companies, get_users
+from importer.parser import get_companies, get_users, get_projects
 
 from netunomock.server import run_server, ROOT_URL
 
@@ -95,8 +95,35 @@ class CrawlerTestCase(unittest.TestCase):
         self.assertEquals(user['last_name'], 'Zouza')
         self.assertEquals(user['middle_name'], '')
 
+    def select_projects(self):
+        crawler = NetunoCrawler(ROOT_URL)
+        crawler.login(username='adam', password='senha')
+        self.assertTrue(crawler.logged_in)
+
+        crawler.go_to_all_projects()
+        projects = get_projects(crawler.content)
+        self.assertEquals(104, len(projects))
+
+        project = projects[0]
+        self.assertEquals(project['name'], "Feedbackme")
+        self.assertEquals(project['original_id'], 116)
+        self.assertEquals(project['company_id'], 1)
+        self.assertEquals(project['description'], "")
+
+        project = projects[1]
+        self.assertEquals(project['name'], "SixPro")
+        self.assertEquals(project['original_id'], 122)
+        self.assertEquals(project['company_id'], 38)
+        self.assertEquals(project['description'], "")
+
+        project = projects[-1]
+        self.assertEquals(project['name'], "Liferay")
+        self.assertEquals(project['original_id'], 158)
+        self.assertEquals(project['company_id'], 48)
+        self.assertEquals(project['description'], "")
 
 testSuite = unittest.TestSuite()
 testSuite.addTest(CrawlerTestCase('login'))
 testSuite.addTest(CrawlerTestCase('select_companies'))
 testSuite.addTest(CrawlerTestCase('select_user_from_companies'))
+testSuite.addTest(CrawlerTestCase('select_projects'))
