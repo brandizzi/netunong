@@ -95,6 +95,7 @@ class CrawlerTestCase(unittest.TestCase):
         self.assertEquals(user['last_name'], 'Zouza')
         self.assertEquals(user['middle_name'], '')
 
+
 testSuite = unittest.TestSuite()
 testSuite.addTest(CrawlerTestCase('login'))
 testSuite.addTest(CrawlerTestCase('select_companies'))

@@ -35,6 +35,8 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
         elif 'm' in params:
             if 'companies' in params.get('m'):
                 self.show_companies(params)
+            elif 'projects' in params.get('m'):
+                self.show_projects(params)
         else:
             self.wfile.write(self.read_html_file('index.html'))
 
@@ -56,6 +58,9 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
         elif 'm' in params:
             if 'companies' in params.get('m'):
                 self.show_companies(params, form)
+            if 'projects' in params.get('m'):
+                self.show_projects(params, form)
+
 
     def show_companies(self, params, form=None):
         if 'company_id' in params:
@@ -71,6 +76,13 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.read_html_file('companies_all.html'))
         else:
             self.wfile.write(self.read_html_file('companies.html'))
+
+    def show_projects(self, params, form=None):
+        if form and form['department'].value == 'company_0':
+            self.wfile.write(self.read_html_file('projects_all.html'))
+        else:
+            self.wfile.write(self.read_html_file('projects.html'))
+
 
     def do_login(self, form):
         if form['username'].value == 'adam' and form['password'].value == 'senha':
