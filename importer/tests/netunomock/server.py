@@ -12,6 +12,9 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
 
     logged_in = False
 
+    def __init__(self, *args, **kwargs):
+        BaseHTTPRequestHandler.__init__(self, *args, **kwargs)
+
     def do_GET(self):
         if self.path.endswith(('css','png','js','gif', 'jpg')):
             self.wfile.write('')
@@ -33,10 +36,9 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
             IndexRequestHandler.logged_in = False
             self.wfile.write(self.read_html_file('login.html'))
         elif 'm' in params:
-            if 'companies' in params.get('m'):
-                self.show_companies(params)
-            elif 'projects' in params.get('m'):
-                self.show_projects(params)
+            m = params.get('m')[0]
+            shower = IndexRequestHandler.showers[m]
+            shower(self, params)
         else:
             self.wfile.write(self.read_html_file('index.html'))
 
@@ -56,10 +58,9 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
         if set(['username', 'password']).issubset(set(form)):
             self.do_login(form)
         elif 'm' in params:
-            if 'companies' in params.get('m'):
-                self.show_companies(params, form)
-            if 'projects' in params.get('m'):
-                self.show_projects(params, form)
+            m = params.get('m')[0]
+            shower = IndexRequestHandler.showers[m]
+            shower(self, params, form)
 
 
     def show_companies(self, params, form=None):
@@ -83,6 +84,12 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
         else:
             self.wfile.write(self.read_html_file('projects.html'))
 
+    def show_tasks(self, params, form=None):
+        if form and form['f'].value == 'all':
+            self.wfile.write(self.read_html_file('tasks_all.html'))
+        else:
+            self.wfile.write(self.read_html_file('tasks.html'))
+
 
     def do_login(self, form):
         if form['username'].value == 'adam' and form['password'].value == 'senha':
@@ -97,6 +104,12 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
     def read_html_file(self, html_file):
         filename = os.path.join(HTML_DIR, html_file)
         return open(filename).read()
+
+    showers = {
+        'companies' : show_companies,
+        'projects' : show_projects,
+        'tasks'  : show_tasks
+    }
 
 DEBUG=False
 

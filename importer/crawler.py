@@ -50,4 +50,11 @@ class NetunoCrawler(object):
         self.browser['department'] = ['company_0']
         response = self.browser.submit()
         self.content = response.read().decode('utf-8')
-        
+
+    def go_to_all_tasks(self):
+        self.browser.open(self.url+'?m=tasks')
+        self.browser.select_form('taskFilter')
+        self.browser['f'] = ['all']
+        response = self.browser.submit()
+        self.content = response.read().decode('utf-8')
+

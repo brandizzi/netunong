@@ -4,7 +4,8 @@ import time
 import unittest2 as unittest
 
 from importer.crawler import NetunoCrawler
-from importer.parser import get_companies, get_users, get_projects
+from importer.parser import get_companies, get_users, get_projects, \
+        get_list_of_partial_tasks
 
 from netunomock.server import run_server, ROOT_URL
 
@@ -122,8 +123,26 @@ class CrawlerTestCase(unittest.TestCase):
         self.assertEquals(project['company_id'], 48)
         self.assertEquals(project['description'], "")
 
+    def select_tasks(self):
+        crawler = NetunoCrawler(ROOT_URL)
+        crawler.login(username='adam', password='senha')
+        self.assertTrue(crawler.logged_in)
+
+        crawler.go_to_all_tasks()
+        tasks = get_list_of_partial_tasks(crawler.content)
+        self.assertEquals(945, len(tasks))
+
+        task = tasks[0]
+        self.assertEqual(task['type'], 'partial')
+        self.assertEqual(task['original_id'], 2376)
+
+        task = tasks[-1]
+        self.assertEqual(task['type'], 'partial')
+        self.assertEqual(task['original_id'], 2114)
+
 testSuite = unittest.TestSuite()
 testSuite.addTest(CrawlerTestCase('login'))
 testSuite.addTest(CrawlerTestCase('select_companies'))
 testSuite.addTest(CrawlerTestCase('select_user_from_companies'))
 testSuite.addTest(CrawlerTestCase('select_projects'))
+testSuite.addTest(CrawlerTestCase('select_tasks'))
