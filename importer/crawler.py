@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from cStringIO import StringIO
-
+from importer.parser import is_parent_task, PARENT_TAG
 import mechanize
 
 def greeting():
@@ -57,4 +57,12 @@ class NetunoCrawler(object):
         self.browser['f'] = ['all']
         response = self.browser.submit()
         self.content = response.read().decode('utf-8')
+
+    def go_to_task(self, task_id):
+        response = self.browser.open(self.url+'?m=tasks&task_id=%s'%task_id)
+        self.content = response.read()
+        if is_parent_task(self.content):
+            response = self.browser.follow_link(text=PARENT_TAG)
+            self.content = response.read()
+
 

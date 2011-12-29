@@ -6,6 +6,7 @@ from BeautifulSoup import BeautifulSoup
 import settings
 
 COMPANY_LINK = 'https://www.seatecnologia.com.br/netuno/index.php?m=companies&a=view&company_id='
+PARENT_TAG = 'Tarefas Filho'
 
 def get_company_id_from_url(url):
     parsed_url = urlparse(url)
@@ -62,6 +63,9 @@ def get_companies(content):
 
     return companies
 
+def is_parent_task(content):
+    return PARENT_TAG in content
+
 def get_projects(content):
     soup = BeautifulSoup(content)
 
@@ -95,7 +99,7 @@ def get_task(content):
     soup = BeautifulSoup(content)
     # Is a leaf tasks (tasks that does not have subtasks) or a parent task
     # (a task with subtasks)?
-    is_parent = len(soup.findAll('a', text='Tarefas Filho')) > 0
+    is_parent = is_parent_task(content)
     if not is_parent:
         task_type =  'leaf'
     else:

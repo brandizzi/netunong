@@ -85,7 +85,10 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.read_html_file('projects.html'))
 
     def show_tasks(self, params, form=None):
-        if form and form['f'].value == 'all':
+        if 'task_id' in params:
+            task_id = params['task_id']
+            self.wfile.write(self.read_html_file('task%s.html'%task_id[0]))
+        elif form and form['f'].value == 'all':
             self.wfile.write(self.read_html_file('tasks_all.html'))
         else:
             self.wfile.write(self.read_html_file('tasks.html'))

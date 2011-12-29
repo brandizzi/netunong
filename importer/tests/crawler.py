@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os.path
 from multiprocessing import Process
 import time
@@ -5,7 +6,7 @@ import unittest2 as unittest
 
 from importer.crawler import NetunoCrawler
 from importer.parser import get_companies, get_users, get_projects, \
-        get_list_of_partial_tasks
+        get_list_of_partial_tasks, get_task, is_parent_task
 
 from netunomock.server import run_server, ROOT_URL
 
@@ -141,7 +142,38 @@ class CrawlerTestCase(unittest.TestCase):
         self.assertEqual(task['original_id'], 2114)
 
     def select_specific_task(self):
-        pass
+        crawler = NetunoCrawler(ROOT_URL)
+        crawler.login(username='adam', password='senha')
+        self.assertTrue(crawler.logged_in)
+
+        crawler.go_to_all_tasks()
+        tasks = get_list_of_partial_tasks(crawler.content)
+        self.assertEquals(58, len(tasks))
+
+        partial_task = tasks[0]
+        crawler.go_to_task(partial_task['original_id'])
+        task = get_task(crawler.content)
+        self.assertEqual(task['type'], u'leaf')
+        self.assertEqual(task['original_id'], 2376)
+        self.assertEqual(task['project_id'], 118)
+        self.assertEqual(task['name'], u'Reuniões')
+
+        partial_task = tasks[7]
+        crawler.go_to_task(partial_task['original_id'])
+        task = get_task(crawler.content)
+        self.assertEqual(task['type'], u'parent')
+        self.assertEqual(task['original_id'], 2207)
+        self.assertEqual(task['project_id'], 108)
+        self.assertEqual(task['name'], u'1o Sprint')
+
+
+        partial_task = tasks[-1]
+        crawler.go_to_task(partial_task['original_id'])
+        task = get_task(crawler.content)
+        self.assertEqual(task['type'], u'leaf')
+        self.assertEqual(task['original_id'], 2114)
+        self.assertEqual(task['project_id'], 55)
+        self.assertEqual(task['name'], u'Release 0.9')
 
 testSuite = unittest.TestSuite()
 testSuite.addTest(CrawlerTestCase('login'))
@@ -149,3 +181,4 @@ testSuite.addTest(CrawlerTestCase('select_companies'))
 testSuite.addTest(CrawlerTestCase('select_user_from_companies'))
 testSuite.addTest(CrawlerTestCase('select_projects'))
 testSuite.addTest(CrawlerTestCase('select_tasks'))
+testSuite.addTest(CrawlerTestCase('select_specific_task'))
