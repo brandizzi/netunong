@@ -130,7 +130,7 @@ class CrawlerTestCase(unittest.TestCase):
 
         crawler.go_to_all_tasks()
         tasks = get_list_of_partial_tasks(crawler.content)
-        self.assertEquals(945, len(tasks))
+        self.assertEquals(58, len(tasks))
 
         task = tasks[0]
         self.assertEqual(task['type'], 'partial')

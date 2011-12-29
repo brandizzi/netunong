@@ -40,8 +40,6 @@ class TaskParserTestCase(ParserTestCase):
         self.assertEqual(task['description'], '')
         self.assertItemsEqual(task['subtasks_ids'], [])
 
-
-
     def get_subtask(self):
         task_page = self.get_sample_content('subtask.html');
         task = parser.get_task(task_page)
