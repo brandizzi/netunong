@@ -29,6 +29,18 @@ class TaskParserTestCase(ParserTestCase):
         self.assertEqual(task['description'], '')
         self.assertItemsEqual(task['subtasks_ids'], [2208, 2209, 2210])
 
+    def get_empty_parent_task(self):
+        task_page = self.get_sample_content('supertask-none.html');
+        task = parser.get_task(task_page)
+
+        self.assertEqual(task['type'], 'parent')
+        self.assertEqual(task['name'], u'OS Intranet SETIN')
+        self.assertEqual(task['original_id'], 2604)
+        self.assertEqual(task['project_id'], 120)
+        self.assertEqual(task['description'], '')
+        self.assertItemsEqual(task['subtasks_ids'], [])
+
+
 
     def get_subtask(self):
         task_page = self.get_sample_content('subtask.html');
@@ -60,6 +72,7 @@ class TaskParserTestCase(ParserTestCase):
 
 testSuite = unittest.TestSuite()
 testSuite.addTest(TaskParserTestCase('get_leaf_task'))
+testSuite.addTest(TaskParserTestCase('get_empty_parent_task'))
 testSuite.addTest(TaskParserTestCase('get_parent_task'))
 testSuite.addTest(TaskParserTestCase('get_subtask'))
 testSuite.addTest(TaskParserTestCase('get_task_list'))

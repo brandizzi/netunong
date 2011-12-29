@@ -140,6 +140,9 @@ class CrawlerTestCase(unittest.TestCase):
         self.assertEqual(task['type'], 'partial')
         self.assertEqual(task['original_id'], 2114)
 
+    def select_specific_task(self):
+        pass
+
 testSuite = unittest.TestSuite()
 testSuite.addTest(CrawlerTestCase('login'))
 testSuite.addTest(CrawlerTestCase('select_companies'))

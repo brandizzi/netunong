@@ -95,7 +95,7 @@ def get_task(content):
     soup = BeautifulSoup(content)
     # Is a leaf tasks (tasks that does not have subtasks) or a parent task
     # (a task with subtasks)?
-    is_parent = soup.findAll('table')[14].findAll('td')[2].a.text == 'Tarefas Filho'
+    is_parent = len(soup.findAll('a', text='Tarefas Filho')) > 0
     if not is_parent:
         task_type =  'leaf'
     else:
@@ -116,8 +116,12 @@ def get_task(content):
     project_id = get_project_id_from_url(project_url)
     # Getting subtasks ids
     if is_parent:
-        subtasks_ids = [get_task_id_from_url(tr.a['href'])
-                for tr in soup.findAll('table')[16].findAll('tr')[1:]]
+        try:
+            subtasks_ids = [get_task_id_from_url(tr.a['href'])
+                    for tr in soup.find('table', {'class':'tbl'}).findAll('tr')[1:]
+                    if tr.a and 'task_id' in tr.a['href']]
+        except AttributeError:
+             subtasks_ids = []
     else:
         subtasks_ids = []
     return {
