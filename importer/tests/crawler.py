@@ -1,23 +1,14 @@
 # -*- coding: utf-8 -*-
-import os.path
-from multiprocessing import Process
-import time
 import unittest2 as unittest
 
 from importer.crawler import NetunoCrawler
 from importer.parser import get_companies, get_users, get_projects, \
         get_list_of_partial_tasks, get_task, is_parent_task
+from importer.tests.util import NetunomockTestCase
 
 from netunomock.server import run_server, ROOT_URL
 
-class CrawlerTestCase(unittest.TestCase):
-
-    def setUp(self):
-        self.server = Process(target=run_server)
-        self.server.start()
-
-    def tearDown(self):
-        self.server.terminate()
+class CrawlerTestCase(NetunomockTestCase):
 
     def login(self):
         crawler = NetunoCrawler(ROOT_URL)

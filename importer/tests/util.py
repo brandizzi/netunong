@@ -1,4 +1,7 @@
 import os.path
+from multiprocessing import Process
+from netunomock.server import run_server
+import time
 
 import unittest2 as unittest
 
@@ -23,3 +26,14 @@ class ImportedEntityTestCase(unittest.TestCase):
     def setUp(self):
         for model in [ImportedEntity, Organization, Project, Task, Employee, User]:
             model.objects.all().delete()
+
+class NetunomockTestCase(unittest.TestCase):
+    def __init__(self, s):
+        unittest.TestCase.__init__(self, s)
+
+    def setUp(self):
+        self.server = Process(target=run_server)
+        self.server.start()
+
+    def tearDown(self):
+        self.server.terminate()
