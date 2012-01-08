@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 import unittest2 as unittest
 
-from importer.crawler import NetunoCrawler
+from importer.crawler import NetunoCrawler, AuthenticationException
 from importer.parser import get_companies, get_users, get_projects, \
         get_list_of_partial_tasks, get_task, is_parent_task
 from importer.tests.util import NetunomockTestCase
 
-from netunomock.server import run_server, ROOT_URL
+from netunomock.server import ROOT_URL
 
 class CrawlerTestCase(NetunomockTestCase):
 
@@ -19,7 +19,8 @@ class CrawlerTestCase(NetunomockTestCase):
 
         crawler.logout()
         self.assertFalse(crawler.logged_in)
-        crawler.login(username='nobody', password='false password')
+        with self.assertRaises(AuthenticationException):
+            crawler.login(username='nobody', password='false password')
         self.assertFalse(crawler.logged_in)
 
         crawler.login(username='adam', password='senha')

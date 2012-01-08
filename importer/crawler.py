@@ -25,6 +25,8 @@ class NetunoCrawler(object):
         self.content = response.read().decode('utf-8')
         if greeting() in self.content:
             self.logged_in = True
+        else:
+            raise AuthenticationException("Authentication failed")
 
     def logout(self):
         response = self.browser.open(self.url+'/index.php?logout=-1')
@@ -65,4 +67,5 @@ class NetunoCrawler(object):
             response = self.browser.follow_link(text=PARENT_TAG)
             self.content = response.read()
 
+class AuthenticationException(Exception): pass
 
