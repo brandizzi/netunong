@@ -60,7 +60,6 @@ class ImportedEntity(models.Model):
 
     @staticmethod
     def import_task(task_dict):
-        if task_dict['type'] == 'parent': raise SavingParentTask()
         already_imported_task = ImportedEntity.objects.filter(category='T',
             original_id=task_dict['original_id'])
         if already_imported_task: return

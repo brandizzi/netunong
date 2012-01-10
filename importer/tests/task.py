@@ -43,7 +43,7 @@ class TaskSavingTestCase(ImportedEntityTestCase):
         self.assertEquals(task_dict['description'], task.description)
         self.assertEquals(task_dict['project_id'], task.project.id)
 
-    def do_not_save_parent_task(self):
+    def test_save_parent_task(self):
         # Setting up
         companies = [
             {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
@@ -63,11 +63,10 @@ class TaskSavingTestCase(ImportedEntityTestCase):
                 'project_id' : projects[1]['original_id'],
                 'description' : '', 'subtasks_ids' : [35, 36]
         }
-        with self.assertRaises(SavingParentTask):
-            ImportedEntity.import_task(task_dict)
+        ImportedEntity.import_task(task_dict)
 
         entities = ImportedEntity.objects.filter(category='T')
-        self.assertEquals(0, len(entities))
+        self.assertEquals(1, len(entities))
 
     def save_only_once(self):
         # Setting up
@@ -109,5 +108,5 @@ class TaskSavingTestCase(ImportedEntityTestCase):
 
 testSuite = unittest.TestSuite()
 testSuite.addTest(TaskSavingTestCase('save_leaf_task'))
-testSuite.addTest(TaskSavingTestCase('do_not_save_parent_task'))
+testSuite.addTest(TaskSavingTestCase('test_save_parent_task'))
 testSuite.addTest(TaskSavingTestCase('save_only_once'))
