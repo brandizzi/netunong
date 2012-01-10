@@ -1,5 +1,6 @@
 from importer.models import ImportedEntity
-from importer.parser import get_companies, get_users, get_projects
+from importer.parser import get_companies, get_users, get_projects, \
+        get_list_of_partial_tasks, get_task
 from importer.crawler import NetunoCrawler
 
 class Importer(object):
@@ -32,3 +33,18 @@ class Importer(object):
         self.crawler.go_to_all_projects()
         projects = get_projects(self.crawler.content)
         ImportedEntity.import_projects(projects)
+
+    def import_tasks(self, partial_task_ids=None):
+        if partial_task_ids is None:
+            self.sign_in()
+            self.crawler.go_to_all_tasks()
+            partial_task_ids = [
+                    task['original_id'] 
+                    for task in get_list_of_partial_tasks(self.crawler.content)
+            ]
+        for task_id in partial_task_ids:
+            self.crawler.go_to_task(task_id)
+            task = get_task(self.crawler.content)
+            ImportedEntity.import_task(task)
+            if task['type'] == 'parent':
+                self.import_tasks(task['subtasks_ids'])
