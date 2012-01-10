@@ -1,4 +1,3 @@
-import unittest2 as unittest
 from test_utilities import ModelTestCase, clear_database
 
 from datetime import datetime, time
@@ -18,7 +17,7 @@ class EmployeeTestCase(ModelTestCase):
         self.organization.save()
 
 
-    def create_employee(self):
+    def test_create_employee(self):
         employee = self.get_default_employee()
 
         user = auth.authenticate(username='test', password='test')
@@ -32,7 +31,7 @@ class EmployeeTestCase(ModelTestCase):
         self.assertIsNotNone(employee, "Employee should be found")
         self.assertEqual(employee.middle_name, "Testos")
 
-    def detele_with_user(self):
+    def test_detele_with_user(self):
         employee = self.get_default_employee()
 
         user = auth.authenticate(username='test', password='test')
@@ -48,7 +47,7 @@ class EmployeeTestCase(ModelTestCase):
         with self.assertRaises(Employee.DoesNotExist):
             employee = Employee.objects.get(middle_name="Testos")
 
-    def reject_repeated_username(self):
+    def test_reject_repeated_username(self):
         employee = self.get_default_employee()
         with self.assertRaises(Exception):
             employee = Employee.create_employee(organization=self.organization,
@@ -56,7 +55,7 @@ class EmployeeTestCase(ModelTestCase):
                     middle_name="Testos", email="test@test.tst", 
                     password="test")
 
-    def has_organization(self):
+    def test_has_organization(self):
         organization = Organization(name="SEA Tecnologia",
                 description="Criadora do Netuno Nova Geracao (NetunoNG)")
         organization.save()
@@ -68,7 +67,7 @@ class EmployeeTestCase(ModelTestCase):
         retrieved = Employee.objects.get(middle_name='Testos')
         self.assertEqual(retrieved.organization, organization)
         
-    def has_tasks(self):
+    def test_has_tasks(self):
         employee = self.get_default_employee()
 
         project = Project(name="Project 1", description="First project",
@@ -84,7 +83,7 @@ class EmployeeTestCase(ModelTestCase):
         retrieved = Employee.objects.get(middle_name='Testos')
         self.assertItemsEqual(retrieved.tasks.all(), (task1, task2))
 
-    def has_working_periods(self):
+    def test_has_working_periods(self):
         employee = self.get_default_employee()
 
         project = Project(name="Project 1", description="First project",
@@ -109,7 +108,7 @@ class EmployeeTestCase(ModelTestCase):
 
         self.assertItemsEqual(employee.workingperiod_set.all(), (wp1, wp2))
 
-    def last_working_period(self):
+    def test_last_working_period(self):
         employee = self.get_default_employee()
 
         project = Project(name="Project 1", description="First project",
@@ -134,7 +133,7 @@ class EmployeeTestCase(ModelTestCase):
 
         self.assertEquals(employee.last_working_period, wp2)
 
-    def last_working_period_none_found(self):
+    def test_last_working_period_none_found(self):
         employee = self.get_default_employee()
 
         project = Project(name="Project 1", description="First project",
@@ -146,58 +145,19 @@ class EmployeeTestCase(ModelTestCase):
 
         self.assertIs(employee.last_working_period, WorkingPeriod.NONE)
         
-    def name_properties(self):
+    def test_name_properties(self):
         employee = self.get_default_employee()
         self.assertEqual(employee.first_name, employee.user.first_name)
         self.assertEqual(employee.last_name, employee.user.last_name)
         self.assertEqual(employee.name, "%s %s %s" % ( 
                     employee.first_name, employee.middle_name, employee.last_name
              ))
-
-    def has_timezone(self):
-        employee = self.get_default_employee()
-        self.assertEqual(employee.timezone, time.timezone)
-        employee.timezone = 0
-
         
     def get_default_employee(self):
         return Employee.create_employee(organization=self.organization,
                 username="test", first_name="Test", last_name="Testein",
                 middle_name="Testos", email="test@test.tst", password="test")
 
-    """def save(self):
-        employee = Employee(username='test', password='test', first_name='Test', 
-            middle_name='Testos', last_name='Testein', email="test@test.tst",
-            organization=self.organization)
-        employee.save()
-
-        
-        user = auth.authenticate(username='test', password='test')
-        self.assertIsNotNone(user, "User should be created")
-
-        self.assertEqual(user.first_name, "Test")
-        self.assertEqual(user.last_name, "Testein")
-        self.assertEqual(user.email, "test@test.tst")
-
-        employee = Employee.objects.get(user=user)
-        self.assertIsNotNone(employee, "Employee should be found")
-        self.assertEqual(employee.middle_name, "Testos")
-
-        self.assertEqual(employee.user, user)"""
-
-
     def tearDown(self):
         clear_database()
 
-
-employeeTestSuite = unittest.TestSuite()
-employeeTestSuite.addTest(EmployeeTestCase('create_employee'))
-employeeTestSuite.addTest(EmployeeTestCase('detele_with_user'))
-employeeTestSuite.addTest(EmployeeTestCase('reject_repeated_username'))
-employeeTestSuite.addTest(EmployeeTestCase('has_organization'))
-employeeTestSuite.addTest(EmployeeTestCase('has_tasks'))
-employeeTestSuite.addTest(EmployeeTestCase('has_working_periods'))
-employeeTestSuite.addTest(EmployeeTestCase('last_working_period'))
-employeeTestSuite.addTest(EmployeeTestCase('last_working_period_none_found'))
-employeeTestSuite.addTest(EmployeeTestCase('name_properties'))
-#employeeTestSuite.addTest(EmployeeTestCase('save'))
