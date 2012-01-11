@@ -1,6 +1,7 @@
 from django.db import models
 
 from register.models import Organization, Project, Task, Employee
+from register.utils import split_name
 
 def get_original_ids_from_dicts(dicts):
     return (d['original_id'] for d in dicts)
@@ -70,10 +71,30 @@ class ImportedEntity(models.Model):
                 description=task_dict['description'],
                 project=project)
         task.save()
+        # Saving entity
         entity = ImportedEntity(
                 category='T', original_id=task_dict['original_id'],
                 new_id=task.id)
         entity.save()
+        # Associating employees
+        employees = set()
+        try:
+            employee = Employee.objects.get(user__username=task_dict['incubent'])
+            employees.add(employee)
+        except (KeyError, Employee.DoesNotExist): pass
+        try:
+            splitted = (split_name(name) for name, email in task_dict['users'])
+        except KeyError:
+            splitted = ()
+        for first, middle, last in splitted:
+            try:
+                employee = Employee.objects.get(
+                    user__first_name=first, middle_name=middle, user__last_name=last)
+                employees.add(employee)
+            except Employee.DoesNotExist: pass
+        for employee in employees:
+            employee.tasks.add(task)
+            employee.save()
 
     @staticmethod
     def import_users_as_employees(users):

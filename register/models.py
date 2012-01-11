@@ -246,6 +246,9 @@ class Employee(models.Model):
     def __str__(self):
         return self.name
 
+    def __cmp__(self, other):
+        return self.id - other.id
+
     class Admin:
         pass
 
