@@ -53,6 +53,21 @@ class ImporterTestCase(NetunomockTestCase, ImportedEntityTestCase):
         self.assertEquals(104, len(ImportedEntity.objects.filter(category='P')))
         self.assertEqual(104, len(Project.objects.all()))
 
+    def test_import_companies_users_projects_tasks(self):
+        self.assertEqual(0, len(ImportedEntity.objects.all()))
+        self.assertEqual(0, len(Organization.objects.all()))
+        self.assertEqual(0, len(Employee.objects.all()))
+        self.assertEqual(0, len(Project.objects.all()))
+        
+        importer = Importer(ROOT_URL, 'adam', 'senha')
+        importer.import_organizations()
+        importer.import_employees()
+        importer.import_projects()
+        importer.import_tasks()
+
+        self.assertEquals(162, len(ImportedEntity.objects.filter(category='T')))
+        self.assertEqual(162, len(Task.objects.all()))
+
     def setUp(self):
         NetunomockTestCase.setUp(self)
         ImportedEntityTestCase.setUp(self)
