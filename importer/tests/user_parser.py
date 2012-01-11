@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import os.path
 
-import unittest2 as unittest
-
 import importer.parser as parser
 from importer.tests.util import ParserTestCase
 
@@ -10,13 +8,13 @@ import settings
 
 class UserParserTestCase(ParserTestCase):
 
-    def get_something(self):
+    def test_get_something(self):
         users_page = self.get_sample_content('company_users.html');
         users = parser.get_users(users_page)
 
         self.assertGreater(len(users), 0)
 
-    def get_first_users(self):
+    def test_get_first_users(self):
         users_page = self.get_sample_content('company_users.html');
         users = parser.get_users(users_page)
 
@@ -42,7 +40,7 @@ class UserParserTestCase(ParserTestCase):
         self.assertEquals(user['password'], 'danilo.avila')
         self.assertEquals(user['company_id'], 1)
 
-    def get_last_user(self):
+    def test_get_last_user(self):
         users_page = self.get_sample_content('company_users.html');
         users = parser.get_users(users_page)
 
@@ -57,8 +55,3 @@ class UserParserTestCase(ParserTestCase):
         self.assertEquals(user['email'], 'msousa@'+settings.NETUNONG_EMAIL_DOMAIN)
         self.assertEquals(user['password'], 'msousa')
         self.assertEquals(user['company_id'], 1)
-
-testSuite = unittest.TestSuite()
-testSuite.addTest(UserParserTestCase('get_something'))
-testSuite.addTest(UserParserTestCase('get_first_users'))
-testSuite.addTest(UserParserTestCase('get_last_user'))

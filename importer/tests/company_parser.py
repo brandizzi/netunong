@@ -1,19 +1,17 @@
 import os.path
 
-import unittest2 as unittest
-
 import importer.parser as parser
 from importer.tests.util import ParserTestCase
 
 class CompanyParserTestCase(ParserTestCase):
 
-    def get_something(self):
+    def test_get_something(self):
         companies_page = self.get_sample_content('companies.html');
         companies = parser.get_companies(companies_page)
 
         self.assertGreater(len(companies), 0)
 
-    def get_first_companies(self):
+    def test_get_first_companies(self):
         companies_page = self.get_sample_content('companies.html');
         companies = parser.get_companies(companies_page)
 
@@ -31,7 +29,7 @@ class CompanyParserTestCase(ParserTestCase):
 Coordenadora de Atendimento e Relacionamento ANPROTEC
 telefone 8427.1420""")
 
-    def get_last_company(self):
+    def test_get_last_company(self):
         companies_page = self.get_sample_content('companies.html');
         companies = parser.get_companies(companies_page)
 
@@ -42,8 +40,3 @@ telefone 8427.1420""")
         self.assertEquals(company['original_id'], 26)
         self.assertEquals(company['description'], "")
 
-
-testSuite = unittest.TestSuite()
-testSuite.addTest(CompanyParserTestCase('get_something'))
-testSuite.addTest(CompanyParserTestCase('get_first_companies'))
-testSuite.addTest(CompanyParserTestCase('get_last_company'))

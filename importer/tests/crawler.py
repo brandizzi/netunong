@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import unittest2 as unittest
-
 from importer.crawler import NetunoCrawler, AuthenticationException
 from importer.parser import get_companies, get_users, get_projects, \
         get_list_of_partial_tasks, get_task, is_parent_task
@@ -10,7 +8,7 @@ from netunomock.server import ROOT_URL
 
 class CrawlerTestCase(NetunomockTestCase):
 
-    def login(self):
+    def test_login(self):
         crawler = NetunoCrawler(ROOT_URL)
         self.assertFalse(crawler.logged_in)
 
@@ -26,7 +24,7 @@ class CrawlerTestCase(NetunomockTestCase):
         crawler.login(username='adam', password='senha')
         self.assertTrue(crawler.logged_in)        
 
-    def select_companies(self):
+    def test_select_companies(self):
         crawler = NetunoCrawler(ROOT_URL)
         crawler.login(username='adam', password='senha')
         self.assertTrue(crawler.logged_in)
@@ -48,7 +46,7 @@ class CrawlerTestCase(NetunomockTestCase):
         self.assertEquals(company['name'], "Zilics")
         self.assertEquals(company['original_id'], 26)
 
-    def select_user_from_companies(self):
+    def test_select_user_from_companies(self):
         crawler = NetunoCrawler(ROOT_URL)
         crawler.login(username='adam', password='senha')
         self.assertTrue(crawler.logged_in)
@@ -89,7 +87,7 @@ class CrawlerTestCase(NetunomockTestCase):
         self.assertEquals(user['last_name'], 'Zouza')
         self.assertEquals(user['middle_name'], '')
 
-    def select_projects(self):
+    def test_select_projects(self):
         crawler = NetunoCrawler(ROOT_URL)
         crawler.login(username='adam', password='senha')
         self.assertTrue(crawler.logged_in)
@@ -116,7 +114,7 @@ class CrawlerTestCase(NetunomockTestCase):
         self.assertEquals(project['company_id'], 48)
         self.assertEquals(project['description'], "")
 
-    def select_tasks(self):
+    def test_select_tasks(self):
         crawler = NetunoCrawler(ROOT_URL)
         crawler.login(username='adam', password='senha')
         self.assertTrue(crawler.logged_in)
@@ -133,7 +131,7 @@ class CrawlerTestCase(NetunomockTestCase):
         self.assertEqual(task['type'], 'partial')
         self.assertEqual(task['original_id'], 2114)
 
-    def select_specific_task(self):
+    def test_select_specific_task(self):
         crawler = NetunoCrawler(ROOT_URL)
         crawler.login(username='adam', password='senha')
         self.assertTrue(crawler.logged_in)
@@ -167,10 +165,3 @@ class CrawlerTestCase(NetunomockTestCase):
         self.assertEqual(task['project_id'], 55)
         self.assertEqual(task['name'], u'Release 0.9')
 
-testSuite = unittest.TestSuite()
-testSuite.addTest(CrawlerTestCase('login'))
-testSuite.addTest(CrawlerTestCase('select_companies'))
-testSuite.addTest(CrawlerTestCase('select_user_from_companies'))
-testSuite.addTest(CrawlerTestCase('select_projects'))
-testSuite.addTest(CrawlerTestCase('select_tasks'))
-testSuite.addTest(CrawlerTestCase('select_specific_task'))

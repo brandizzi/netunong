@@ -1,5 +1,3 @@
-import unittest2 as unittest
-
 from importer.models import ImportedEntity
 from register.models import Organization, Project, Task, Employee
 from importer.agent import Importer
@@ -63,7 +61,3 @@ class ImporterTestCase(NetunomockTestCase, ImportedEntityTestCase):
         NetunomockTestCase.tearDown(self)
         ImportedEntityTestCase.tearDown(self)
 
-testSuite = unittest.TestSuite()
-testSuite.addTest(ImporterTestCase('test_import_companies'))
-testSuite.addTest(ImporterTestCase('test_import_companies_users'))
-testSuite.addTest(ImporterTestCase('test_import_companies_projects'))

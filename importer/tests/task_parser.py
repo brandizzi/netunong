@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 import os.path
 
-import unittest2 as unittest
-
 import importer.parser as parser
 from importer.tests.util import ParserTestCase
 
 class TaskParserTestCase(ParserTestCase):
 
-    def get_leaf_task(self):
+    def test_get_leaf_task(self):
         task_page = self.get_sample_content('task.html');
         task = parser.get_task(task_page)
 
@@ -18,7 +16,7 @@ class TaskParserTestCase(ParserTestCase):
         self.assertEqual(task['project_id'], 151)
         self.assertEqual(task['description'], '')        
 
-    def get_parent_task(self):
+    def test_get_parent_task(self):
         task_page = self.get_sample_content('supertask.html');
         task = parser.get_task(task_page)
 
@@ -29,7 +27,7 @@ class TaskParserTestCase(ParserTestCase):
         self.assertEqual(task['description'], '')
         self.assertItemsEqual(task['subtasks_ids'], [2208, 2209, 2210])
 
-    def get_empty_parent_task(self):
+    def test_get_empty_parent_task(self):
         task_page = self.get_sample_content('supertask-none.html');
         task = parser.get_task(task_page)
 
@@ -40,7 +38,7 @@ class TaskParserTestCase(ParserTestCase):
         self.assertEqual(task['description'], '')
         self.assertItemsEqual(task['subtasks_ids'], [])
 
-    def get_subtask(self):
+    def test_get_subtask(self):
         task_page = self.get_sample_content('subtask.html');
         task = parser.get_task(task_page)
 
@@ -50,7 +48,7 @@ class TaskParserTestCase(ParserTestCase):
         self.assertEqual(task['project_id'], 108)
         self.assertEqual(task['description'], '') 
 
-    def get_task_list(self):
+    def test_get_task_list(self):
         task_page = self.get_sample_content('tasks.html')
         tasks = parser.get_list_of_partial_tasks(task_page)
 
@@ -68,7 +66,7 @@ class TaskParserTestCase(ParserTestCase):
         self.assertEqual(task['type'], 'partial')
         self.assertEqual(task['original_id'], 2114)
 
-    def is_parent_task(self):
+    def test_is_parent_task(self):
         task_page = self.get_sample_content('supertask.html');
         self.assertTrue(parser.is_parent_task(task_page))
 
@@ -78,12 +76,3 @@ class TaskParserTestCase(ParserTestCase):
         task_page = self.get_sample_content('supertask-none.html');
         self.assertTrue(parser.is_parent_task(task_page))
 
-
-
-testSuite = unittest.TestSuite()
-testSuite.addTest(TaskParserTestCase('get_leaf_task'))
-testSuite.addTest(TaskParserTestCase('get_empty_parent_task'))
-testSuite.addTest(TaskParserTestCase('get_parent_task'))
-testSuite.addTest(TaskParserTestCase('get_subtask'))
-testSuite.addTest(TaskParserTestCase('get_task_list'))
-testSuite.addTest(TaskParserTestCase('is_parent_task'))

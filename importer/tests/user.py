@@ -1,7 +1,5 @@
 import os.path
 
-import unittest2 as unittest
-
 from django.contrib.auth import authenticate
 
 from register.models import Organization, Employee
@@ -11,7 +9,7 @@ from importer.tests.util import ImportedEntityTestCase
 
 class UserSavingTestCase(ImportedEntityTestCase):
 
-    def save_users(self):
+    def test_save_users(self):
         # needed
         companies = [
             {'name': 'org1', 'original_id': 4, 'description': 'Organization 1'},
@@ -65,7 +63,7 @@ class UserSavingTestCase(ImportedEntityTestCase):
             organization = Organization.objects.get(id=company_entity.new_id)
             self.assertEquals(organization, employee.organization)
 
-    def save_only_new_users(self):
+    def test_save_only_new_users(self):
         # needed
         companies = [
             {'name': 'org1', 'original_id': 4, 'description': 'Organization 1'},
@@ -148,7 +146,3 @@ class UserSavingTestCase(ImportedEntityTestCase):
                     category='C', original_id=user_dict['company_id'])
             organization = Organization.objects.get(id=company_entity.new_id)
             self.assertEquals(organization, employee.organization)
-
-testSuite = unittest.TestSuite()
-testSuite.addTest(UserSavingTestCase('save_users'))
-testSuite.addTest(UserSavingTestCase('save_only_new_users'))

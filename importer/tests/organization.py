@@ -1,7 +1,5 @@
 import os.path
 
-import unittest2 as unittest
-
 from register.models import Organization
 from importer.models import ImportedEntity
 
@@ -9,7 +7,7 @@ from importer.tests.util import ImportedEntityTestCase
 
 class OrganizationSavingTestCase(ImportedEntityTestCase):
 
-    def save_companies_as_organizations(self):
+    def test_save_companies_as_organizations(self):
         companies = [
             {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
             {'name': 'org2', 'original_id': 2, 'description': 'Organization 2'},
@@ -28,7 +26,7 @@ class OrganizationSavingTestCase(ImportedEntityTestCase):
             self.assertEquals(company['name'], organization.name)
             self.assertEquals(company['description'], organization.description)
 
-    def save_only_new_companies(self):
+    def test_save_only_new_companies(self):
         companies = [
             {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
         ]
@@ -63,7 +61,3 @@ class OrganizationSavingTestCase(ImportedEntityTestCase):
             self.assertEquals(company['name'], organization.name)
             self.assertEquals(company['description'], organization.description)
 
-
-testSuite = unittest.TestSuite()
-testSuite.addTest(OrganizationSavingTestCase('save_companies_as_organizations'))
-testSuite.addTest(OrganizationSavingTestCase('save_only_new_companies'))

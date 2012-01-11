@@ -1,21 +1,15 @@
 import unittest2 as unittest
 
-import company_parser, project_parser, task_parser, user_parser
-import organization, project, task, user
-import crawler, test_importer as importer
+from company_parser import CompanyParserTestCase
+from project_parser import ProjectParserTestCase
+from task_parser import TaskParserTestCase
+from user_parser import UserParserTestCase
 
-def suite():
-    s = unittest.TestSuite()
-    s.addTest(company_parser.testSuite)
-    s.addTest(project_parser.testSuite)
-    s.addTest(task_parser.testSuite)
-    s.addTest(user_parser.testSuite)
-    s.addTest(organization.testSuite)
-    s.addTest(project.testSuite)
-    s.addTest(task.testSuite)
-    s.addTest(user.testSuite)
-    s.addTest(crawler.testSuite)
-    s.addTest(importer.testSuite)
-    return s
+from organization import OrganizationSavingTestCase
+from project import ProjectSavingTestCase
+from task import TaskSavingTestCase
+from user import UserSavingTestCase
 
+from crawler import CrawlerTestCase
+from test_importer import ImporterTestCase
 

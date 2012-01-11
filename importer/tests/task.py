@@ -1,7 +1,5 @@
 import os.path
 
-import unittest2 as unittest
-
 from register.models import Task
 from importer.models import ImportedEntity, SavingParentTask
 
@@ -9,7 +7,7 @@ from importer.tests.util import ImportedEntityTestCase
 
 class TaskSavingTestCase(ImportedEntityTestCase):
 
-    def save_leaf_task(self):
+    def test_save_leaf_task(self):
         # Setting up
         companies = [
             {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
@@ -43,7 +41,7 @@ class TaskSavingTestCase(ImportedEntityTestCase):
         self.assertEquals(task_dict['description'], task.description)
         self.assertEquals(task_dict['project_id'], task.project.id)
 
-    def test_save_parent_task(self):
+    def test_test_save_parent_task(self):
         # Setting up
         companies = [
             {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
@@ -68,7 +66,7 @@ class TaskSavingTestCase(ImportedEntityTestCase):
         entities = ImportedEntity.objects.filter(category='T')
         self.assertEquals(1, len(entities))
 
-    def save_only_once(self):
+    def test_save_only_once(self):
         # Setting up
         companies = [
             {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
@@ -106,7 +104,4 @@ class TaskSavingTestCase(ImportedEntityTestCase):
         # Should be equal to previous
         self.assertEquals(entity, entities[0])
 
-testSuite = unittest.TestSuite()
-testSuite.addTest(TaskSavingTestCase('save_leaf_task'))
-testSuite.addTest(TaskSavingTestCase('test_save_parent_task'))
-testSuite.addTest(TaskSavingTestCase('save_only_once'))
+
