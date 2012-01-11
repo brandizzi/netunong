@@ -5,6 +5,7 @@ import re
 from BeautifulSoup import BeautifulSoup
 
 import settings
+from register.utils import split_name
 
 COMPANY_LINK = 'https://www.seatecnologia.com.br/netuno/index.php?m=companies&a=view&company_id='
 PARENT_TAG = 'Tarefas Filho'
@@ -157,6 +158,7 @@ def get_list_of_partial_tasks(content):
     return [{'type' : 'partial', 'original_id' : int(task_id)}
             for task_id in tasks_ids]
 
+
 def get_users(content):
     soup = BeautifulSoup(content)
     company_url = soup.find('td', {'id':'toptab_0'}).find('a')['href']
@@ -168,13 +170,8 @@ def get_users(content):
     for tr in users_trs:
         user_id = get_user_id_from_url(tr.a['href'])
         name = tr.findAll('td')[1].text
-        splitted_name = name.split(",")
-        splitted_name = [name 
-                for name in " ".join(reversed(splitted_name)).split() 
-                if name]
-        first_name = splitted_name[0]
-        last_name = splitted_name[-1]
-        middle_name = " ".join(splitted_name[1:-1])
+        first_name, middle_name, last_name = split_name(name)
+
         username = tr.a.text
         email = "@".join([username, settings.NETUNONG_EMAIL_DOMAIN])
         users.append({
