@@ -9,16 +9,8 @@ class TaskSavingTestCase(ImportedEntityTestCase):
 
     def test_save_leaf_task(self):
         # Setting up
-        companies = [
-            {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
-            {'name': 'org2', 'original_id': 2, 'description': 'Organization 2'},
-        ]
+        companies, _, projects = get_companies_users_projects()
         ImportedEntity.import_companies_as_organizations(companies)
-        projects = [
-            {'name': 'proj1', 'original_id': 1, 'company_id': 1, 'description': ''},
-            {'name': 'proj2', 'original_id': 2, 'company_id': 1, 'description': ''},
-            {'name': 'proj3', 'original_id': 3, 'company_id': 2, 'description': ''},
-        ]
         ImportedEntity.import_projects(projects)
 
         # Not let us go!
@@ -43,39 +35,11 @@ class TaskSavingTestCase(ImportedEntityTestCase):
 
     def test_save_task_with_users(self):
         # Setting up
-        companies = [
-            {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
-            {'name': 'org2', 'original_id': 2, 'description': 'Organization 2'},
-        ]
+        companies, users, projects = get_companies_users_projects()
         ImportedEntity.import_companies_as_organizations(companies)
-        projects = [
-            {'name': 'proj1', 'original_id': 1, 'company_id': 1, 'description': ''},
-            {'name': 'proj2', 'original_id': 2, 'company_id': 1, 'description': ''},
-            {'name': 'proj3', 'original_id': 3, 'company_id': 2, 'description': ''},
-        ]
+        
         ImportedEntity.import_projects(projects)
-        users = [
-            {
-                'username': 'adam', 
-                'original_id': 1, 
-                'company_id': 1, 
-                'first_name': 'Adam Victor',
-                'middle_name' : 'Nazareth',
-                'last_name' : 'Brandizzi',
-                'email' : 'adam.brandizzi@seatecnologia.com.br',
-                'password' : 'kitty!'
-            },
-            {
-                'username': 'joao.melao', 
-                'original_id': 3, 
-                'company_id': 2, 
-                'first_name': 'Joao',
-                'middle_name' : 'Ja',
-                'last_name' : 'Melao',
-                'email' : 'joao.melao@org2.com.br',
-                'password' : 'puppy!'
-            },
-        ]
+        
         ImportedEntity.import_users_as_employees(users)
 
         # Not let us go!
@@ -103,19 +67,32 @@ class TaskSavingTestCase(ImportedEntityTestCase):
         for employee in Employee.objects.all():
             self.assertTrue(task in employee.tasks.all())
 
+    def test_update_user_emails(self):
+        # Setting up
+        companies, users, projects = get_companies_users_projects()
+        ImportedEntity.import_companies_as_organizations(companies)
+        
+        ImportedEntity.import_projects(projects)
+        
+        ImportedEntity.import_users_as_employees(users)
+
+        # Not let us go!
+        task_dict = {
+                'type' : 'leaf', 'name' : 'Leaf Task', 'original_id' : 33,
+                'project_id' : projects[0]['original_id'],
+                'description' : '', 'subtasks_ids' : [], 'incubent' : 'adam',
+                'users' : [('Joao Ja Melao', 'joao.melao@seatecnologia.com.br')],
+        }
+        ImportedEntity.import_task(task_dict)
+
+        joao =  Employee.objects.get(middle_name='Ja')
+        self.assertEquals('joao.melao@seatecnologia.com.br', joao.user.email)
+
 
     def test_test_save_parent_task(self):
         # Setting up
-        companies = [
-            {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
-            {'name': 'org2', 'original_id': 2, 'description': 'Organization 2'},
-        ]
+        companies, _, projects = get_companies_users_projects()
         ImportedEntity.import_companies_as_organizations(companies)
-        projects = [
-            {'name': 'proj1', 'original_id': 1, 'company_id': 1, 'description': ''},
-            {'name': 'proj2', 'original_id': 2, 'company_id': 1, 'description': ''},
-            {'name': 'proj3', 'original_id': 3, 'company_id': 2, 'description': ''},
-        ]
         ImportedEntity.import_projects(projects)
 
         # Not let us go!
@@ -131,13 +108,8 @@ class TaskSavingTestCase(ImportedEntityTestCase):
 
     def test_save_only_once(self):
         # Setting up
-        companies = [
-            {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
-        ]
+        companies, _, projects = get_companies_users_projects()
         ImportedEntity.import_companies_as_organizations(companies)
-        projects = [
-            {'name': 'proj1', 'original_id': 1, 'company_id': 1, 'description': ''},
-        ]
         ImportedEntity.import_projects(projects)
 
         # Not let us go!
@@ -167,4 +139,36 @@ class TaskSavingTestCase(ImportedEntityTestCase):
         # Should be equal to previous
         self.assertEquals(entity, entities[0])
 
-
+def get_companies_users_projects():
+    companies = [
+        {'name': 'org1', 'original_id': 1, 'description': 'Organization 1'},
+        {'name': 'org2', 'original_id': 2, 'description': 'Organization 2'},
+    ]
+    users = [
+        {
+            'username': 'adam', 
+            'original_id': 1, 
+            'company_id': 1, 
+            'first_name': 'Adam Victor',
+            'middle_name' : 'Nazareth',
+            'last_name' : 'Brandizzi',
+            'email' : 'adam.brandizzi@seatecnologia.com.br',
+            'password' : 'kitty!'
+        },
+        {
+            'username': 'joao.melao', 
+            'original_id': 3, 
+            'company_id': 2, 
+            'first_name': 'Joao',
+            'middle_name' : 'Ja',
+            'last_name' : 'Melao',
+            'email' : 'joao.melao@org2.com.br',
+            'password' : 'puppy!'
+        },
+    ]
+    projects = [
+        {'name': 'proj1', 'original_id': 1, 'company_id': 1, 'description': ''},
+        {'name': 'proj2', 'original_id': 2, 'company_id': 1, 'description': ''},
+        {'name': 'proj3', 'original_id': 3, 'company_id': 2, 'description': ''},
+    ]
+    return companies, users, projects

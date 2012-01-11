@@ -77,23 +77,28 @@ class ImportedEntity(models.Model):
                 new_id=task.id)
         entity.save()
         # Associating employees
-        employees = set()
+        employees = {}
         try:
             employee = Employee.objects.get(user__username=task_dict['incubent'])
-            employees.add(employee)
+            employees[employee.user.email] = employee
         except (KeyError, Employee.DoesNotExist): pass
         try:
-            splitted = (split_name(name) for name, email in task_dict['users'])
+            splitted = ((split_name(name), email)
+                    for name, email in task_dict['users'])
         except KeyError:
             splitted = ()
-        for first, middle, last in splitted:
+        for (first, middle, last), email in splitted:
             try:
                 employee = Employee.objects.get(
                     user__first_name=first, middle_name=middle, user__last_name=last)
-                employees.add(employee)
+                employees[email] = employee
             except Employee.DoesNotExist: pass
-        for employee in employees:
+        for email in employees:
+            employee = employees[email]
             employee.tasks.add(task)
+            if email != employee.user.email:
+                employee.user.email = email
+                employee.user.save()
             employee.save()
 
     @staticmethod
