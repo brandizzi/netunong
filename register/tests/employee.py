@@ -1,6 +1,6 @@
 from test_utilities import ModelTestCase, clear_database
 
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 
 from register.models import Employee, Organization, Task, Project, WorkingPeriod
 from django.contrib import auth
@@ -132,6 +132,88 @@ class EmployeeTestCase(ModelTestCase):
         wp2.save()
 
         self.assertEquals(employee.last_working_period, wp2)
+
+    def test_order_working_periods_by_start_date(self):
+        employee = self.get_default_employee()
+
+        project = Project(name="Project 1", description="First project",
+                    organization=self.organization)
+        project.save()
+        task = Task(name="Test employee", project=project, 
+                description="Testing the Employee model")
+        task.save()
+
+        now = datetime.now()
+        past = now-timedelta(1)
+        future = now+timedelta(1)
+
+        now_wp = WorkingPeriod(employee=employee,
+                intended="Be now",
+                intended_task=task,
+                executed="Be now",
+                executed_task=task,
+                start= now, end=now)
+        past_wp = WorkingPeriod(employee=employee,
+                intended="Be in past",
+                intended_task=task,
+                executed="Be in past",
+                executed_task=task,
+                start=past, end=past)
+        future_wp = WorkingPeriod(employee=employee,
+                intended="Be in futore",
+                intended_task=task,
+                executed="Be in future",
+                executed_task=task,
+                start=future, end=future)
+
+        now_wp.save()
+        past_wp.save()
+        future_wp.save()
+
+        self.assertEquals(employee.workingperiod_set.all()[0], past_wp)
+        self.assertEquals(employee.workingperiod_set.all()[1], now_wp)
+        self.assertEquals(employee.workingperiod_set.all()[2], future_wp)
+
+    def test_order_working_periods_by_end_date(self):
+        employee = self.get_default_employee()
+
+        project = Project(name="Project 1", description="First project",
+                    organization=self.organization)
+        project.save()
+        task = Task(name="Test employee", project=project, 
+                description="Testing the Employee model")
+        task.save()
+
+        now = datetime.now()
+        past = now-timedelta(1)
+        future = now+timedelta(1)
+
+        now_wp = WorkingPeriod(employee=employee,
+                intended="Be now",
+                intended_task=task,
+                executed="Be now",
+                executed_task=task,
+                start= past, end=now)
+        past_wp = WorkingPeriod(employee=employee,
+                intended="Be in past",
+                intended_task=task,
+                executed="Be in past",
+                executed_task=task,
+                start=past, end=past)
+        future_wp = WorkingPeriod(employee=employee,
+                intended="Be in futore",
+                intended_task=task,
+                executed="Be in future",
+                executed_task=task,
+                start=past, end=future)
+
+        now_wp.save()
+        past_wp.save()
+        future_wp.save()
+
+        self.assertEquals(employee.workingperiod_set.all()[0], past_wp)
+        self.assertEquals(employee.workingperiod_set.all()[1], now_wp)
+        self.assertEquals(employee.workingperiod_set.all()[2], future_wp)
 
     def test_last_working_period_none_found(self):
         employee = self.get_default_employee()
