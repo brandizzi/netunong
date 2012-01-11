@@ -1,6 +1,6 @@
 from importer.models import ImportedEntity
 from register.models import Organization, Project, Task, Employee
-from importer.agent import Importer
+from importer.agent import Importer, ORGANIZATIONS, EMPLOYEES, PROJECTS, TASKS
 
 from importer.tests.util import NetunomockTestCase, ImportedEntityTestCase
 from netunomock.server import ROOT_URL
@@ -67,6 +67,26 @@ class ImporterTestCase(NetunomockTestCase, ImportedEntityTestCase):
 
         self.assertEquals(162, len(ImportedEntity.objects.filter(category='T')))
         self.assertEqual(162, len(Task.objects.all()))
+
+    def test_give_feedback(self):
+        self.assertEqual(0, len(ImportedEntity.objects.all()))
+        self.assertEqual(0, len(Organization.objects.all()))
+        self.assertEqual(0, len(Employee.objects.all()))
+        self.assertEqual(0, len(Project.objects.all()))
+        
+        importer = Importer(ROOT_URL, 'adam', 'senha')
+        self.assertEqual([], importer.already_done)
+
+        importer.import_organizations()
+        self.assertEqual([ORGANIZATIONS], importer.already_done)
+        importer.import_employees()
+        self.assertItemsEqual([ORGANIZATIONS, EMPLOYEES], importer.already_done)
+        importer.import_projects()
+        self.assertItemsEqual([ORGANIZATIONS, EMPLOYEES, PROJECTS],
+                importer.already_done)
+        importer.import_tasks()
+        self.assertItemsEqual([ORGANIZATIONS, EMPLOYEES, PROJECTS, TASKS],
+                importer.already_done)
 
     def setUp(self):
         NetunomockTestCase.setUp(self)
