@@ -16,6 +16,23 @@ class TaskParserTestCase(ParserTestCase):
         self.assertEqual(task['project_id'], 151)
         self.assertEqual(task['description'], '')        
 
+    def test_get_task_with_users(self):
+        task_page = self.get_sample_content('task.html');
+        task = parser.get_task(task_page)
+
+        self.assertEqual(task['type'], 'leaf')
+        self.assertEqual(task['name'], u'OS02 - Arquitetura da Informação e Identidade Visual')
+        self.assertEqual(task['original_id'], 2832)
+        self.assertEqual(task['project_id'], 151)
+        self.assertEqual(task['description'], '')
+        self.assertItemsEqual(task['incubent'], 'vinicius.botelho')
+        self.assertItemsEqual(task['users'], [
+                (u'Bruna Sodré', u'bruna.sodre@seatecnologia.com.br'), 
+                (u'Jhony Buril Cardozo de Oliveira', u'jhony.buril@seatecnologia.com.br'), 
+                (u'Leonardo Antonialli', u'leonardo.antonialli@seatecnologia.com.br'),
+                (u'Wesley Rocha', u'wesley.rocha@seatecnologia.com.br')
+        ])
+
     def test_get_parent_task(self):
         task_page = self.get_sample_content('supertask.html');
         task = parser.get_task(task_page)

@@ -1,5 +1,6 @@
 import itertools
 from urlparse import urlparse, parse_qs
+import re
 
 from BeautifulSoup import BeautifulSoup
 
@@ -118,6 +119,15 @@ def get_task(content):
     # Getting project id
     project_url = ids_table.findAll('a')[1]['href']
     project_id = get_project_id_from_url(project_url)
+    # Getting users
+    incubent = soup.find(text=re.compile('Respons.*vel:')).parent.parent.find(
+            'td', { 'class' : 'hilite'}
+    ).text.strip()
+
+    users_tds = soup.find('strong', text=re.compile('Usu.*rios Associados')).\
+            findParent('table').find('table').findAll('td')
+    contents = [td.text for td in users_tds]
+    users = zip(contents[::2], contents[1::2])
     # Getting subtasks ids
     if is_parent:
         try:
@@ -134,7 +144,9 @@ def get_task(content):
             'original_id' : original_id,
             'project_id' : project_id,
             'description' : '',
-            'subtasks_ids' : subtasks_ids
+            'subtasks_ids' : subtasks_ids,
+            'incubent' : incubent,
+            'users' : users,
     }
 
 def get_list_of_partial_tasks(content):
