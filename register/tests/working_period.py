@@ -1,4 +1,3 @@
-import unittest2 as unittest
 from test_utilities import ModelTestCase, clear_database, \
         get_organization_project_task, get_employee
 
@@ -23,7 +22,7 @@ class WorkingPeriodTestCase(ModelTestCase):
         ) = get_organization_project_task()
         self.employee = get_employee(self.organization)
 
-    def is_complete(self):
+    def test_is_complete(self):
         wp1 = WorkingPeriod(employee=self.employee,
                 intended="test if employee has working period",
                 intended_task=self.task,
@@ -37,7 +36,7 @@ class WorkingPeriodTestCase(ModelTestCase):
                 start= datetime.now())
         self.assertFalse(wp2.is_complete())         
 
-    def last_activity_last_task(self):
+    def test_last_activity_last_task(self):
         wp1 = WorkingPeriod(employee=self.employee,
                 intended="test if employee has working period",
                 intended_task=self.task,
@@ -53,7 +52,7 @@ class WorkingPeriodTestCase(ModelTestCase):
         self.assertEqual(wp2.last_activity, wp2.intended)
         self.assertEqual(wp2.last_task, wp2.intended_task)
 
-    def last_activity_without_end(self):
+    def test_last_activity_without_end(self):
         task1 = self.task
         task2 = Task(name="Another task", project=self.project, 
             description="Just another task")
@@ -73,7 +72,7 @@ class WorkingPeriodTestCase(ModelTestCase):
         self.assertEqual(wp2.last_activity, wp2.executed)
         self.assertEqual(wp2.last_task, wp2.executed_task)
 
-    def total_time(self):
+    def test_total_time(self):
         wp1 = WorkingPeriod(employee=self.employee,
                 intended="test if employee has working period",
                 intended_task=self.task,
@@ -97,14 +96,14 @@ class WorkingPeriodTestCase(ModelTestCase):
         self.assertEqual(wp2.hours, None)
         self.assertEqual(wp2.minutes, None)
 
-    def save_without_intended_task(self):
+    def test_save_without_intended_task(self):
         wp1 = WorkingPeriod(employee=self.employee,
                 intended="test if employee has working period",
                 #intended_task=self.task, # no task
                 start= datetime.now())
         wp1.save()
 
-    def formatted_time_values(self):
+    def test_formatted_time_values(self):
         wp1 = WorkingPeriod(employee=self.employee,
                 intended="test if employee has working period",
                 intended_task=self.task,
@@ -131,11 +130,3 @@ class WorkingPeriodTestCase(ModelTestCase):
     def tearDown(self):
         clear_database()
 
-workingPeriodTestSuite = unittest.TestSuite()
-workingPeriodTestSuite.addTest(WorkingPeriodTestCase('is_complete'))
-workingPeriodTestSuite.addTest(WorkingPeriodTestCase('save_without_intended_task'))
-workingPeriodTestSuite.addTest(WorkingPeriodTestCase('last_activity_last_task'))
-workingPeriodTestSuite.addTest(WorkingPeriodTestCase('last_activity_without_end'))
-workingPeriodTestSuite.addTest(WorkingPeriodTestCase('total_time'))
-workingPeriodTestSuite.addTest(WorkingPeriodTestCase('save_without_intended_task'))
-workingPeriodTestSuite.addTest(WorkingPeriodTestCase('formatted_time_values'))

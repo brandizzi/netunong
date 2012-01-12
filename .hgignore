@@ -4,3 +4,9 @@
 base.db
 err.html
 reports.tar.gz
+database-real\.db
+netunong.log
+
+importer/tests/netunomock/html/
+importer/tests/samples/
+.*/\.DS_Store

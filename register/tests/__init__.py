@@ -1,26 +1,7 @@
-import unittest2 as unittest
-from employee import employeeTestSuite
-from task import taskTestSuite
-from working_period import workingPeriodTestSuite
-try:
-    import os
-    run_selenium = os.environ['RUN_SELENIUM'] == 'true'
-except KeyError:
-    run_selenium = False
+from employee import EmployeeTestCase
+from project import ProjectTestCase
+from task import TaskTestCase
+from working_period import WorkingPeriodTestCase
 
-if run_selenium:
-    from selenium.login import seleniumLoginTestSuite
-
-
-def suite():
-    s = unittest.TestSuite()
-    s.addTest(employeeTestSuite)
-    s.addTest(workingPeriodTestSuite)
-    s.addTest(taskTestSuite)
-
-    if run_selenium:
-        s.addTest(seleniumLoginTestSuite)
-    
-    return s
-
+from application import RegisterAppTestCase
 

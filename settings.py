@@ -16,12 +16,14 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': CURRENT_DIR+ '/dababase.db',                      # Or path to database file if using sqlite3.
+        'NAME': CURRENT_DIR+ '/database.db',                      # Or path to database file if using sqlite3.
+        'TEST_NAME': CURRENT_DIR+ '/database.db',
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
+    },
+    
 }
 
 # Local time zone for this installation. Choices can be found here:
@@ -79,7 +81,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'netunong.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -94,10 +96,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-#    'django.contrib.staticfiles',
     'register',
-#    'reports',
-#    'reports.due_payment',
+    'importer',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -118,4 +118,7 @@ AUTH_PROFILE_MODULE='register.Employee'
 #####
 NETUNONG_DATE_FORMAT="%d/%m/%Y"
 NETUNONG_TIME_FORMAT="%Hh%M"
+NETUNONG_EMAIL_DOMAIN='seatecnologia.com.br'
+
+## SHOULD CHANGE
 STATIC_ROOT=os.path.join(CURRENT_DIR, 'static')

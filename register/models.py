@@ -6,8 +6,6 @@ from django.contrib import auth
 from django.contrib import admin
 from settings import NETUNONG_DATE_FORMAT, NETUNONG_TIME_FORMAT
 
-
-
 class Organization(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -22,7 +20,10 @@ class Project(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     organization = models.ForeignKey(Organization)
+    completed = models.BooleanField()
 
+    def complete(self):
+        self.completed = True
 
     def __str__(self):
         return self.name
@@ -34,6 +35,10 @@ class Task(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     project = models.ForeignKey(Project)
+    done = models.BooleanField()
+
+    def mark_as_done(self):
+        self.done = True
 
     def __str__(self):
         return "%s@%s" % (self.name, self.project.name)
@@ -212,8 +217,37 @@ class Employee(models.Model):
         """
         return " ".join([self.first_name, self.middle_name, self.last_name])
 
+    @property
+    def username(self):
+        """
+        Returns the employee's username:
+
+        >>> import tests.test_utilities as tu
+        >>> employee = tu.get_employee()
+        >>> employee.username
+        'test'
+        >>> tu.clear_database()
+        """
+        return self.user.username
+
+    @property
+    def email(self):
+        """
+        Returns the employee's email:
+
+        >>> import tests.test_utilities as tu
+        >>> employee = tu.get_employee()
+        >>> employee.email
+        'test@test.tst'
+        >>> tu.clear_database()
+        """
+        return self.user.email
+
     def __str__(self):
         return self.name
+
+    def __cmp__(self, other):
+        return self.id - other.id
 
     class Admin:
         pass
@@ -567,12 +601,18 @@ class WorkingPeriod(models.Model):
         """
         return self.end.strftime(NETUNONG_TIME_FORMAT) if self.end else ''
 
+    def __str__(self):
+        description = self.executed if self.is_complete else self.intended
+        started = self.formatted_start_date
+        return "WorkingPeriod(%s, %s)"  % (description, started)
+
     def __cmp__(self, other):
         """Required for using TestCase.assertItemsEqual()"""
         return self.id - other.id
 
     class Meta:
         get_latest_by = "id"
+        ordering = ['start', 'end']
 
 
 # Represents the null working period. Better than verifying if the working
