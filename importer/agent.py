@@ -1,3 +1,5 @@
+import threading
+
 from importer.models import ImportedEntity
 from importer.parser import get_companies, get_users, get_projects, \
         get_list_of_partial_tasks, get_task
@@ -13,24 +15,27 @@ class Importer(object):
 
     def __init__(self, url, username, password):
         self.crawler = NetunoCrawler(url)
+        self.lock = threading.Lock()
         self.username = username
         self.password = password
         self.already_done = []
         self.is_running = False
 
+    def import_all(self):
+        if self.is_running: return
+        with self.lock:
+            self.is_running = True
+            try:
+                self.import_organizations()
+                self.import_projects()
+                self.import_employees()
+                self.import_tasks()
+            finally:
+                self.is_running = False             
+
     def sign_in(self):
         if not self.crawler.logged_in:
             self.crawler.login(self.username, self.password)
-
-    def import_all(self):
-        self.is_running = True
-        try:
-            self.import_organizations()
-            self.import_projects()
-            self.import_employees()
-            self.import_tasks()
-        finally:
-            self.is_running = False             
 
     def import_organizations(self):
         self.sign_in()
