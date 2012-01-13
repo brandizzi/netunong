@@ -21,10 +21,13 @@ class Importer(object):
         self.already_done = []
         self.is_running = False
 
-    def import_all(self):
+    def import_all(self, url=None, username=None, password=None):
         if self.is_running: return
         with self.lock:
             self.is_running = True
+            if url: self.crawler.url = url
+            if username: self.username = username
+            if password: self.password = password
             try:
                 self.import_organizations()
                 self.import_projects()
@@ -78,3 +81,4 @@ class Importer(object):
                 self.import_tasks(task['subtasks_ids'])
         if task_ids is None:
             self.already_done.append(TASKS)
+importer = Importer('','','')

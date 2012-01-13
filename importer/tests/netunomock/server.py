@@ -122,8 +122,11 @@ def print_debug(info):
                
 
 def run_server():
-    server = HTTPServer(ADDRESS, IndexRequestHandler)
-    server.serve_forever()
+    try:
+        server = HTTPServer(ADDRESS, IndexRequestHandler)
+        server.serve_forever()
+    except Exception as e:
+        print e
 
 if __name__ == "__main__":
     run_server()
