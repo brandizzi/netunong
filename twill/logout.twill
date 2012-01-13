@@ -1,6 +1,6 @@
 # Click in logout link
 follow logout
 code 200
-url http://localhost:8000/netunong/login/$
+url http://localhost:32198/netunong/login/$
 # Should go to login page
 notfind '<a +.*href="/netunong/logout/"'

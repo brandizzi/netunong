@@ -17,7 +17,7 @@ fv 1 end-date '${end.strftime(settings.NETUNONG_DATE_FORMAT)}'
 fv 1 end-time '${end.strftime(settings.NETUNONG_TIME_FORMAT)}'
 submit
 code 200
-url http://localhost:8000/netunong/manage/
+url http://localhost:32198/netunong/manage/
 notfind '<li class="error">'
 find '<li class="success">'
 find 'Add period through manage interface'

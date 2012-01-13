@@ -1,27 +1,27 @@
 # Tries to go to register
-go http://localhost:8000/netunong/
+go http://localhost:32198/netunong/
 # is redirected to login
 code 200
-url http://localhost:8000/netunong/login/\?next=/netunong/
+url http://localhost:32198/netunong/login/\?next=/netunong/
 
 # Authenticate
 fv 1 username test
 fv 1 password test
 submit
 code 200
-url http://localhost:8000/netunong/$
+url http://localhost:32198/netunong/$
 
 follow logout
 # Tries to go to register
-go http://localhost:8000/netunong/manage/
+go http://localhost:32198/netunong/manage/
 # is redirected to login
 code 200
-url http://localhost:8000/netunong/login/\?next=/netunong/manage/
+url http://localhost:32198/netunong/login/\?next=/netunong/manage/
 
 # Authenticate
 fv 1 username test
 fv 1 password test
 submit
 code 200
-url http://localhost:8000/netunong/manage/$
+url http://localhost:32198/netunong/manage/$
 

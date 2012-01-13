@@ -7,7 +7,7 @@ submit
 
 # Returns to open page, without any problem
 code 200
-url http://localhost:8000/netunong/$
+url http://localhost:32198/netunong/$
 # Operation should be "open"
 find '<input type="hidden" name="operation" value="open" />'
 

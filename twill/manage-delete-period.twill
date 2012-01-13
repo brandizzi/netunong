@@ -8,6 +8,7 @@ fv form-wp${str(wp1.id)} activity ''
 submit delete${str(wp1.id)}
 code 200
 find '<li class="success">'
-# Should appear nor in the screen neither in database
+# Should not appear in the screen
 notfind '${wp1.executed}'
+# Should be in the database
 run 'assert wp1 not in WorkingPeriod.objects.all()'

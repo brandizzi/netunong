@@ -1,5 +1,5 @@
 # Access login page
-go http://localhost:8000/netunong/login
+go http://localhost:32198/netunong/login
 code 200
 notfind '<a +.*href="/netunong/logout/"'
 # Authenticate
@@ -9,12 +9,12 @@ submit
 
 # Validate new page. Should have logout link
 code 200
-url http://localhost:8000/netunong/$
+url http://localhost:32198/netunong/$
 run 'e = Employee.objects.all()[0]'
 find '${e.name}'
 find '<a +.*href="/netunong/logout/"'
 
-go http://localhost:8000/netunong/
+go http://localhost:32198/netunong/
 code 200
 find '${e.name}'
 find '<a +.*href="/netunong/logout/"'

@@ -1,6 +1,7 @@
 \.twill-history
 .*\.pyc
 .*\.save
+.*\.bkp
 base.db
 err.html
 reports.tar.gz

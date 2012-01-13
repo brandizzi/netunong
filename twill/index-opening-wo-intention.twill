@@ -6,7 +6,7 @@ fv 1 intention ''
 fv 1 task ${str(taskid1)}
 submit
 code 200
-url http://localhost:8000/netunong/$
+url http://localhost:32198/netunong/$
 # Since the period could not be created, the operation is still "open"
 notfind '<input type="hidden" name="operation" value="close" />'
 find '<input type="hidden" name="operation" value="open" />'
