@@ -21,6 +21,12 @@ class Importer(object):
         if not self.crawler.logged_in:
             self.crawler.login(self.username, self.password)
 
+    def import_all(self):
+        self.import_organizations()
+        self.import_projects()
+        self.import_employees()
+        self.import_tasks()                
+
     def import_organizations(self):
         self.sign_in()
         self.crawler.go_to_all_companies()
