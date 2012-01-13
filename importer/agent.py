@@ -16,16 +16,21 @@ class Importer(object):
         self.username = username
         self.password = password
         self.already_done = []
+        self.is_running = False
 
     def sign_in(self):
         if not self.crawler.logged_in:
             self.crawler.login(self.username, self.password)
 
     def import_all(self):
-        self.import_organizations()
-        self.import_projects()
-        self.import_employees()
-        self.import_tasks()                
+        self.is_running = True
+        try:
+            self.import_organizations()
+            self.import_projects()
+            self.import_employees()
+            self.import_tasks()
+        finally:
+            self.is_running = False             
 
     def import_organizations(self):
         self.sign_in()
