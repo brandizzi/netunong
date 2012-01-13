@@ -71,5 +71,10 @@ $(document).ready(
         $(':submit').click(
             set_operation
         );
+        $('.delete-submit').click(
+            function() {
+                return confirm($(this).attr("alt"));
+            }
+        );
     }
 );
