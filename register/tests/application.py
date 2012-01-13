@@ -36,7 +36,7 @@ class RegisterAppTestCase(SplinterTestCase,ModelTestCase):
 
         self.browser.find_by_name("delete%d"%wp.id).click()
         self.browser.get_alert().accept()
-        sleep(0.5)
+        sleep(0.1)
         self.assertFalse(
                 self.browser.is_element_present_by_tag('input', wait_time=2))
         self.assertEquals(0, self.employee.workingperiod_set.count())

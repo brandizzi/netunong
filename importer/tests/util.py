@@ -1,7 +1,7 @@
 import os.path
 from multiprocessing import Process
 from netunomock.server import run_server
-import time
+from time import sleep
 
 import unittest2 as unittest
 
@@ -34,6 +34,7 @@ class NetunomockTestCase(unittest.TestCase):
     def setUp(self):
         self.server = Process(target=run_server)
         self.server.start()
+        sleep(0.5)
 
     def tearDown(self):
         self.server.terminate()
