@@ -28,6 +28,7 @@ class Importer(object):
             if url: self.crawler.url = url
             if username: self.username = username
             if password: self.password = password
+            self.already_done = []
             try:
                 self.import_organizations()
                 self.import_projects()
@@ -81,4 +82,5 @@ class Importer(object):
                 self.import_tasks(task['subtasks_ids'])
         if task_ids is None:
             self.already_done.append(TASKS)
+
 importer = Importer('','','')

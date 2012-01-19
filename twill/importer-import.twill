@@ -1,0 +1,32 @@
+fv 1 netuno-address 'http://localhost:32020/'
+fv 1 username adam
+fv 1 password senha
+submit
+
+code 200
+
+notfind '<input .*name="netuno-address"'
+notfind '<input .*name="username"'
+notfind '<input .*name="password"'
+
+find '<div class="info'
+
+extend_with 'time'
+
+run 'sleep(40)'
+
+go 'http://localhost:32198/netunong/importer/'
+
+find '<input .*name="netuno-address"'
+find '<input .*name="username"'
+find '<input .*name="password"'
+
+extend_with 'importer.models'
+
+# Everything is imported
+run 'assert ImportedEntity.objects.count() == 389'
+run 'assert Organization.objects.count() == 43' 
+run 'assert Employee.objects.count() == 80'
+run 'assert Project.objects.count() == 104'
+run 'assert Task.objects.count() == 162' 
+

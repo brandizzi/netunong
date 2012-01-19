@@ -1,0 +1,11 @@
+################################################################################
+#########   VERIFY BASIC NAVIGATION                                  ###########
+################################################################################
+# FIRST RELEVANT POINT: should have link for importer page...
+find '<a .*href="/netunong/importer/"' 
+follow importer
+code 200
+
+find '<input .*name="netuno-address"'
+find '<input .*name="username"'
+find '<input .*name="password"'

@@ -17,7 +17,10 @@ patterns_list = [
     (r'^netunong/login/(?:\?next=.*)?$', django.contrib.auth.views.login), # (?:...) requird for non grouping
     (r'^accounts/login/(?:\?next=.*)?$', django.contrib.auth.views.login),
     (r'^netunong/logout/$', django.contrib.auth.views.logout, {'next_page': '/netunong/login/'}),
+
     (r'^admin/', include(django.contrib.admin.site.urls)),
+
+    (r'^netunong/importer/', include('importer.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     # (r'^netunong/reports/', include('netunong.reports.urls')),

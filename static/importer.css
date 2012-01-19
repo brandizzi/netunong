@@ -1,0 +1,28 @@
+body {
+    font-size: 1.5em;
+}
+
+div.content {
+    text-align: left;
+    width: 50%;
+    margin: 1em 10% 1em 10%;
+}
+
+input, select {
+    font-size: 100%;
+    width: 30em;
+    margin: 0.5em 0;
+}
+
+input[type=submit] {
+    width: auto;
+}
+
+input.date, input.time {
+    font-size: 100%;
+    width: 11em;
+    margin: 0.5em 0;
+}
+
+.message {
+}
