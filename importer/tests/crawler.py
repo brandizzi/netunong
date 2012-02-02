@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from BeautifulSoup import BeautifulSoup
+
 from importer.crawler import NetunoCrawler, AuthenticationException
 from importer.parser import get_companies, get_users, get_projects, \
         get_list_of_partial_tasks, get_task, is_parent_task
@@ -165,3 +167,20 @@ class CrawlerTestCase(NetunomockTestCase):
         self.assertEqual(task['project_id'], 55)
         self.assertEqual(task['name'], u'Release 0.9')
 
+    def test_access_task_new_log(self):
+        crawler = NetunoCrawler(ROOT_URL)
+        crawler.login(username='adam', password='senha')
+        self.assertTrue(crawler.logged_in)
+
+        crawler.go_to_task_log_registration(2376)
+        soup = BeautifulSoup(crawler.content)
+        form = soup.find('form', {'name':'editFrm'})
+        self.assertIsNotNone(form)
+        date = form.find('input', {'name':'task_log_date'})
+        self.assertIsNotNone(date)
+        hours = form.find('input', {'name':'task_log_hours'})
+        self.assertIsNotNone(hours)
+        description = form.find('textarea', {'name':'task_log_description'})
+        self.assertIsNotNone(description)
+
+        

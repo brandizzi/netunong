@@ -67,5 +67,9 @@ class NetunoCrawler(object):
             response = self.browser.follow_link(text=PARENT_TAG)
             self.content = response.read()
 
+    def go_to_task_log_registration(self, task_id):
+        response = self.browser.open(self.url+'?m=tasks&task_id=%s&tab=1'%task_id)
+        self.content = response.read()
+
 class AuthenticationException(Exception): pass
 
