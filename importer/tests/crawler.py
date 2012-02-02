@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 from BeautifulSoup import BeautifulSoup
 
 from importer.crawler import NetunoCrawler, AuthenticationException
@@ -183,4 +185,18 @@ class CrawlerTestCase(NetunomockTestCase):
         description = form.find('textarea', {'name':'task_log_description'})
         self.assertIsNotNone(description)
 
-        
+    def test_register_new_log(self):
+        crawler = NetunoCrawler(ROOT_URL)
+        crawler.login(username='adam', password='senha')
+        self.assertTrue(crawler.logged_in)
+
+        crawler.go_to_task_log_registration(2376)
+        date = datetime(2011, 12, 31)
+        crawler.register_log(date, 2.5, '14h - 15h30: Making exporter for Netuno')
+        self.assertTrue('Task id: 2376' in crawler.content)
+        self.assertTrue('Log creator: 1' in crawler.content)
+        self.assertTrue('Date: 20111231' in crawler.content)
+        self.assertTrue('Worked hours: 2.5' in crawler.content)
+        self.assertTrue('Description: 14h - 15h30: Making exporter for Netuno' in crawler.content)
+
+

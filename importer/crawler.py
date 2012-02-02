@@ -70,6 +70,15 @@ class NetunoCrawler(object):
     def go_to_task_log_registration(self, task_id):
         response = self.browser.open(self.url+'?m=tasks&task_id=%s&tab=1'%task_id)
         self.content = response.read()
+        
+    def register_log(self, date, hours, description):
+        self.browser.select_form('editFrm')
+        self.browser.set_all_readonly(False)
+        self.browser['task_log_date'] = date.strftime('%Y%m%d')
+        self.browser['task_log_hours'] = str(hours)
+        self.browser['task_log_description'] = description
+        response = self.browser.submit()
+        self.content = response.read()
 
 class AuthenticationException(Exception): pass
 
