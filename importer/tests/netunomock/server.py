@@ -1,4 +1,5 @@
 import os.path
+from datetime import datetime
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from cgi import FieldStorage
 from urlparse import urlparse, parse_qs
@@ -86,8 +87,22 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
 
     def show_tasks(self, params, form=None):
         if 'task_id' in params:
-            task_id = params['task_id']
-            self.wfile.write(self.read_html_file('task%s.html'%task_id[0]))
+            task_id = params['task_id'][0]
+            if 'tab' in params and params['tab'][0] == '1' and not form:
+                template = self.read_html_file('task-new-log.html')
+                template = template.replace('%MOCK_TASK_ID%', task_id)
+                template = template.replace('%MOCK_USER_ID%', '1')
+                d = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                template = template.replace('%MOCK_TASK_LOG_DATE%', d)
+                self.wfile.write(template)
+            elif form and form['dosql'].value == 'do_updatetask':
+                self.wfile.write('Task id: %s<br/>' % form['task_log_task'].value)
+                self.wfile.write('Log creator: %s<br/>' % form['task_log_creator'].value)
+                self.wfile.write('Date: %s<br/>' % form['task_log_date'].value)
+                self.wfile.write('Worked hours: %s<br/>' % form['task_log_hours'].value)
+                self.wfile.write('Description: %s<br/>' % form['task_log_description'].value)
+            else:
+                self.wfile.write(self.read_html_file('task%s.html'%task_id))
         elif form and form['f'].value == 'all':
             self.wfile.write(self.read_html_file('tasks_all.html'))
         else:
