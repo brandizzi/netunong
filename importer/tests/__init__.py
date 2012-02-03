@@ -4,6 +4,7 @@ from company_parser import CompanyParserTestCase
 from project_parser import ProjectParserTestCase
 from task_parser import TaskParserTestCase
 from user_parser import UserParserTestCase
+from log_parser import LogParserTestCase
 
 from organization import OrganizationSavingTestCase
 from project import ProjectSavingTestCase

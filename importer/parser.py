@@ -185,3 +185,8 @@ def get_users(content):
             'password' : username
         })
     return users
+
+def get_exported_description(working_period):
+    start = working_period.start.strftime(settings.NETUNONG_TIME_FORMAT)
+    end = working_period.end.strftime(settings.NETUNONG_TIME_FORMAT)
+    return "%s - %s: %s" % (start, end, working_period.executed)
