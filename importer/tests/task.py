@@ -3,9 +3,9 @@ import os.path
 from register.models import Task, Employee
 from importer.models import ImportedEntity
 
-from importer.tests.util import ImportedEntityTestCase
+from importer.tests.util import ModelTestCase
 
-class TaskSavingTestCase(ImportedEntityTestCase):
+class TaskSavingTestCase(ModelTestCase):
 
     def test_save_leaf_task(self):
         # Setting up

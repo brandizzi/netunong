@@ -3,9 +3,9 @@ import os.path
 from register.models import Project, Organization
 from importer.models import ImportedEntity
 
-from importer.tests.util import ImportedEntityTestCase
+from importer.tests.util import ModelTestCase
 
-class ProjectSavingTestCase(ImportedEntityTestCase):
+class ProjectSavingTestCase(ModelTestCase):
 
     def test_save_projects(self):
         # needed

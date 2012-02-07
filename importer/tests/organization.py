@@ -3,9 +3,9 @@ import os.path
 from register.models import Organization
 from importer.models import ImportedEntity
 
-from importer.tests.util import ImportedEntityTestCase
+from importer.tests.util import ModelTestCase
 
-class OrganizationSavingTestCase(ImportedEntityTestCase):
+class OrganizationSavingTestCase(ModelTestCase):
 
     def test_save_companies_as_organizations(self):
         companies = [

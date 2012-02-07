@@ -5,9 +5,9 @@ from django.contrib.auth import authenticate
 from register.models import Organization, Employee
 from importer.models import ImportedEntity
 
-from importer.tests.util import ImportedEntityTestCase
+from importer.tests.util import ModelTestCase
 
-class UserSavingTestCase(ImportedEntityTestCase):
+class UserSavingTestCase(ModelTestCase):
 
     def test_save_users(self):
         # needed

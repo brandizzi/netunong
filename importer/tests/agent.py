@@ -6,11 +6,11 @@ from register.models import Organization, Project, Task, Employee
 from importer.agent import Importer, ORGANIZATIONS, EMPLOYEES, PROJECTS, TASKS
 import importer.agent as agent
 
-from importer.tests.util import NetunomockTestCase, ImportedEntityTestCase
+from importer.tests.util import NetunomockTestCase, ModelTestCase
 
 from netunomock.server import ROOT_URL
 
-class ImporterTestCase(NetunomockTestCase, ImportedEntityTestCase):
+class ImporterTestCase(NetunomockTestCase, ModelTestCase):
 
     def test_import_companies(self):
         self.assertEqual(0, len(ImportedEntity.objects.all()))
@@ -222,9 +222,9 @@ class ImporterTestCase(NetunomockTestCase, ImportedEntityTestCase):
 
     def setUp(self):
         NetunomockTestCase.setUp(self)
-        ImportedEntityTestCase.setUp(self)
+        ModelTestCase.setUp(self)
         
     def tearDown(self):
         NetunomockTestCase.tearDown(self)
-        ImportedEntityTestCase.tearDown(self)
+        ModelTestCase.tearDown(self)
 

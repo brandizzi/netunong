@@ -19,7 +19,7 @@ class ParserTestCase(unittest.TestCase):
     def get_sample_content(self, sample_file):
         return open(os.path.join(SAMPLES_DIR, sample_file)).read()
 
-class ImportedEntityTestCase(unittest.TestCase):
+class ModelTestCase(unittest.TestCase):
     def __init__(self, s):
         unittest.TestCase.__init__(self, s)
 
