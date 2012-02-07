@@ -7,10 +7,14 @@ import unittest2 as unittest
 
 from django.contrib.auth.models import User
 
-from importer.models import ImportedEntity
+from importer.models import ImportedEntity, ExportedLog
 from register.models import Organization, Project, Task, Employee
 
 SAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'samples')
+MODELS = [
+        ExportedLog, ImportedEntity, Organization, 
+        Project, Task, Employee, User
+]
 
 class ParserTestCase(unittest.TestCase):
     def __init__(self, s):
@@ -24,7 +28,8 @@ class ModelTestCase(unittest.TestCase):
         unittest.TestCase.__init__(self, s)
 
     def setUp(self):
-        for model in [ImportedEntity, Organization, Project, Task, Employee, User]:
+        
+        for model in MODELS:
             model.objects.all().delete()
 
 class NetunomockTestCase(unittest.TestCase):

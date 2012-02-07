@@ -1,6 +1,6 @@
 from django.db import models
 
-from register.models import Organization, Project, Task, Employee
+from register.models import Organization, Project, Task, Employee, WorkingPeriod
 from register.utils import split_name
 
 class ImportedEntity(models.Model):
@@ -101,6 +101,9 @@ class ImportedEntity(models.Model):
                     category='U', original_id=user_dict['original_id'],
                     new_id=employee.id)
             entity.save()
+
+class ExportedLog(models.Model):
+    working_period = models.OneToOneField(WorkingPeriod)
 
 def get_original_ids_from_dicts(dicts):
     return (d['original_id'] for d in dicts)
