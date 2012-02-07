@@ -13,4 +13,4 @@ from user import UserSavingTestCase
 
 from crawler import CrawlerTestCase
 from agent import ImporterTestCase
-
+from exported_log import ExportedLogTestCase

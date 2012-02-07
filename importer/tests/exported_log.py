@@ -1,16 +1,15 @@
 import os.path
 from datetime import datetime
 
-import settings
 
 from register.models import WorkingPeriod
 from register.tests.test_utilities import \
         get_organization_project_task, get_employee
 
-import importer.models as ExportedLog
-from importer.tests.util import ParserTestCase
+from importer.models import ExportedLog
+from importer.tests.util import ModelTestCase
 
-class ExportedLogTestCase(ParserTestCase):
+class ExportedLogTestCase(ModelTestCase):
 
     def test_is_exported(self):
         org, _, task = get_organization_project_task()
@@ -23,5 +22,10 @@ class ExportedLogTestCase(ParserTestCase):
             executed="Created function to describe exported WP",
             executed_task=task,
             start= start, end=end)
+        wp.save()
+        self.assertFalse(ExportedLog.is_exported(wp))
+        el = ExportedLog(working_period=wp)
+        el.save()
+        self.assertTrue(ExportedLog.is_exported(wp))
         
         

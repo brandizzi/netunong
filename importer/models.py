@@ -105,6 +105,11 @@ class ImportedEntity(models.Model):
 class ExportedLog(models.Model):
     working_period = models.OneToOneField(WorkingPeriod)
 
+    @staticmethod
+    def is_exported(working_period):
+        number = ExportedLog.objects.filter(working_period=working_period).count()
+        return number == 1
+
 def get_original_ids_from_dicts(dicts):
     return (d['original_id'] for d in dicts)
 
