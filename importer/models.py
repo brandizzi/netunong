@@ -102,10 +102,6 @@ class ImportedEntity(models.Model):
                     new_id=employee.id)
             entity.save()
 
-
-class SavingParentTask(Exception):
-    pass
-
 def get_original_ids_from_dicts(dicts):
     return (d['original_id'] for d in dicts)
 

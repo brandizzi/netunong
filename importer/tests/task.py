@@ -1,7 +1,7 @@
 import os.path
 
 from register.models import Task, Employee
-from importer.models import ImportedEntity, SavingParentTask
+from importer.models import ImportedEntity
 
 from importer.tests.util import ImportedEntityTestCase
 
