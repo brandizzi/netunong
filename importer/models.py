@@ -3,23 +3,6 @@ from django.db import models
 from register.models import Organization, Project, Task, Employee
 from register.utils import split_name
 
-def get_original_ids_from_dicts(dicts):
-    return (d['original_id'] for d in dicts)
-
-def get_original_ids_from_entities(entities):
-    return (entity.original_id for entity in entities)
-
-def get_original_ids_from_already_imported(category, dicts):
-    ids = get_original_ids_from_dicts(dicts)
-    already_imported = ImportedEntity.objects.filter(category=category,
-            original_id__in=ids)
-    return get_original_ids_from_entities(already_imported)
-
-def get_not_imported_ones(category, dicts):
-    already_imported_ids = get_original_ids_from_already_imported(category,
-                dicts)
-    return [d for d in dicts if d['original_id'] not in already_imported_ids]
-
 class ImportedEntity(models.Model):
     CATEGORIES = (
         ('C', 'company'),
@@ -122,3 +105,20 @@ class ImportedEntity(models.Model):
 
 class SavingParentTask(Exception):
     pass
+
+def get_original_ids_from_dicts(dicts):
+    return (d['original_id'] for d in dicts)
+
+def get_original_ids_from_entities(entities):
+    return (entity.original_id for entity in entities)
+
+def get_original_ids_from_already_imported(category, dicts):
+    ids = get_original_ids_from_dicts(dicts)
+    already_imported = ImportedEntity.objects.filter(category=category,
+            original_id__in=ids)
+    return get_original_ids_from_entities(already_imported)
+
+def get_not_imported_ones(category, dicts):
+    already_imported_ids = get_original_ids_from_already_imported(category,
+                dicts)
+    return [d for d in dicts if d['original_id'] not in already_imported_ids]
