@@ -2,7 +2,7 @@ import threading
 
 from importer.models import ImportedEntity
 from importer.parser import get_companies, get_users, get_projects, \
-        get_list_of_partial_tasks, get_task
+        get_list_of_partial_tasks, get_task, get_exported_description
 from importer.crawler import NetunoCrawler
 
 (
@@ -38,8 +38,8 @@ class Importer(object):
                 self.is_running = False             
 
     def sign_in(self):
-        if not self.crawler.logged_in:
-            self.crawler.login(self.username, self.password)
+        self.crawler.login(self.username, self.password)
+
 
     def import_organizations(self):
         self.sign_in()
@@ -82,5 +82,23 @@ class Importer(object):
                 self.import_tasks(task['subtasks_ids'])
         if task_ids is None:
             self.already_done.append(TASKS)
+
+class Exporter(object):
+
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.is_running = False
+
+    def export_logs(self, wps, url, username, password):
+        crawler = NetunoCrawler(url)
+        if not crawler.logged_in:
+            crawler.login(username, password)
+        for wp in wps:
+            task_id = wp.executed_task.id
+            entity = ImportedEntity.objects.get(category='T', new_id=task_id)
+            original_task_id  = entity.original_id
+            crawler.go_to_task_log_registration(original_task_id)
+            crawler.register_log(wp.end, wp.hours, get_exported_description(wp))
+        
 
 importer = Importer('','','')

@@ -6,6 +6,7 @@ from urlparse import urlparse, parse_qs
 
 ADDRESS = (SERVER, PORT) = ('localhost', 32020)
 ROOT_PATH=''
+SHOW_LOGS_PATH = 'showlogs'
 ROOT_URL = 'http://%s:%s/'  % ADDRESS
 HTML_DIR = os.path.join(os.path.dirname(__file__), 'html')
 
@@ -37,7 +38,7 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/html')
         self.end_headers()
 
-        if url.path.endswith('showlogs'):
+        if self.path.endswith(SHOW_LOGS_PATH):
             self.show_logs(logs)
         elif not IndexRequestHandler.logged_in:
             self.wfile.write(self.read_html_file('login.html'))
