@@ -12,5 +12,5 @@ from task import TaskSavingTestCase
 from user import UserSavingTestCase
 
 from crawler import CrawlerTestCase
-from agent import ImporterTestCase
+from agent_importer import ImporterTestCase
 from exported_log import ExportedLogTestCase
