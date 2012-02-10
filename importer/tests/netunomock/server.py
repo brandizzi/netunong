@@ -9,6 +9,14 @@ ROOT_PATH=''
 ROOT_URL = 'http://%s:%s/'  % ADDRESS
 HTML_DIR = os.path.join(os.path.dirname(__file__), 'html')
 
+logs = []
+
+LOGS_MASK = """Task id: %s<br/>
+Log creator: %s<br/>
+Date: %s<br/>
+Worked hours: %s<br/>
+Description: %s<br/>"""
+
 class IndexRequestHandler(BaseHTTPRequestHandler):
 
     logged_in = False
@@ -29,9 +37,9 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/html')
         self.end_headers()
 
-        
-
-        if not IndexRequestHandler.logged_in:
+        if url.path.endswith('showlogs'):
+            self.show_logs(logs)
+        elif not IndexRequestHandler.logged_in:
             self.wfile.write(self.read_html_file('login.html'))
         elif 'logout' in params:
             IndexRequestHandler.logged_in = False
@@ -96,11 +104,15 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
                 template = template.replace('%MOCK_TASK_LOG_DATE%', d)
                 self.wfile.write(template)
             elif form and form['dosql'].value == 'do_updatetask':
-                self.wfile.write('Task id: %s<br/>' % form['task_log_task'].value)
-                self.wfile.write('Log creator: %s<br/>' % form['task_log_creator'].value)
-                self.wfile.write('Date: %s<br/>' % form['task_log_date'].value)
-                self.wfile.write('Worked hours: %s<br/>' % form['task_log_hours'].value)
-                self.wfile.write('Description: %s<br/>' % form['task_log_description'].value)
+                log = (
+                        form['task_log_task'].value,
+                        form['task_log_creator'].value,
+                        form['task_log_date'].value,
+                        form['task_log_hours'].value,
+                        form['task_log_description'].value,
+                )
+                logs.append(log)
+                self.show_logs(logs)
             else:
                 self.wfile.write(self.read_html_file('task%s.html'%task_id))
         elif form and form['f'].value == 'all':
@@ -115,6 +127,10 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.read_html_file('index.html'))
         else:
             self.wfile.write(self.read_html_file('login_falho.html'))
+
+    def show_logs(self, logs):
+        for log in logs:
+            self.wfile.write(LOGS_MASK % log)
 
     def log_message(self, format, *args):
         return
