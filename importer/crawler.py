@@ -17,16 +17,19 @@ class NetunoCrawler(object):
         self.content = ''
 
     def login(self, username, password):
-        self.browser.open(self.url)
-        self.browser.select_form(name="loginform")
-        self.browser['username'] = username
-        self.browser['password'] = password
-        response = self.browser.submit()
-        self.content = response.read().decode('utf-8')
-        if greeting() in self.content:
+        response = self.browser.open(self.url)
+        try:
+            self.browser.select_form(name="loginform")
+            self.browser['username'] = username
+            self.browser['password'] = password
+            response = self.browser.submit()
+            self.content = response.read().decode('utf-8')
+            if greeting() in self.content:
+                self.logged_in = True
+            else:
+                raise AuthenticationException("Authentication failed")
+        except mechanize.FormNotFoundError:
             self.logged_in = True
-        else:
-            raise AuthenticationException("Authentication failed")
 
     def logout(self):
         response = self.browser.open(self.url+'/index.php?logout=-1')
