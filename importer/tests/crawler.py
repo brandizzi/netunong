@@ -125,7 +125,7 @@ class CrawlerTestCase(NetunomockTestCase):
 
         crawler.go_to_all_tasks()
         tasks = get_list_of_partial_tasks(crawler.content)
-        self.assertEquals(58, len(tasks))
+        self.assertEquals(5, len(tasks))
 
         task = tasks[0]
         self.assertEqual(task['type'], 'partial')
@@ -133,7 +133,7 @@ class CrawlerTestCase(NetunomockTestCase):
 
         task = tasks[-1]
         self.assertEqual(task['type'], 'partial')
-        self.assertEqual(task['original_id'], 2114)
+        self.assertEqual(task['original_id'], 1371)
 
     def test_select_specific_task(self):
         crawler = NetunoCrawler(ROOT_URL)
@@ -142,7 +142,7 @@ class CrawlerTestCase(NetunomockTestCase):
 
         crawler.go_to_all_tasks()
         tasks = get_list_of_partial_tasks(crawler.content)
-        self.assertEquals(58, len(tasks))
+        self.assertEquals(5, len(tasks))
 
         partial_task = tasks[0]
         crawler.go_to_task(partial_task['original_id'])
@@ -152,7 +152,7 @@ class CrawlerTestCase(NetunomockTestCase):
         self.assertEqual(task['project_id'], 118)
         self.assertEqual(task['name'], u'Reuniões')
 
-        partial_task = tasks[7]
+        partial_task = tasks[2]
         crawler.go_to_task(partial_task['original_id'])
         task = get_task(crawler.content)
         self.assertEqual(task['type'], u'parent')
@@ -165,9 +165,9 @@ class CrawlerTestCase(NetunomockTestCase):
         crawler.go_to_task(partial_task['original_id'])
         task = get_task(crawler.content)
         self.assertEqual(task['type'], u'leaf')
-        self.assertEqual(task['original_id'], 2114)
-        self.assertEqual(task['project_id'], 55)
-        self.assertEqual(task['name'], u'Release 0.9')
+        self.assertEqual(task['original_id'], 1371)
+        self.assertEqual(task['project_id'], 77)
+        self.assertEqual(task['name'], u'Desenvolvimento')
 
     def test_access_task_new_log(self):
         crawler = NetunoCrawler(ROOT_URL)

@@ -34,17 +34,6 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertEquals(80, len(ImportedEntity.objects.filter(category='U')))
         self.assertEqual(80, len(Employee.objects.all()))
 
-    def test_import_companies_users(self):
-        self.assertEqual(0, len(ImportedEntity.objects.all()))
-        self.assertEqual(0, len(Employee.objects.all()))
-        
-        importer = Importer(ROOT_URL, 'adam', 'senha')
-        importer.import_organizations()
-        importer.import_employees()
-        
-        self.assertEqual(43+80, len(ImportedEntity.objects.all()))
-        self.assertEquals(80, len(ImportedEntity.objects.filter(category='U')))
-        self.assertEqual(80, len(Employee.objects.all()))
 
     def test_import_companies_projects(self):
         self.assertEqual(0, len(ImportedEntity.objects.all()))
@@ -70,8 +59,8 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
         importer.import_projects()
         importer.import_tasks()
 
-        self.assertEquals(162, len(ImportedEntity.objects.filter(category='T')))
-        self.assertEqual(162, len(Task.objects.all()))
+        self.assertEquals(8, len(ImportedEntity.objects.filter(category='T')))
+        self.assertEqual(8, len(Task.objects.all()))
 
     def test_give_feedback(self):
         self.assertEqual(0, len(ImportedEntity.objects.all()))
@@ -110,8 +99,8 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertEqual(80, len(Employee.objects.all()))
         self.assertEquals(104, len(ImportedEntity.objects.filter(category='P')))
         self.assertEqual(104, len(Project.objects.all()))
-        self.assertEquals(162, len(ImportedEntity.objects.filter(category='T')))
-        self.assertEqual(162, len(Task.objects.all()))
+        self.assertEquals(8, len(ImportedEntity.objects.filter(category='T')))
+        self.assertEqual(8, len(Task.objects.all()))
 
     def test_import_all_accepts_url_username_password(self):
         self.assertEqual(0, len(ImportedEntity.objects.all()))
@@ -132,8 +121,8 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertEqual(80, len(Employee.objects.all()))
         self.assertEquals(104, len(ImportedEntity.objects.filter(category='P')))
         self.assertEqual(104, len(Project.objects.all()))
-        self.assertEquals(162, len(ImportedEntity.objects.filter(category='T')))
-        self.assertEqual(162, len(Task.objects.all()))
+        self.assertEquals(8, len(ImportedEntity.objects.filter(category='T')))
+        self.assertEqual(8, len(Task.objects.all()))
 
     def test_import_all_reports_importer_is_running(self):
         self.assertEqual(0, len(ImportedEntity.objects.all()))
@@ -161,8 +150,8 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertEqual(80, len(Employee.objects.all()))
         self.assertEquals(104, len(ImportedEntity.objects.filter(category='P')))
         self.assertEqual(104, len(Project.objects.all()))
-        self.assertEquals(162, len(ImportedEntity.objects.filter(category='T')))
-        self.assertEqual(162, len(Task.objects.all()))
+        self.assertEquals(8, len(ImportedEntity.objects.filter(category='T')))
+        self.assertEqual(8, len(Task.objects.all()))
 
     def test_import_all_reports_importer_is_running_and_block_others(self):
         self.assertEqual(0, len(ImportedEntity.objects.all()))
@@ -197,8 +186,8 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertEqual(80, len(Employee.objects.all()))
         self.assertEquals(104, len(ImportedEntity.objects.filter(category='P')))
         self.assertEqual(104, len(Project.objects.all()))
-        self.assertEquals(162, len(ImportedEntity.objects.filter(category='T')))
-        self.assertEqual(162, len(Task.objects.all()))
+        self.assertEquals(8, len(ImportedEntity.objects.filter(category='T')))
+        self.assertEqual(8, len(Task.objects.all()))
 
 
     def test_has_a_singleton_importer(self):
@@ -217,8 +206,8 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertEqual(80, len(Employee.objects.all()))
         self.assertEquals(104, len(ImportedEntity.objects.filter(category='P')))
         self.assertEqual(104, len(Project.objects.all()))
-        self.assertEquals(162, len(ImportedEntity.objects.filter(category='T')))
-        self.assertEqual(162, len(Task.objects.all()))
+        self.assertEquals(8, len(ImportedEntity.objects.filter(category='T')))
+        self.assertEqual(8, len(Task.objects.all()))
 
     def setUp(self):
         NetunomockTestCase.setUp(self)
