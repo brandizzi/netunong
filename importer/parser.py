@@ -187,6 +187,8 @@ def get_users(content):
     return users
 
 def get_exported_description(working_period):
+    if not working_period.start or not working_period.end:
+        return "INCOMPLETE"
     start = working_period.start.strftime(settings.NETUNONG_TIME_FORMAT)
     end = working_period.end.strftime(settings.NETUNONG_TIME_FORMAT)
     return "%s - %s: %s" % (start, end, working_period.executed)

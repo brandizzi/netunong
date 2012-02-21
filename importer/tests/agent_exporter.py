@@ -141,6 +141,70 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertFalse('Worked hours: %s' % wp2.hours in content)
         self.assertFalse('Description: %s' % get_exported_description(wp2) in content)  
 
+    def test_does_not_export_incomplete(self): 
+        emp, task, start, end = self.get_depencencies()
+
+        wp1 = WorkingPeriod(employee=emp,
+            intended="Write a function for creating better descriptions",
+            intended_task=task,
+            executed="Created function to describe exported WP",
+            executed_task=task,
+            start= start, end=end)
+        wp1.save()
+
+        wp2 = WorkingPeriod(employee=emp,
+            intended="Export stuff",
+            intended_task=task,
+            executed="Exporting WPs to old netuno",
+            executed_task=task,
+            start=start) # No end
+        wp2.save()
+
+        wp3 = WorkingPeriod(employee=emp,
+            intended="Thinking about future",
+            intended_task=task,
+            #executed="Exporting WPs to old netuno", # No final message
+            executed_task=task,
+            start=start, end=end)
+        wp3.save()
+
+        wp4 = WorkingPeriod(employee=emp,
+            intended="PLanning how to spend money",
+            intended_task=task,
+            executed="Exporting WPs to old netuno",
+            # executed_task=task, # No updated task
+            start=start, end=end)
+        wp4.save()
+
+        wp5 = WorkingPeriod(employee=emp,
+            intended="Write a function for creating better descriptions",
+            intended_task=task,
+            executed="Closing WP",
+            executed_task=task,
+            start= start, end=end)
+        wp5.save()
+
+        exporter = agents.Exporter()
+        exporter.export_logs([wp1, wp2, wp3, wp4, wp5], ROOT_URL, 'adam', 'senha')
+        
+        content = self.get_list_of_submitted_logs()
+        self.assertTrue(('Task id: 2376') in content)
+        self.assertTrue('Log creator: 1' in content)
+        self.assertTrue(('Date: %s' % start.strftime("%Y%m%d")) in content)
+        self.assertTrue('Worked hours: %s' % wp1.hours in content)
+
+        self.assertTrue('Description: %s' % get_exported_description(wp1) in content)     
+        self.assertFalse('Description: %s' % get_exported_description(wp2) in content)     
+        self.assertFalse('Description: %s' % get_exported_description(wp3) in content)     
+        self.assertFalse('Description: %s' % get_exported_description(wp4) in content)     
+        self.assertTrue('Description: %s' % get_exported_description(wp5) in content)     
+
+        self.assertTrue(ExportedLog.is_exported(wp1))
+        self.assertFalse(ExportedLog.is_exported(wp2))
+        self.assertFalse(ExportedLog.is_exported(wp3))
+        self.assertFalse(ExportedLog.is_exported(wp4))
+        self.assertTrue(ExportedLog.is_exported(wp5))
+
     def setUp(self):
         NetunomockTestCase.setUp(self)
         ModelTestCase.setUp(self)

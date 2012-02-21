@@ -36,6 +36,39 @@ class WorkingPeriodTestCase(ModelTestCase):
                 start= datetime.now())
         self.assertFalse(wp2.is_complete())         
 
+    def test_is_complete_requires_executed(self):
+        wp1 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=self.task,
+                executed="made the employe have it",
+                executed_task=self.task,
+                start= datetime.now(), end=datetime.now())
+        self.assertTrue(wp1.is_complete())
+        wp2 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=self.task,
+                #executed="made the employe have it",
+                executed_task=self.task,
+                start= datetime.now(), end=datetime.now())
+        self.assertFalse(wp2.is_complete())         
+
+
+    def test_is_complete_requires_executed_task(self):
+        wp1 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=self.task,
+                executed="made the employe have it",
+                executed_task=self.task,
+                start= datetime.now(), end=datetime.now())
+        self.assertTrue(wp1.is_complete())
+        wp2 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=self.task,
+                executed="made the employe have it",
+                #executed_task=self.task,
+                start= datetime.now(), end=datetime.now())
+        self.assertFalse(wp2.is_complete())         
+
     def test_last_activity_last_task(self):
         wp1 = WorkingPeriod(employee=self.employee,
                 intended="test if employee has working period",

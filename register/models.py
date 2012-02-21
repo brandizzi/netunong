@@ -268,8 +268,8 @@ class WorkingPeriod(models.Model):
 
     def is_complete(self):
         """
-        Returns True if the period is complete --- that is, its end field is
-        filled; returns False otherwise.
+        Returns True if the period is complete --- that is, all of its executed
+        fields are filled.
 
         >>> import tests.test_utilities as tu
         >>> org, _, task = tu.get_organization_project_task()
@@ -291,7 +291,7 @@ class WorkingPeriod(models.Model):
         Cleanup:
         >>> tu.clear_database()
         """
-        return self.end is not None
+        return bool(self.end and self.executed and self.executed_task)
 
     @property
     def last_activity(self):
