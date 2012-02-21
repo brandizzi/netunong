@@ -19,13 +19,7 @@ from netunomock.server import ROOT_URL, SHOW_LOGS_PATH
 class ExporterTestCase(NetunomockTestCase, ModelTestCase):
 
     def test_export(self): 
-        emp = get_employee(get_organization())    
-        agents.importer.import_all(ROOT_URL, 'adam', 'senha')
-
-        e = ImportedEntity.objects.get(category='T', original_id=2376)
-        task = Task.objects.get(id=e.new_id)
-        start = datetime(2011, 12, 31, 8, 0)
-        end = datetime(2011, 12, 31, 12, 0)
+        emp, task, start, end = self.get_depencencies()
 
         wp = WorkingPeriod(employee=emp,
             intended="Write a function for creating better descriptions",
@@ -38,9 +32,7 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         exporter = agents.Exporter()
         exporter.export_logs([wp], ROOT_URL, 'adam', 'senha')
         
-        browser = mechanize.Browser()
-        response = browser.open(ROOT_URL + SHOW_LOGS_PATH)
-        content = response.read().decode('utf-8')
+        content = self.get_list_of_submitted_logs()
         self.assertTrue(('Task id: 2376') in content)
         self.assertTrue('Log creator: 1' in content)
         self.assertTrue(('Date: %s' % start.strftime("%Y%m%d")) in content)
@@ -48,13 +40,7 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertTrue('Description: %s' % get_exported_description(wp) in content)
 
     def test_export_two_wps(self): 
-        emp = get_employee(get_organization())    
-        agents.importer.import_all(ROOT_URL, 'adam', 'senha')
-
-        e = ImportedEntity.objects.get(category='T', original_id=2376)
-        task = Task.objects.get(id=e.new_id)
-        start = datetime(2011, 12, 31, 8, 0)
-        end = datetime(2011, 12, 31, 12, 0)
+        emp, task, start, end = self.get_depencencies()
 
         wp1 = WorkingPeriod(employee=emp,
             intended="Write a function for creating better descriptions",
@@ -80,9 +66,7 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         exporter = agents.Exporter()
         exporter.export_logs([wp1, wp2], ROOT_URL, 'adam', 'senha')
         
-        browser = mechanize.Browser()
-        response = browser.open(ROOT_URL + SHOW_LOGS_PATH)
-        content = response.read().decode('utf-8')
+        content = self.get_list_of_submitted_logs()
         self.assertTrue(('Task id: 2376') in content)
         self.assertTrue('Log creator: 1' in content)
         self.assertTrue(('Date: %s' % start.strftime("%Y%m%d")) in content)
@@ -102,3 +86,17 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         NetunomockTestCase.tearDown(self)
         ModelTestCase.tearDown(self)
 
+    def get_depencencies(self):
+        emp = get_employee(get_organization())    
+        agents.importer.import_all(ROOT_URL, 'adam', 'senha')
+
+        e = ImportedEntity.objects.get(category='T', original_id=2376)
+        task = Task.objects.get(id=e.new_id)
+        start = datetime(2011, 12, 31, 8, 0)
+        end = datetime(2011, 12, 31, 12, 0)
+        return emp, task, start, end
+
+    def get_list_of_submitted_logs(self):
+        browser = mechanize.Browser()
+        response = browser.open(ROOT_URL + SHOW_LOGS_PATH)
+        return response.read().decode('utf-8')
