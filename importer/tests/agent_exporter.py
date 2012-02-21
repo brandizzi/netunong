@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 import mechanize
 
-from importer.models import ImportedEntity
+from importer.models import ImportedEntity, ExportedLog
 from importer.parser import get_exported_description
 from register.models import Task, WorkingPeriod
 import importer.agent as agents
@@ -77,6 +77,31 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertTrue(('Date: %s' % tomorrow_start.strftime("%Y%m%d")) in content)
         self.assertTrue('Worked hours: %s' % wp2.hours in content)
         self.assertTrue('Description: %s' % get_exported_description(wp2) in content)    
+
+    def test_export_mark_as_exported(self): 
+        emp, task, start, end = self.get_depencencies()
+
+        wp = WorkingPeriod(employee=emp,
+            intended="Write a function for creating better descriptions",
+            intended_task=task,
+            executed="Created function to describe exported WP",
+            executed_task=task,
+            start= start, end=end)
+        wp.save()
+
+        self.assertFalse(ExportedLog.is_exported(wp))
+
+        exporter = agents.Exporter()
+        exporter.export_logs([wp], ROOT_URL, 'adam', 'senha')
+        
+        content = self.get_list_of_submitted_logs()
+        self.assertTrue(('Task id: 2376') in content)
+        self.assertTrue('Log creator: 1' in content)
+        self.assertTrue(('Date: %s' % start.strftime("%Y%m%d")) in content)
+        self.assertTrue('Worked hours: %s' % wp.hours in content)
+        self.assertTrue('Description: %s' % get_exported_description(wp) in content)
+
+        self.assertTrue(ExportedLog.is_exported(wp))
 
     def setUp(self):
         NetunomockTestCase.setUp(self)

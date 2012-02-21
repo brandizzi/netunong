@@ -1,6 +1,6 @@
 import threading
 
-from importer.models import ImportedEntity
+from importer.models import ImportedEntity, ExportedLog
 from importer.parser import get_companies, get_users, get_projects, \
         get_list_of_partial_tasks, get_task, get_exported_description
 from importer.crawler import NetunoCrawler
@@ -99,6 +99,7 @@ class Exporter(object):
             original_task_id  = entity.original_id
             crawler.go_to_task_log_registration(original_task_id)
             crawler.register_log(wp.end, wp.hours, get_exported_description(wp))
-        
+            log = ExportedLog(working_period=wp)
+            log.save()
 
 importer = Importer('','','')
