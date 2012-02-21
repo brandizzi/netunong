@@ -93,7 +93,8 @@ class Exporter(object):
         crawler = NetunoCrawler(url)
         if not crawler.logged_in:
             crawler.login(username, password)
-        for wp in wps:
+        exportables = (wp for wp in wps if not ExportedLog.is_exported(wp))
+        for wp in exportables:
             task_id = wp.executed_task.id
             entity = ImportedEntity.objects.get(category='T', new_id=task_id)
             original_task_id  = entity.original_id
