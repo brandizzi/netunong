@@ -13,7 +13,7 @@ from register.models import Employee, Task, WorkingPeriod
 def get_index(request):
     employee = request.user.get_profile()
     working_period = employee.last_working_period
-    if working_period.is_complete():
+    if working_period.is_closed():
         template = loader.get_template("register/open_period.html")
     else:
         template = loader.get_template("register/close_period.html")
