@@ -50,8 +50,7 @@ class WorkingPeriodTestCase(ModelTestCase):
                 #executed="made the employe have it",
                 executed_task=self.task,
                 start= datetime.now(), end=datetime.now())
-        self.assertFalse(wp2.is_complete())         
-
+        self.assertFalse(wp2.is_complete())             
 
     def test_is_complete_requires_executed_task(self):
         wp1 = WorkingPeriod(employee=self.employee,
@@ -68,6 +67,52 @@ class WorkingPeriodTestCase(ModelTestCase):
                 #executed_task=self.task,
                 start= datetime.now(), end=datetime.now())
         self.assertFalse(wp2.is_complete())         
+
+    def test_is_closed(self):
+        wp1 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=self.task,
+                executed="made the employe have it",
+                executed_task=self.task,
+                start= datetime.now(), end=datetime.now())
+        self.assertTrue(wp1.is_closed())
+        wp2 = WorkingPeriod(intended_task=self.task,
+                employee=self.employee,
+                intended="test if employee has working period again",
+                start= datetime.now())
+        self.assertFalse(wp2.is_closed())         
+
+    def test_is_closed_does_not_require_executed(self):
+        wp1 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=self.task,
+                executed="made the employe have it",
+                executed_task=self.task,
+                start= datetime.now(), end=datetime.now())
+        self.assertTrue(wp1.is_closed())
+        wp2 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=self.task,
+                #executed="made the employe have it",
+                executed_task=self.task,
+                start= datetime.now(), end=datetime.now())
+        self.assertTrue(wp2.is_closed())             
+
+    def test_is_closed_does_not_require_executed_task(self):
+        wp1 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=self.task,
+                executed="made the employe have it",
+                executed_task=self.task,
+                start= datetime.now(), end=datetime.now())
+        self.assertTrue(wp1.is_closed())
+        wp2 = WorkingPeriod(employee=self.employee,
+                intended="test if employee has working period",
+                intended_task=self.task,
+                executed="made the employe have it",
+                #executed_task=self.task,
+                start= datetime.now(), end=datetime.now())
+        self.assertTrue(wp2.is_closed())         
 
     def test_last_activity_last_task(self):
         wp1 = WorkingPeriod(employee=self.employee,

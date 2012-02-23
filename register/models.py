@@ -287,11 +287,50 @@ class WorkingPeriod(models.Model):
         >>> wp2.save()
         >>> wp2.is_complete()
         False
+        >>> wp3 = WorkingPeriod(intended_task=task, employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start= datetime.now(), end=datetime.now())
+        >>> wp2.save()
+        >>> wp2.is_complete()
+        False
+        
+        Cleanup:
+        >>> tu.clear_database()
+        """
+        return None not in (self.end, self.executed, self.executed_task)
+
+    def is_closed(self):
+        """
+        Returns True if the period is closed --- that is, the end date is set.
+
+        >>> import tests.test_utilities as tu
+        >>> org, _, task = tu.get_organization_project_task()
+        >>> employee = tu.get_employee(org)
+        >>> wp1 = WorkingPeriod(employee=employee,
+        ...     intended="test if employee has working period", intended_task=task, 
+        ...     executed="made the employee have it", executed_task=task, 
+        ...     start= datetime.now(), end=datetime.now())
+        >>> wp1.save()
+        >>> wp1.is_closed()
+        True
+        >>> wp2 = WorkingPeriod(intended_task=task, employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start= datetime.now())
+        >>> wp2.save()
+        >>> wp2.is_closed()
+        False
+        >>> wp3 = WorkingPeriod(intended_task=task, employee=employee,
+        ...     intended="test if employee has working period again",
+        ...     start= datetime.now(), end=datetime.now())
+        >>> wp3.save()
+        >>> wp3.is_closed()
+        True
 
         Cleanup:
         >>> tu.clear_database()
         """
-        return bool(self.end and self.executed and self.executed_task)
+        return self.end is not None
+
 
     @property
     def last_activity(self):
