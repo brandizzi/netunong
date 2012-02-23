@@ -10,7 +10,7 @@ submit
 run 'employee = Employee.objects.all()[0]'
 run 'task1 = Task.objects.get(id=${taskid1})'
 run 'wp = employee.last_working_period'
-run 'assert not wp.is_complete()'
+run 'assert not wp.is_closed()'
 run 'assert wp.intended_task == task1'
 
 # Validate result

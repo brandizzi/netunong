@@ -14,7 +14,7 @@ find '<input type="hidden" name="operation" value="open" />'
 # Working period should be closed
 run 'employee = Employee.objects.all()[0]'
 run 'wp = employee.last_working_period'
-run 'assert wp.is_complete()'
+run 'assert wp.is_closed()'
 # No executed task
 run 'assert wp.executed_task == None'
 

@@ -1,5 +1,6 @@
+importer-cleanup
 strict-html
-index-setup
+login-setup
 login-ok
 importer-go
 importer-import

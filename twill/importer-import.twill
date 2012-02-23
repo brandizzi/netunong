@@ -13,7 +13,7 @@ find '<div class="info'
 
 extend_with 'time'
 
-run 'sleep(40)'
+run 'sleep(12)'
 
 go 'http://localhost:32198/netunong/importer/'
 
@@ -24,9 +24,10 @@ find '<input .*name="password"'
 extend_with 'importer.models'
 
 # Everything is imported
-run 'assert ImportedEntity.objects.count() == 389'
-run 'assert Organization.objects.count() == 43' 
-run 'assert Employee.objects.count() == 80'
+run 'print Organization.objects.count()' 
+run 'assert ImportedEntity.objects.count() == 235'
+run 'assert Organization.objects.count() == 44' 
+run 'assert Employee.objects.count() == 81'
 run 'assert Project.objects.count() == 104'
-run 'assert Task.objects.count() == 162' 
+run 'assert Task.objects.count() == 8' 
 

@@ -18,6 +18,6 @@ find '<input type="hidden" name="operation" value="open" />'
 run 'employee = Employee.objects.all()[0]'
 run 'task2 = Task.objects.get(id=${taskid2})'
 run 'wp = employee.last_working_period'
-run 'assert wp.is_complete()'
+run 'assert wp.is_closed()'
 run 'assert wp.executed_task == task2'
 
