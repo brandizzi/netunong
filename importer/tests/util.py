@@ -16,6 +16,10 @@ MODELS = [
         Project, Task, Employee, User
 ]
 
+def clear_database():
+    for model in MODELS:
+        model.objects.all().delete()
+
 class ParserTestCase(unittest.TestCase):
     def __init__(self, s):
         unittest.TestCase.__init__(self, s)
@@ -28,9 +32,8 @@ class ModelTestCase(unittest.TestCase):
         unittest.TestCase.__init__(self, s)
 
     def setUp(self):
+        clear_database()
         
-        for model in MODELS:
-            model.objects.all().delete()
 
 class NetunomockTestCase(unittest.TestCase):
     def __init__(self, s):
