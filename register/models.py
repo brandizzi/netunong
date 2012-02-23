@@ -657,5 +657,5 @@ class WorkingPeriod(models.Model):
 # Represents the null working period. Better than verifying if the working
 # period is None
 WorkingPeriod.NONE = WorkingPeriod()
-WorkingPeriod.NONE.is_complete = lambda : True
+WorkingPeriod.NONE.is_complete = WorkingPeriod.NONE.is_closed = lambda : True
 
