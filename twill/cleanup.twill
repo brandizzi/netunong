@@ -1,4 +1,4 @@
 # Cleans the database
-extend_with 'register.tests.test_utilities'
+extend_with 'importer.tests.util'
 run 'clear_database()'
 

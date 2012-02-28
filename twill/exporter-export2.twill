@@ -1,0 +1,44 @@
+go http://localhost:32198/netunong/login
+code 200
+
+fv 1 username alegomes
+fv 1 password alegomes
+submit
+code 200
+
+find '<a .*href="/netunong/exporter/"' 
+follow exporter
+code 200
+
+fv 1 netuno-address 'http://localhost:32020/'
+fv 1 username adam
+fv 1 password senha
+submit
+
+code 200
+
+find '<input .*name="netuno-address"'
+find '<input .*name="username"'
+find '<input .*name="password"'
+
+extend_with 'register.models'
+extend_with 'importer.parser'
+run 'e = Employee.objects.get(id=22)'
+run 'wp = WorkingPeriod.objects.get(employee=e)'
+
+# First task exported
+go http://localhost:32020/showlogs
+find 'Task id: 220'
+find 'Log creator: 1'
+find 'Date: ${wp.start.strftime("%Y%m%d")}'
+echo 'Description: ${get_exported_description(wp)}'
+find 'Description: ${get_exported_description(wp)}'
+
+# Second task not exported
+run 'e = Employee.objects.get(id=36)'
+run 'wp = WorkingPeriod.objects.get(employee=e)'
+find 'Task id: 1370'
+find 'Description: ${get_exported_description(wp)}'
+
+go http://localhost:32198/netunong/logout
+code 200

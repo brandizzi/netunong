@@ -1,0 +1,38 @@
+follow logout
+code 200
+fv 1 username adam.brandizzi
+fv 1 password adam.brandizzi
+submit
+code 200
+
+fv 1 intention 'Correct listing'
+fv 1 task 5 # Mission listing
+submit
+code 200
+
+fv 1 execution 'Corrected listing; added paging'
+fv 1 task 5 # Mission listing
+submit
+code 200
+
+follow logout
+code 200
+fv 1 username alegomes
+fv 1 password alegomes
+submit
+code 200
+
+fv 1 intention 'Develop something'
+fv 1 task 8 # Development
+submit
+code 200
+
+show
+fv 1 execution 'A meeting'
+fv 1 task 7 # Meeting
+submit
+code 200
+
+follow logout
+code 200
+

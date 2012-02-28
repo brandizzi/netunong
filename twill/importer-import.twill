@@ -12,7 +12,6 @@ notfind '<input .*name="password"'
 find '<div class="info'
 
 extend_with 'time'
-
 run 'sleep(12)'
 
 go 'http://localhost:32198/netunong/importer/'

@@ -1,0 +1,22 @@
+{% extends "model.html" %}
+{% load i18n %}
+
+{% block title %}Netuno NG - Exporter{% endblock %}
+
+{% block customcss %}
+<link rel="stylesheet" type="text/css" href="/static/importer.css" />
+{% endblock %}
+
+{% block content %}
+<form action="." method="POST">
+{% csrf_token %}
+    {% trans 'Old Netuno URL' %}
+    <input name="netuno-address" type="text" /><br />
+    {% trans 'Old Netuno username' %}
+    <input name="username" type="text" /><br />
+    {% trans 'Old Netuno password' %}
+    <input name="password" type="password" /><br />
+    <input  id="submit" name="submit" type="submit"  value="{% trans 'Export' %}" />
+</form>
+{% endblock %}
+
