@@ -10,7 +10,7 @@ class Organization(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     class Admin:
@@ -25,7 +25,7 @@ class Project(models.Model):
     def complete(self):
         self.completed = True
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     class Admin:
@@ -40,7 +40,7 @@ class Task(models.Model):
     def mark_as_done(self):
         self.done = True
 
-    def __str__(self):
+    def __unicode__(self):
         return "%s@%s" % (self.name, self.project.name)
 
     def __cmp__(self, other):
@@ -243,7 +243,7 @@ class Employee(models.Model):
         """
         return self.user.email
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     def __cmp__(self, other):
@@ -640,7 +640,7 @@ class WorkingPeriod(models.Model):
         """
         return self.end.strftime(NETUNONG_TIME_FORMAT) if self.end else ''
 
-    def __str__(self):
+    def __unicode__(self):
         description = self.executed if self.is_complete else self.intended
         started = self.formatted_start_date
         return "WorkingPeriod(%s, %s)"  % (description, started)
