@@ -42,7 +42,8 @@ class NetunomockTestCase(unittest.TestCase):
     def setUp(self):
         self.server = Process(target=run_server)
         self.server.start()
-        sleep(0.5)
+        sleep(1)
 
     def tearDown(self):
         self.server.terminate()
+        sleep(0.2)

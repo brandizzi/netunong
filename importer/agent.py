@@ -1,4 +1,6 @@
 import threading
+import traceback
+from datetime import datetime
 
 from importer.models import ImportedEntity, ExportedLog
 from importer.parser import get_companies, get_users, get_projects, \
@@ -20,8 +22,12 @@ class Importer(object):
         self.password = password
         self.already_done = []
         self.is_running = False
+        t = datetime.now().strftime("%Y%m%d%H%M%S")
+        self.logfile = open('importer.%s.log'% t, 'w')
 
     def import_all(self, url=None, username=None, password=None):
+        t = datetime.now().strftime("%Y%m%d%H%M%S")
+        self.logfile = open('importer.%s.log'% t, 'w')
         if self.is_running: return
         with self.lock:
             self.is_running = True
@@ -35,18 +41,20 @@ class Importer(object):
                 self.import_employees()
                 self.import_tasks()
             finally:
-                self.is_running = False             
+                self.is_running = False
+        self.logfile.close()           
 
     def sign_in(self):
         self.crawler.login(self.username, self.password)
 
 
-    def import_organizations(self):
+    def import_organizations(self): 
         self.sign_in()
         self.crawler.go_to_all_companies()
         companies = get_companies(self.crawler.content)
         ImportedEntity.import_companies_as_organizations(companies)
         self.already_done.append(ORGANIZATIONS)
+        self.logfile.write('Organizations imported')
         
     def import_employees(self):
         self.sign_in()
@@ -56,6 +64,7 @@ class Importer(object):
             users = get_users(self.crawler.content)
             ImportedEntity.import_users_as_employees(users)
         self.already_done.append(EMPLOYEES)
+        self.logfile.write('Employees imported')
 
     def import_projects(self):
         self.sign_in()
@@ -63,6 +72,7 @@ class Importer(object):
         projects = get_projects(self.crawler.content)
         ImportedEntity.import_projects(projects)
         self.already_done.append(PROJECTS)
+        self.logfile.write('Projects imported')
 
     def import_tasks(self, task_ids=None):
         if task_ids is None:
@@ -75,11 +85,20 @@ class Importer(object):
         else:
             partial_task_ids = task_ids
         for task_id in partial_task_ids:
-            self.crawler.go_to_task(task_id)
-            task = get_task(self.crawler.content)
-            ImportedEntity.import_task(task)
-            if task['type'] == 'parent':
-                self.import_tasks(task['subtasks_ids'])
+            self.logfile.write('Importing task (id=%d)\n' % task_id)
+            try:
+                self.crawler.go_to_task(task_id)
+                task = get_task(self.crawler.content)
+                ImportedEntity.import_task(task)
+                if task['type'] == 'parent':
+                    self.import_tasks(task['subtasks_ids'])
+            except Exception as e:
+                self.logfile.write('Task (id=%d) not imported because of error:\n' % task_id)
+                traceback.print_exc(file=self.logfile)
+                self.logfile.write('URL: ' + self.crawler.browser.geturl())
+                self.logfile.write('Content: ' + self.crawler.content)
+            else:
+                self.logfile.write('Task (id=%d) and subtasks imported\n' % task_id)
         if task_ids is None:
             self.already_done.append(TASKS)
 
