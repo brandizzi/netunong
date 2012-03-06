@@ -64,14 +64,14 @@ class NetunoCrawler(object):
         self.content = response.read().decode('utf-8')
 
     def go_to_task(self, task_id):
-        response = self.browser.open(self.url+'?m=tasks&task_id=%s'%task_id)
+        response = self.browser.open(self.url+'?m=tasks&task_id=%s&a=view'%task_id)
         self.content = response.read()
         if is_parent_task(self.content):
             response = self.browser.follow_link(text=PARENT_TAG)
             self.content = response.read()
 
     def go_to_task_log_registration(self, task_id):
-        response = self.browser.open(self.url+'?m=tasks&task_id=%s&tab=1'%task_id)
+        response = self.browser.open(self.url+'?m=tasks&task_id=%s&a=view&tab=1'%task_id)
         self.content = response.read()
         
     def register_log(self, date, hours, description):

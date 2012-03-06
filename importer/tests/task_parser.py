@@ -93,3 +93,10 @@ class TaskParserTestCase(ParserTestCase):
         task_page = self.get_sample_content('supertask-none.html');
         self.assertTrue(parser.is_parent_task(task_page))
 
+    def test_get_task_2056(self):
+        task_page = self.get_sample_content('task2056.html');
+        task = parser.get_task(task_page)
+
+        self.assertEqual(task['type'], 'leaf')
+        self.assertEqual(task['name'], u'Suporte APL Maio')
+        self.assertEqual(task['original_id'], 2056)

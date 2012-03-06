@@ -95,7 +95,7 @@ class IndexRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(self.read_html_file('projects.html'))
 
     def show_tasks(self, params, form=None):
-        if 'task_id' in params:
+        if 'task_id' in params and 'a' in params and params['a'][0]  == 'view':
             task_id = params['task_id'][0]
             if 'tab' in params and params['tab'][0] == '1' and not form:
                 template = self.read_html_file('task-new-log.html')
