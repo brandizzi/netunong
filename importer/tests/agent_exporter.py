@@ -36,7 +36,7 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertTrue(('Task id: 2376') in content)
         self.assertTrue('Log creator: 1' in content)
         self.assertTrue(('Date: %s' % start.strftime("%Y%m%d")) in content)
-        self.assertTrue('Worked hours: %s' % wp.hours in content)
+        self.assertTrue('Worked hours: %s' % wp.total_time in content)
         self.assertTrue('Description: %s' % get_exported_description(wp) in content)
 
     def test_export_two_wps(self): 
@@ -70,12 +70,12 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertTrue(('Task id: 2376') in content)
         self.assertTrue('Log creator: 1' in content)
         self.assertTrue(('Date: %s' % start.strftime("%Y%m%d")) in content)
-        self.assertTrue('Worked hours: %s' % wp1.hours in content)
+        self.assertTrue('Worked hours: %s' % wp1.total_time in content)
         self.assertTrue('Description: %s' % get_exported_description(wp1) in content)     
         self.assertTrue(('Task id: 2376') in content)
         self.assertTrue('Log creator: 1' in content)
         self.assertTrue(('Date: %s' % tomorrow_start.strftime("%Y%m%d")) in content)
-        self.assertTrue('Worked hours: %s' % wp2.hours in content)
+        self.assertTrue('Worked hours: %s' % wp2.total_time in content)
         self.assertTrue('Description: %s' % get_exported_description(wp2) in content)    
 
     def test_export_mark_as_exported(self): 
@@ -98,7 +98,7 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertTrue(('Task id: 2376') in content)
         self.assertTrue('Log creator: 1' in content)
         self.assertTrue(('Date: %s' % start.strftime("%Y%m%d")) in content)
-        self.assertTrue('Worked hours: %s' % wp.hours in content)
+        self.assertTrue('Worked hours: %s' % wp.total_time in content)
         self.assertTrue('Description: %s' % get_exported_description(wp) in content)
 
         self.assertTrue(ExportedLog.is_exported(wp))
@@ -135,10 +135,10 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertTrue(('Task id: 2376') in content)
         self.assertTrue('Log creator: 1' in content)
         self.assertTrue(('Date: %s' % start.strftime("%Y%m%d")) in content)
-        self.assertTrue('Worked hours: %s' % wp1.hours in content)
+        self.assertTrue('Worked hours: %s' % wp1.total_time in content)
         self.assertTrue('Description: %s' % get_exported_description(wp1) in content)     
         self.assertFalse(('Date: %s' % tomorrow_start.strftime("%Y%m%d")) in content)
-        self.assertFalse('Worked hours: %s' % wp2.hours in content)
+        self.assertFalse('Worked hours: %s' % wp2.total_time in content)
         self.assertFalse('Description: %s' % get_exported_description(wp2) in content)  
 
     def test_does_not_export_incomplete(self): 
@@ -191,7 +191,7 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertTrue(('Task id: 2376') in content)
         self.assertTrue('Log creator: 1' in content)
         self.assertTrue(('Date: %s' % start.strftime("%Y%m%d")) in content)
-        self.assertTrue('Worked hours: %s' % wp1.hours in content)
+        self.assertTrue('Worked hours: %s' % wp1.total_time in content)
 
         self.assertTrue('Description: %s' % get_exported_description(wp1) in content)     
         self.assertFalse('Description: %s' % get_exported_description(wp2) in content)     
@@ -204,6 +204,29 @@ class ExporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertFalse(ExportedLog.is_exported(wp3))
         self.assertFalse(ExportedLog.is_exported(wp4))
         self.assertTrue(ExportedLog.is_exported(wp5))
+
+    def test_export_hour_fraction(self): 
+        emp, task, _, _ = self.get_depencencies()
+        start = datetime(2011, 12, 31, 7, 45)
+        end = datetime(2011, 12, 31, 12, 15)
+
+        wp = WorkingPeriod(employee=emp,
+            intended="Write a function for creating better descriptions",
+            intended_task=task,
+            executed="Created function to describe exported WP",
+            executed_task=task,
+            start= start, end=end)
+        wp.save()
+
+        exporter = agents.Exporter()
+        exporter.export_logs([wp], ROOT_URL, 'adam', 'senha')
+        
+        content = self.get_list_of_submitted_logs()
+        self.assertTrue(('Task id: 2376') in content)
+        self.assertTrue('Log creator: 1' in content)
+        self.assertTrue(('Date: %s' % start.strftime("%Y%m%d")) in content)
+        self.assertTrue('Worked hours: 4.5' in content)
+        self.assertTrue('Description: %s' % get_exported_description(wp) in content)
 
     def setUp(self):
         NetunomockTestCase.setUp(self)

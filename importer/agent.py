@@ -121,7 +121,7 @@ class Exporter(object):
             entity = ImportedEntity.objects.get(category='T', new_id=task_id)
             original_task_id  = entity.original_id
             crawler.go_to_task_log_registration(original_task_id)
-            crawler.register_log(wp.end, wp.hours, get_exported_description(wp))
+            crawler.register_log(wp.end, wp.total_time, get_exported_description(wp))
             log = ExportedLog(working_period=wp)
             log.save()
 
