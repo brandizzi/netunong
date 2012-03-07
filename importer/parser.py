@@ -191,4 +191,4 @@ def get_exported_description(working_period):
         return "INCOMPLETE"
     start = working_period.start.strftime(settings.NETUNONG_TIME_FORMAT)
     end = working_period.end.strftime(settings.NETUNONG_TIME_FORMAT)
-    return "%s - %s: %s" % (start, end, working_period.executed)
+    return (u"%s - %s: %s" % (start, end, working_period.executed)).encode('utf-8')

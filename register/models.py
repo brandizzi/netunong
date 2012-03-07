@@ -28,6 +28,9 @@ class Project(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
     class Admin:
         pass
 
@@ -46,6 +49,9 @@ class Task(models.Model):
     def __cmp__(self, other):
         """Required for using TestCase.assertItemsEqual()"""
         return self.id - other.id
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
 
     class Admin:
         pass
@@ -245,6 +251,9 @@ class Employee(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
 
     def __cmp__(self, other):
         return self.id - other.id
@@ -644,6 +653,9 @@ class WorkingPeriod(models.Model):
         description = self.executed if self.is_complete else self.intended
         started = self.formatted_start_date
         return "WorkingPeriod(%s, %s)"  % (description, started)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
 
     def __cmp__(self, other):
         """Required for using TestCase.assertItemsEqual()"""
