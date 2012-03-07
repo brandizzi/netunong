@@ -125,6 +125,7 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertEqual(8, len(Task.objects.all()))
 
     def test_import_all_reports_importer_is_running(self):
+        time.sleep(1)
         self.assertEqual(0, len(ImportedEntity.objects.all()))
         self.assertEqual(0, len(Organization.objects.all()))
         self.assertEqual(0, len(Employee.objects.all()))
@@ -136,6 +137,7 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
 
         thread = threading.Thread(target=importer.import_all)
         thread.start()
+        time.sleep(0.1)
         self.assertTrue(importer.is_running)
         time.sleep(2)
         self.assertTrue(importer.is_running)
@@ -165,6 +167,7 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
 
         thread1 = threading.Thread(target=importer.import_all)
         thread1.start()
+        time.sleep(0.1)
         self.assertTrue(importer.is_running)
         time.sleep(2)
         self.assertTrue(importer.is_running)
@@ -172,6 +175,7 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
         # Tries to run again
         thread2 = threading.Thread(target=importer.import_all)
         thread2.start()
+        time.sleep(0.1)
         self.assertTrue(importer.is_running)
         time.sleep(0)
         self.assertFalse(thread2.is_alive())
