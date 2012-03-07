@@ -19,7 +19,7 @@
         <!-- Funny thing: <option> cannot be empty! -->
         <option value="0">&nbsp;</option> 
         {% for task in employee.tasks.all %}
-        <option value="{{task.id}}">{{task.name|escape}}</option>
+        <option value="{{task.id}}">{{task|escape}}</option>
         {% endfor %}
     </select></br>
 <input type="hidden" name="working_period" value="{{working_period.id|escape}}" />

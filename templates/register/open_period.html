@@ -13,7 +13,7 @@
         <!-- Funny thing: <option> cannot be empty! -->
         <option value="0">&nbsp;</option>
         {% for task in employee.tasks.all %}
-        <option value="{{task.id|escape}}">{{task.name|escape}}</option>
+        <option value="{{task.id|escape}}">{{task|escape}}</option>
         {% endfor %}
     </select><br/>
 {% endblock %}
