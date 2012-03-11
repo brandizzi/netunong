@@ -62,6 +62,31 @@ class ImporterTestCase(NetunomockTestCase, ModelTestCase):
         self.assertEquals(8, len(ImportedEntity.objects.filter(category='T')))
         self.assertEqual(8, len(Task.objects.all()))
 
+    def test_import_tasks_register_parent(self):
+        self.assertEqual(0, len(ImportedEntity.objects.all()))
+        self.assertEqual(0, len(Organization.objects.all()))
+        self.assertEqual(0, len(Employee.objects.all()))
+        self.assertEqual(0, len(Project.objects.all()))
+        
+        importer = Importer(ROOT_URL, 'adam', 'senha')
+        importer.import_organizations()
+        importer.import_employees()
+        importer.import_projects()
+        importer.import_tasks()
+
+        #self.assertEquals(8, len(ImportedEntity.objects.filter(category='T')))
+        self.assertEqual(8, len(Task.objects.all()))
+
+        entity = ImportedEntity.objects.get(original_id=2208, category='T')
+        subtask = Task.objects.get(id=entity.new_id)
+
+        entity = ImportedEntity.objects.get(original_id=2207, category='T')
+        supertask = Task.objects.get(id=entity.new_id)
+
+        self.assertEqual(subtask.parent, supertask)
+        self.assertIn(subtask, supertask.children.all())
+
+
     def test_give_feedback(self):
         self.assertEqual(0, len(ImportedEntity.objects.all()))
         self.assertEqual(0, len(Organization.objects.all()))

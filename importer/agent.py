@@ -2,6 +2,7 @@ import threading
 import traceback
 from datetime import datetime
 
+from register.models import Task
 from importer.models import ImportedEntity, ExportedLog
 from importer.parser import get_companies, get_users, get_projects, \
         get_list_of_partial_tasks, get_task, get_exported_description
@@ -74,7 +75,7 @@ class Importer(object):
         self.already_done.append(PROJECTS)
         self.logfile.write('Projects imported')
 
-    def import_tasks(self, task_ids=None):
+    def import_tasks(self, task_ids=None, parent=None):
         if task_ids is None:
             self.sign_in()
             self.crawler.go_to_all_tasks()
@@ -88,10 +89,13 @@ class Importer(object):
             self.logfile.write('Importing task (id=%d)\n' % task_id)
             try:
                 self.crawler.go_to_task(task_id)
-                task = get_task(self.crawler.content)
-                ImportedEntity.import_task(task)
-                if task['type'] == 'parent':
-                    self.import_tasks(task['subtasks_ids'])
+                task_dict = get_task(self.crawler.content)
+                ImportedEntity.import_task(task_dict, parent)
+                entity = ImportedEntity.objects.get(
+                    original_id=task_dict['original_id'], category='T')
+                task = Task.objects.get(id=entity.new_id)
+                if task_dict['type'] == 'parent':
+                    self.import_tasks(task_dict['subtasks_ids'], parent=task)
             except Exception as e:
                 self.logfile.write('Task (id=%d) not imported because of error:\n' % task_id)
                 traceback.print_exc(file=self.logfile)

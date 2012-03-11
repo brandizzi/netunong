@@ -43,7 +43,7 @@ class ImportedEntity(models.Model):
             entity.save()
 
     @staticmethod
-    def import_task(task_dict):
+    def import_task(task_dict, parent=None):
         already_imported_task = ImportedEntity.objects.filter(category='T',
             original_id=task_dict['original_id'])
         if already_imported_task: return
@@ -52,7 +52,7 @@ class ImportedEntity(models.Model):
         project = Project.objects.get(id=project_entity.new_id)
         task = Task(name=task_dict['name'],
                 description=task_dict['description'],
-                project=project)
+                project=project, parent=parent)
         task.save()
         # Saving entity
         entity = ImportedEntity(
