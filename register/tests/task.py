@@ -33,3 +33,14 @@ class TaskTestCase(ModelTestCase):
         task = Task.objects.get(id=self.task.id)
         self.assertTrue(task.done)
 
+    def test_can_have_supertask(self):
+        task = Task(project=self.project,
+            description='task', name=' Has supertask',
+            parent=self.task)
+        task.save()
+
+        task = Task.objects.get(id=task.id)
+        self.assertEquals(task.parent, self.task)
+
+        self.assertItemsEqual([task], self.task.children.all())
+

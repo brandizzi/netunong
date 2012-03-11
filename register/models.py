@@ -39,6 +39,7 @@ class Task(models.Model):
     description = models.TextField()
     project = models.ForeignKey(Project)
     done = models.BooleanField()
+    parent = models.ForeignKey('Task', null=True, related_name='children')
 
     def mark_as_done(self):
         self.done = True
@@ -61,6 +62,7 @@ class Employee(models.Model):
     user = models.OneToOneField(User)
     organization = models.ForeignKey(Organization)
     tasks = models.ManyToManyField(Task, null=True)
+    
 
     @staticmethod
     def create_employee(organization, username, password, first_name=None, middle_name=None, 
