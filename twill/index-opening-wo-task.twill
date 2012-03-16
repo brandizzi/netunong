@@ -25,7 +25,7 @@ find '<input type="hidden" name="operation" value="close" />'
 # Also, the tasks should be listed as well
 find '<select name="task">'
 find '<option value="0">&nbsp;</option>'
-find '<option value="${str(taskid1)}">${taskname1}</option>'
-find '<option value="${str(taskid2)}">${taskname2}</option>'
+find '<option value="${str(taskid1)}">${taskname1}@NetunoNG</option>'
+find '<option value="${str(taskid2)}">${taskname2}@NetunoNG</option>'
 find '<input type="hidden" name="working_period" value="${str(wp.id)}" />'
 

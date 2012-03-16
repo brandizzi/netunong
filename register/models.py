@@ -251,6 +251,10 @@ class Employee(models.Model):
         """
         return self.user.email
 
+    @property
+    def not_done_tasks(self):
+        return self.tasks.filter(done=False)
+
     def __unicode__(self):
         return self.name
 

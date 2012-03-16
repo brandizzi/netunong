@@ -234,6 +234,29 @@ class EmployeeTestCase(ModelTestCase):
         self.assertEqual(employee.name, "%s %s %s" % ( 
                     employee.first_name, employee.middle_name, employee.last_name
              ))
+
+
+    def test_get_only_not_done_tasks(self):
+        employee = self.get_default_employee()
+        project = Project(name="Project 1", description="First project",
+            organization=self.organization)
+        done_task = Task(project=project, description='task', name='is done')
+        done_task.save()
+        not_done_task = Task(project=project, description='task', 
+                name='Not done')
+        not_done_task.save()
+
+        employee.tasks.add(done_task, not_done_task)
+
+        employee = Employee.objects.get(id=employee.id)
+        self.assertItemsEqual([not_done_task, done_task], 
+                employee.not_done_tasks)
+
+        done_task.done = True
+        done_task.save()
+
+        self.assertItemsEqual([not_done_task], employee.not_done_tasks)
+
         
     def get_default_employee(self):
         return Employee.create_employee(organization=self.organization,

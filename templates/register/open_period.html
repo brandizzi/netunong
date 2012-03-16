@@ -12,7 +12,7 @@
     <select name="task">
         <!-- Funny thing: <option> cannot be empty! -->
         <option value="0">&nbsp;</option>
-        {% for task in employee.tasks.all %}
+        {% for task in employee.not_done_tasks %}
         <option value="{{task.id|escape}}">{{task|escape}}</option>
         {% endfor %}
     </select><br/>

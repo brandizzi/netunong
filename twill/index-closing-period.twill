@@ -10,8 +10,8 @@ code 200
 url http://localhost:32198/netunong/$
 find '<select name="task">'
 find '<option value="0">&nbsp;</option>'
-find '<option value="${str(taskid1)}">${taskname1}</option>'
-find '<option value="${str(taskid2)}">${taskname2}</option>'
+find '<option value="${str(taskid1)}">${taskname1}@NetunoNG</option>'
+find '<option value="${str(taskid2)}">${taskname2}@NetunoNG</option>'
 find '<input type="hidden" name="operation" value="open" />'
 
 # Working period should be closed

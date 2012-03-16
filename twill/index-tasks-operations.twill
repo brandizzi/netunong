@@ -3,8 +3,8 @@ find '<select name="task">'
 # There should be an empty option: task should not be required for working
 # period creation
 find '<option value="0">&nbsp;</option>'
-find '<option value="${str(taskid1)}">${taskname1}</option>'
-find '<option value="${str(taskid2)}">${taskname2}</option>'
+find '<option value="${str(taskid1)}">${taskname1}@NetunoNG</option>'
+find '<option value="${str(taskid2)}">${taskname2}@NetunoNG</option>'
 # The operation is "open", that is, open a new working period.
 find '<input type="hidden" name="operation" value="open" />'
 

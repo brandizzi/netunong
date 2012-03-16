@@ -1,0 +1,29 @@
+################################################################################
+#########   OPENING A PERIOD                                         ###########
+################################################################################
+go 'http://localhost:32198/netunong/'
+find '<option.*value="${str(taskid1)}".*${str(taskname1)}'
+find '<option.*value="${str(taskid2)}".*${str(taskname2)}'  
+
+# Marking as done
+run 'task2 = Task.objects.get(id=${taskid2})'
+run 'task2.done = True'
+run 'task2.save()'
+
+go http://localhost:32198/netunong/
+find '<option.*value="${str(taskid1)}".*${str(taskname1)}'
+notfind '<option.*value="${str(taskid2)}".*${str(taskname2)}'  
+
+# For closing form too
+fv 1 intention 'write a Twill test'
+fv 1 task ${str(taskid1)}
+submit
+
+find '<option.*value="${str(taskid1)}".*${str(taskname1)}'
+notfind '<option.*value="${str(taskid2)}".*${str(taskname2)}' 
+
+run 'task2 = Task.objects.get(id=${taskid2})'
+run 'task2.done = False'
+run 'task2.save()'
+
+
