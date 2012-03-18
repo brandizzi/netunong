@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-export DJANGO_SETTINGS_MODULE=settings 
+export DJANGO_SETTINGS_MODULE=twill_settings 
 export PYTHONPATH=. 
 
-rm database.db
-#python manage.py syncdb
-#python manage.py migrate register
-#python manage.py migrate importer
+django-admin.py syncdb
+django-admin.py migrate register
+django-admin.py migrate importer
 
 python cleartest.py
+
 echo 'STARTING NETUNONG'
-python manage.py runserver 32198 > netunong.log &
+django-admin.py runserver 32198 > netunong.log &
+
 python importer/tests/netunomock/server.py &
 MPID=$!
 sleep 1
