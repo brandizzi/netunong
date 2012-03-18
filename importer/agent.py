@@ -14,6 +14,20 @@ from importer.crawler import NetunoCrawler
     "ORGANIZATIONS", "EMPLOYEES", "PROJECTS", "TASKS"
 )
 
+def open_logfile(agent_method):
+    def logged(self, *args, **kwargs):
+        logfile = None
+        t = datetime.now().strftime("%Y%m%d%H%M%S")
+        if self.logfile is None:
+            logfile = open('importer.%s.log'% t, 'w')
+            self.logfile = logfile
+        result = agent_method(self, *args, **kwargs)
+        if logfile is not None:
+            logfile.close()
+            self.logfile = None
+        return result
+    return logged
+
 class Importer(object):
 
     def __init__(self, url, username, password):
@@ -23,12 +37,11 @@ class Importer(object):
         self.password = password
         self.already_done = []
         self.is_running = False
-        t = datetime.now().strftime("%Y%m%d%H%M%S")
-        self.logfile = open('importer.%s.log'% t, 'w')
+        self.logfile = None
 
+    @open_logfile
     def import_all(self, url=None, username=None, password=None):
         t = datetime.now().strftime("%Y%m%d%H%M%S")
-        self.logfile = open('importer.%s.log'% t, 'w')
         if self.is_running: return
         with self.lock:
             self.is_running = True
@@ -43,12 +56,11 @@ class Importer(object):
                 self.import_tasks()
             finally:
                 self.is_running = False
-        self.logfile.close()           
 
     def sign_in(self):
         self.crawler.login(self.username, self.password)
 
-
+    @open_logfile
     def import_organizations(self): 
         self.sign_in()
         self.crawler.go_to_all_companies()
@@ -56,7 +68,8 @@ class Importer(object):
         ImportedEntity.import_companies_as_organizations(companies)
         self.already_done.append(ORGANIZATIONS)
         self.logfile.write('Organizations imported')
-        
+
+    @open_logfile        
     def import_employees(self):
         self.sign_in()
         companies = ImportedEntity.objects.filter(category='C')
@@ -67,6 +80,7 @@ class Importer(object):
         self.already_done.append(EMPLOYEES)
         self.logfile.write('Employees imported')
 
+    @open_logfile
     def import_projects(self):
         self.sign_in()
         self.crawler.go_to_all_projects()
@@ -75,6 +89,7 @@ class Importer(object):
         self.already_done.append(PROJECTS)
         self.logfile.write('Projects imported')
 
+    @open_logfile
     def import_tasks(self, task_ids=None, parent=None):
         if task_ids is None:
             self.sign_in()
