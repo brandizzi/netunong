@@ -6,13 +6,19 @@ from django.template import loader, RequestContext
 from importer.agent import importer as importer_agent
 from importer.agent import Exporter
 
-def get_importer(request):
+def get(request):
     if not importer_agent.is_running:
         template = loader.get_template("importer/index.html")
     else:
         template = loader.get_template("importer/running.html")
     context = RequestContext(request)
     return HttpResponse(template.render(context))
+
+def post(request):
+    if request.POST.has_key('import'):
+        return post_importer(request)
+    elif  request.POST.has_key('export'):
+        return post_exporter(request)
 
 def post_importer(request):
     url = request.POST['netuno-address']
@@ -21,23 +27,6 @@ def post_importer(request):
     thread = threading.Thread(target=importer_agent.import_all, args=(url, username, password))
     thread.start()
     return HttpResponseRedirect('.')
-
-importer_handlers = {
-    'GET' : get_importer,
-    'POST' : post_importer
-}
-
-def importer(request):
-    return importer_handlers[request.method](request)
-
-
-def get_exporter(request):
-    if not importer_agent.is_running:
-        template = loader.get_template("exporter/index.html")
-    else:
-        template = loader.get_template("importer/running.html")
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
 
 def post_exporter(request):
     url = request.POST['netuno-address']
@@ -51,10 +40,10 @@ def post_exporter(request):
     exporter.export_logs(wps, url, username, password)
     return HttpResponseRedirect('.')
 
-exporter_handlers = {
-    'GET' : get_exporter,
-    'POST' : post_exporter
+handlers = {
+    'GET' : get,
+    'POST' : post
 }
 
-def exporter(request):
-    return exporter_handlers[request.method](request)
+def index(request):
+    return handlers[request.method](request)

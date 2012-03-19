@@ -3,8 +3,8 @@ fv 1 password adam.brandizzi
 submit
 code 200
 
-find '<a .*href="/netunong/exporter/"' 
-follow exporter
+find '<a .*href="/netunong/heritage/"' 
+follow heritage
 code 200
 
 find '<input .*name="netuno-address"'
@@ -14,7 +14,7 @@ find '<input .*name="password"'
 fv 1 netuno-address 'http://localhost:32020/'
 fv 1 username adam
 fv 1 password senha
-submit
+submit export
 
 code 200
 

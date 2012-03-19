@@ -1,7 +1,7 @@
 fv 1 netuno-address 'http://localhost:32020/'
 fv 1 username adam
 fv 1 password senha
-submit
+submit import
 
 code 200
 
@@ -14,7 +14,7 @@ find '<div class="info'
 extend_with 'time'
 run 'sleep(12)'
 
-go 'http://localhost:32198/netunong/importer/'
+go 'http://localhost:32198/netunong/heritage/'
 
 find '<input .*name="netuno-address"'
 find '<input .*name="username"'

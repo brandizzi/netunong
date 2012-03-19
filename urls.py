@@ -4,8 +4,6 @@ import django.contrib.auth.views
 import django.contrib.admin
 import django.views.static
 
-import importer.views
-
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -21,8 +19,7 @@ patterns_list = [
 
     (r'^admin/', include(django.contrib.admin.site.urls)),
 
-    (r'^netunong/importer/', include('importer.urls')),
-    (r'^netunong/exporter/', importer.views.exporter),
+    (r'^netunong/heritage/', include('importer.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     # (r'^netunong/reports/', include('netunong.reports.urls')),

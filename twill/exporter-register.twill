@@ -27,7 +27,6 @@ fv 1 task 8 # Development
 submit
 code 200
 
-show
 fv 1 execution 'A meeting'
 fv 1 task 7 # Meeting
 submit

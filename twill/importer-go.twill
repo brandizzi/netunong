@@ -2,8 +2,8 @@
 #########   VERIFY BASIC NAVIGATION                                  ###########
 ################################################################################
 # FIRST RELEVANT POINT: should have link for importer page...
-find '<a .*href="/netunong/importer/"' 
-follow importer
+find '<a .*href="/netunong/heritage/"' 
+follow heritage
 code 200
 
 find '<input .*name="netuno-address"'
