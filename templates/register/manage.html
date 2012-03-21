@@ -18,6 +18,13 @@
 {% endblock %}
 
 {% block content %}
+<form name="filter" method="get" action=".">
+    <label for="startperiod">{% trans "After day" %}</label>
+    <input type="text" id="startperiod" class="date" name="startperiod" value="{{startperiod}}" />
+    <label for="endperiod">{% trans "Before day" %}</label>
+    <input type="text" id="endperiod" class="date" name="endperiod" value="{{endperiod}}" />
+    <input type="submit" id="filter" value="Filter" />
+</form>
 <div class="working-periods">
     <div class="header row">
         <span class="column executed">{% trans "Activity" %}</span>
@@ -27,7 +34,7 @@
         <span class="column time-delta">{% trans "Total time" %}</span>
         <span class="column operations">{% trans "Operations" %}</span>
     </div>
-    {% for wp in employee.workingperiod_set.all %}
+    {% for wp in working_periods %}
     <div id="row{{wp.id}}" class="row">
     <form class="form-wp" name="form-wp{{wp.id}}" action="." method="POST">
         <span class="column  executed">

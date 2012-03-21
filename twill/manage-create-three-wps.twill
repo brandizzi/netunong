@@ -1,0 +1,44 @@
+run 'WorkingPeriod.objects.all().delete()'
+
+extend_with datetime
+run 'day1 = datetime.now()'
+run 'day2 = day1 + timedelta(1)'
+run 'day3 = day2 + timedelta(1)'
+
+run 'task1, task2 = Task.objects.all()'
+run 'employee = Employee.objects.all()[0]'
+run 'worked_time = timedelta(0, 60*8)'
+
+follow manage
+
+follow add-period
+fv 1 activity 'Register tasks in day 1'
+fv 1 task ${str(task1.id)}
+fv 1 start-date '${day1.strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 start-time '${day1.strftime(settings.NETUNONG_TIME_FORMAT)}'
+fv 1 end-date '${(day1+worked_time).strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 end-time '${(day1+worked_time).strftime(settings.NETUNONG_TIME_FORMAT)}'
+submit
+code 200
+
+follow add-period
+fv 1 activity 'Register tasks in day 2'
+fv 1 task ${str(task2.id)}
+fv 1 start-date '${day2.strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 start-time '${day2.strftime(settings.NETUNONG_TIME_FORMAT)}'
+fv 1 end-date '${(day2+worked_time).strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 end-time '${(day2+worked_time).strftime(settings.NETUNONG_TIME_FORMAT)}'
+submit
+code 200
+
+follow add-period
+fv 1 activity 'Register tasks in day 3'
+fv 1 task ${str(task1.id)}
+fv 1 start-date '${day3.strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 start-time '${day3.strftime(settings.NETUNONG_TIME_FORMAT)}'
+fv 1 end-date '${(day3+worked_time).strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 end-time '${(day3+worked_time).strftime(settings.NETUNONG_TIME_FORMAT)}'
+submit
+code 200
+
+run 'assert WorkingPeriod.objects.count() == 3'

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib import messages
@@ -15,9 +15,23 @@ from settings import NETUNONG_DATE_FORMAT, NETUNONG_TIME_FORMAT
 
 def get_manage(request):
     employee = request.user.get_profile()
+    filter_params = {}
+    startperiod = endperiod = ""
+    if 'startperiod' in request.GET and request.GET['startperiod']:
+        startperiod = request.GET['startperiod']
+        date = datetime.strptime(startperiod, NETUNONG_DATE_FORMAT)
+        filter_params['start__gte'] = date
+    if 'endperiod' in request.GET and request.GET['endperiod']:
+        endperiod = request.GET['endperiod']
+        date = datetime.strptime(endperiod, NETUNONG_DATE_FORMAT)
+        date += timedelta(1)
+        filter_params['end__lt'] = date
+    wps = employee.workingperiod_set.filter(**filter_params)
     template = loader.get_template("register/manage.html")
     context = RequestContext(request, {
-            'employee' : employee, 'settings' : settings
+            'employee' : employee, 'settings' : settings,
+            'working_periods' : wps, 'startperiod' : startperiod,
+            'endperiod' : endperiod,
     })
     return HttpResponse(template.render(context))
 

@@ -28,17 +28,21 @@ class RegisterAppTestCase(SplinterTestCase,ModelTestCase):
         self.assertEquals('Ask for confirmation before erasing wp', wp.intended)
 
         self.browser.find_by_id("manage").click()
+        self.assertTrue(
+                self.browser.is_element_present_by_xpath("//input[@name='activity']", wait_time=2))
         self.browser.find_by_name("delete%d"%wp.id).click()
 
         self.browser.get_alert()._alert.dismiss()
         wp = self.employee.last_working_period
         self.assertEquals('Ask for confirmation before erasing wp', wp.intended)
+        self.assertTrue(
+                self.browser.is_element_present_by_xpath("//input[@name='activity']", wait_time=2))
 
         self.browser.find_by_name("delete%d"%wp.id).click()
         self.browser.get_alert().accept()
         sleep(0.1)
         self.assertFalse(
-                self.browser.is_element_present_by_tag('input', wait_time=2))
+                self.browser.is_element_present_by_xpath("//input[@name='activity']", wait_time=2))
         self.assertEquals(0, self.employee.workingperiod_set.count())
         
 
