@@ -1,0 +1,50 @@
+follow manage
+
+run 'wp1, wp2, wp3 = WorkingPeriod.objects.all()'
+find '${wp1.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp1.start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+find '${wp1.end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp1.end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+
+find '${wp2.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp2.start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+find '${wp2.end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp2.end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+
+find '${wp3.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp3.start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+find '${wp3.end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp3.end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+
+fv filter tasks "+${str(wp1.executed_task.id)}"
+submit
+code 200
+
+#find '<option.*value="${str(wp1.executed_task.id)}".*selected'
+find '${wp1.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp1.start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+find '${wp1.end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp1.end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+
+notfind '${wp2.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+notfind '${wp2.end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+
+find '${wp3.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp3.start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+find '${wp3.end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp3.end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+
+fv filter tasks "+${str(wp2.executed_task.id)}"
+submit
+code 200
+
+notfind '${wp1.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+notfind '${wp1.end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+
+find '${wp2.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp2.start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+find '${wp2.end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${wp2.end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+
+notfind '${wp3.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+notfind '${wp3.end.strftime(settings.NETUNONG_DATE_FORMAT)}'

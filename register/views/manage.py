@@ -26,12 +26,17 @@ def get_manage(request):
         date = datetime.strptime(endperiod, NETUNONG_DATE_FORMAT)
         date += timedelta(1)
         filter_params['end__lt'] = date
+    if 'tasks' in request.GET and request.GET['tasks']:
+        task_id = request.GET['tasks']
+        task = Task.objects.get(id=task_id)
+        filter_params['executed_task__in'] = [task]
     wps = employee.workingperiod_set.filter(**filter_params)
+    tasks = employee.tasks.all()
     template = loader.get_template("register/manage.html")
     context = RequestContext(request, {
             'employee' : employee, 'settings' : settings,
             'working_periods' : wps, 'startperiod' : startperiod,
-            'endperiod' : endperiod,
+            'endperiod' : endperiod, 'tasks' : tasks,
     })
     return HttpResponse(template.render(context))
 

@@ -24,6 +24,12 @@
     <label for="endperiod">{% trans "Before day" %}</label>
     <input type="text" id="endperiod" class="date" name="endperiod" value="{{endperiod}}" />
     <input type="submit" id="filter" value="Filter" />
+    <label for="tasks">{% trans "Tasks" %}</label>
+    <select name="tasks" id="tasks" multiple="multiple">
+    {% for task in tasks %}
+        <option value="{{task.id}}">{{task}}</option>
+    {% endfor %}
+    </select>
 </form>
 <div class="working-periods">
     <div class="header row">

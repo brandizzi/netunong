@@ -12,3 +12,4 @@ manage-update-incomplete
 manage-add-period
 manage-create-three-wps
 manage-filter-wps-by-date
+manage-filter-wps-by-task
