@@ -40,10 +40,7 @@ function remove_row(sender) {
 }
 
 function wtf(a, b, c) {
-    alert('WTF?!');
-    alert(a);
-    alert(b);
-    alert(c);
+    alert('Opertion failed: '+ a + ' ' + b + ' c');
 }
 
 function set_operation(sender) {
