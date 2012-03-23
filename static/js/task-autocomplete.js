@@ -1,5 +1,5 @@
 $(document).ready(
     function() {
-        $('.task').combobox();
+        $('.task').select_autocomplete();
     }
 );
