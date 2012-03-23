@@ -15,7 +15,7 @@
     {% trans "What I effectively did:" %}<br/>
     <input type="text" name="execution" value="{{working_period.intended|escape}}" /></br>
     {% trans "Which task I helped:" %}<br/>
-    <select name="task">
+    <select name="task" class="task">
         <!-- Funny thing: <option> cannot be empty! -->
         <option value="0">&nbsp;</option> 
         {% for task in employee.not_done_tasks %}

@@ -42,7 +42,7 @@
 				if ($option.val() != '') { //ignore empty value options
 
 					data.push({
-						  name: $option.html()
+						  name: $option.text()
 						, value:$option.val()
 					});
 				}
@@ -53,7 +53,6 @@
 			
 			// add it our data
 			options.data = data;
-		
 			//make the input box into an autocomplete for the select items
 			$input.autocomplete(data, options);
 		

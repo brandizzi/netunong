@@ -24,7 +24,7 @@ find '<input +.*name="execution" +.*value="write a Twill test"'
 # option.
 find '[^>]${str(taskname1)}[^>]'
 # Also, the tasks should be listed as well
-find '<select name="task">'
+find '<select name="task"'
 find '<option value="0">&nbsp;</option>'
 echo '<option value="${str(taskid1)}">${taskname1}@NetunoNG</option>'
 find '<option value="${str(taskid2)}">${taskname2}@NetunoNG</option>'

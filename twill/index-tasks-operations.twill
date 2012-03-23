@@ -1,5 +1,5 @@
 # All tasks should be listed
-find '<select name="task">'
+find '<select name="task"'
 # There should be an empty option: task should not be required for working
 # period creation
 find '<option value="0">&nbsp;</option>'

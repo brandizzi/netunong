@@ -59,7 +59,7 @@
 .ui-widget { font-family: Helvetica,Verdana,Arial,sans-serif; font-size: 1.1em; }
 .ui-widget .ui-widget { font-size: 1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Helvetica,Verdana,Arial,sans-serif; font-size: 1em; }
-.ui-widget-content { border: 1px solid #f17e15; background-color: white color: #222222; }
+.ui-widget-content { border: 1px solid #f17e15; background: #FA8F1A 50% 50% repeat-x; color: #222222; }
 .ui-widget-content a { color: #222222; }
 .ui-widget-header { border: 1px solid #f17e15; background: #f17e15 url(images/ui-bg_highlight-soft_75_f17e15_1x100.png) 50% 50% repeat-x; color: #000000; font-weight: bold; }
 .ui-widget-header a { color: #000000; }
@@ -404,6 +404,7 @@
 .ac_results li {
     padding-top: 0.3em;
     padding-bottom: 0.3em;
+    min-height: 1em;
 }
 .ac_even {
 	background-color: #F1C864;
