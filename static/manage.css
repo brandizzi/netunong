@@ -10,7 +10,7 @@ input.executed {
     width: 29em;
 }
 
-select.task {
+select.task, .task .ac_input {
     width: 20em;
 }
 
