@@ -9,7 +9,7 @@ submit
 code 200
 url http://localhost:32198/netunong/$
 find 'write another Twill test'
-find '<input type="hidden" name="operation" value="close" />'
+find 'action="[^"]*close/"'
 # Tries to close a period without execution; should fail.
 fv 1 execution ''
 fv 1 task ${str(taskid1)}
@@ -17,8 +17,8 @@ submit
 code 200
 url http://localhost:32198/netunong/$
 # Since the period could not be completed, the operation is still "close"
-notfind '<input type="hidden" name="operation" value="open" />'
-find '<input type="hidden" name="operation" value="close" />'
+notfind 'action="[^"]*open/"'
+find 'action="[^"]*close/"'
 # There is an error message
 find '<li class="error">'
 
@@ -27,5 +27,4 @@ fv 1 execution 'yes, yes, write another Twill test'
 fv 1 task ${str(taskid2)}
 submit
 code 200
-url http://localhost:32198/netunong/$
-find '<input type="hidden" name="operation" value="open" />'
+url http://localhost:32198/netunong

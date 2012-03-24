@@ -12,7 +12,7 @@ find '<select name="task"'
 find '<option value="0">&nbsp;</option>'
 find '<option value="${str(taskid1)}">${taskname1}@NetunoNG</option>'
 find '<option value="${str(taskid2)}">${taskname2}@NetunoNG</option>'
-find '<input type="hidden" name="operation" value="open" />'
+find 'action="[^"]*open/"'
 
 # Working period should be closed
 run 'employee = Employee.objects.all()[0]'

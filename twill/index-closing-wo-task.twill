@@ -9,7 +9,7 @@ submit
 code 200
 url http://localhost:32198/netunong/$
 # Operation should be "open"
-find '<input type="hidden" name="operation" value="open" />'
+find 'action="[^"]*open/"'
 
 # Working period should be closed
 run 'employee = Employee.objects.all()[0]'

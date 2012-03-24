@@ -8,8 +8,8 @@ submit
 code 200
 url http://localhost:32198/netunong/$
 # Since the period could not be created, the operation is still "open"
-notfind '<input type="hidden" name="operation" value="close" />'
-find '<input type="hidden" name="operation" value="open" />'
+notfind 'action="[^"]*close/"'
+find 'action="[^"]*open/"'
 # There is an error message
 find '<li class="error">'
 
