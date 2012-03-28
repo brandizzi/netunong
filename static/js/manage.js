@@ -30,17 +30,6 @@ function highlight_row(sender) {
     }
 }
 
-function remove_row(sender) {
-    var row = sender.parents('div.row');
-    return function (data) {
-        var response = $(data);
-        var success = response.find('.success');
-
-        if (success.length != 0) {
-        }
-    }
-}
-
 function wtf(a, b, c) {
     alert('Opertion failed: '+ a.message + ' ' + b.message + ' ' + c);
 }
