@@ -32,7 +32,10 @@
     </select>
     <input type="submit" id="filter" value="Filter" />
 </form>
+
+<form class="form-wp" name="form-wp" action="." method="POST">
 <div class="working-periods">
+    {% csrf_token %}
     <div class="header row">
         <span class="column executed">{% trans "Activity" %}</span>
         <span class="column task">{% trans "Task" %}</span>
@@ -43,14 +46,12 @@
     </div>
     {% for wp in working_periods %}
     <div id="row{{wp.id}}" class="row">
-    <form class="form-wp" name="form-wp{{wp.id}}" action="." method="POST">
         <span class="column  executed">
-            {% csrf_token %}
             <input type="hidden" id="working-period" name="working_period" value="{{wp.id|escape}}" />
-            <input class="executed" type="text" name="activity" value="{{wp.last_activity|escape}}" />
+            <input class="executed" type="text" name="activity{{wp.id}}" value="{{wp.last_activity|escape}}" />
         </span>
         <span class="column  task">
-            <select name="task" class="task">
+            <select name="task{{wp.id}}" class="task">
                 <option value="0">&nbsp;</option>
                 {% for task in employee.tasks.all %}
                 <option value="{{task.id|escape}}"
@@ -64,22 +65,22 @@
             </select>
         </span>
         <span class="column start date">
-            <input type="text" name="start-date" class="start-date date"
+            <input type="text" name="start-date{{wp.id}}" class="start-date date"
                     value="{{wp.formatted_start_date|escape}}" />
         </span>
         <span class="column start time">
-            <input type="text" name="start-time"  class="start-time time"
+            <input type="text" name="start-time{{wp.id}}"  class="start-time time"
                     value="{{wp.formatted_start_time|escape}}" />
         </span>
         <span class="column end date">
-            <input type="text" name="end-date"  class="end-date date"
+            <input type="text" name="end-date{{wp.id}}"  class="end-date date"
                 {% if wp.end %}
                     value="{{wp.formatted_end_date|escape}}" 
                 {% endif %}
             />
         </span>
         <span class="column  end time">
-            <input type="text" name="end-time"  class="end-time time"
+            <input type="text" name="end-time{{wp.id}}"  class="end-time time"
                 {% if wp.end %}
                     value="{{wp.formatted_end_time|escape}}"
                 {% endif %}
@@ -105,10 +106,10 @@
                 {% trans "Delete" %}
             </button>
         </span>
-    </form>
     </div>
     {% endfor %}
     <a name="add-period" href="/netunong/add/">{% trans "Add period" %}</a>
 </div>
+</form>
 {% endblock %}
 

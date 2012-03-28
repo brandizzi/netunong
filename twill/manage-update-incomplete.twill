@@ -17,8 +17,8 @@ run 'assert wp.intended == "Testing altering incomplete period"'
 
 follow manage
 find ${wp.intended}
-fv form-wp${str(wp.id)} activity 'Altered a incomplete period'
-submit update
+fv form-wp activity${str(wp.id)} 'Altered a incomplete period'
+submit update${str(wp.id)}
 code 200
 find '<li class="success">'
 # Find again

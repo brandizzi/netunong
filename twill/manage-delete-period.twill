@@ -4,8 +4,9 @@
 # Does nothing, it is just for selecting the form
 run 'employee = Employee.objects.all()[0]'
 run 'wp1, wp2 = employee.workingperiod_set.all()'
-fv form-wp${str(wp1.id)} activity ''
-submit delete
+
+fv form-wp activity${str(wp1.id)} ''
+submit delete${str(wp1.id)}
 code 200
 find '<li class="success">'
 # Should not appear in the screen

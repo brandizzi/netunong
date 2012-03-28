@@ -1,10 +1,12 @@
 function highlight_row(sender) {
-    var row = sender.parents('div.row');
+    var submit = sender.find('.delete-submit');
+    if (submit.length == 0)  submit = sender.find('.update-submit');
+    var row = submit.parents('div.row');
     return function (data) {
         var response = $(data);
         var error = response.find('.error');
         var success = response.find('.success');
-        var ok = error.length == 0 && success != 0;
+        var ok = error.length == 0 && success.length != 0;
 
         // Row was removed
         if (ok && response.find('#'+row.attr('id')).length == 0) {

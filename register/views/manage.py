@@ -47,17 +47,17 @@ def post_manage(request):
     if request.POST.has_key('update'):
         working_period_id = request.POST['update']
         working_period = WorkingPeriod.objects.get(id=int(working_period_id))
-        activity = request.POST['activity']
-        task_id = request.POST['task']
+        activity = request.POST['activity'+working_period_id]
+        task_id = request.POST['task'+working_period_id]
         try:
             task_id = int(task_id)
             task = Task.objects.get(id=task_id) if task_id > 0 else None
         except ValueError:
             task = working_period.last_task
-        start_date = request.POST['start-date']
-        end_date = request.POST['end-date']
-        start_time = request.POST['start-time']
-        end_time = request.POST['end-time']
+        start_date = request.POST['start-date'+working_period_id]
+        end_date = request.POST['end-date'+working_period_id]
+        start_time = request.POST['start-time'+working_period_id]
+        end_time = request.POST['end-time'+working_period_id]
         
         try:
             start = datetime.strptime(start_date+" "+start_time,
