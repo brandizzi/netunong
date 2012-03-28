@@ -93,13 +93,17 @@
         {% endif %}
         </span>
         <span class="column operations save">
-            <input type="submit" name="submit{{wp.id}}" class="update-submit"
-                    value="{% trans "Save" %}" />
+            <button type="submit" name="update" id="update{{wp.id}}"  
+                    class="update-submit" value="{{wp.id}}">
+                {% trans "Save" %}
+            </button>
         </span>
         <span class="column operations delete">
-            <input type="submit" name="delete{{wp.id}}" class="delete-submit"
-                    value="{% trans "Delete" %}" 
-                    alt="{% trans "Are you sure you want to delete this working period?" %}" />
+            <button type="submit" name="delete" id="delete{{wp.id}}"  
+                    class="delete-submit" value="{{wp.id}}"
+                    alt="{% trans "Are you sure you want to delete this working period?" %}">
+                {% trans "Delete" %}
+            </button>
         </span>
     </form>
     </div>

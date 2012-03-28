@@ -43,10 +43,10 @@ def get_manage(request):
     return HttpResponse(template.render(context))
 
 def post_manage(request):
-    working_period_id = request.POST['working_period']
-    working_period = WorkingPeriod.objects.get(id=int(working_period_id))
 
-    if request.POST.has_key('submit%s' % working_period_id):
+    if request.POST.has_key('update'):
+        working_period_id = request.POST['update']
+        working_period = WorkingPeriod.objects.get(id=int(working_period_id))
         activity = request.POST['activity']
         task_id = request.POST['task']
         try:
@@ -78,7 +78,9 @@ def post_manage(request):
         working_period.save()
         # TODO identify the working period
         messages.success(request, _("The working period was udpated!"))
-    elif  request.POST.has_key('delete%s' % working_period_id):
+    elif  request.POST.has_key('delete'):
+        working_period_id = request.POST['delete']
+        working_period = WorkingPeriod.objects.get(id=int(working_period_id))
         working_period.delete()
         # TODO identify the working period
         messages.success(request, _("The working period was deleted!"))

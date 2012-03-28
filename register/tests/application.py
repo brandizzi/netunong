@@ -30,7 +30,7 @@ class RegisterAppTestCase(SplinterTestCase,ModelTestCase):
         self.browser.find_by_id("manage").click()
         self.assertTrue(
                 self.browser.is_element_present_by_xpath("//input[@name='activity']", wait_time=2))
-        self.browser.find_by_name("delete%d"%wp.id).click()
+        self.browser.find_by_id("delete%d"%wp.id).click()
 
         self.browser.get_alert()._alert.dismiss()
         wp = self.employee.last_working_period
@@ -38,7 +38,7 @@ class RegisterAppTestCase(SplinterTestCase,ModelTestCase):
         self.assertTrue(
                 self.browser.is_element_present_by_xpath("//input[@name='activity']", wait_time=2))
 
-        self.browser.find_by_name("delete%d"%wp.id).click()
+        self.browser.find_by_id("delete%d"%wp.id).click()
         self.browser.get_alert().accept()
         sleep(0.1)
         self.assertFalse(

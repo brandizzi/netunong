@@ -34,10 +34,10 @@ body {
     margin-bottom: 1em;
 }
 
-select, input {
+select, input, button {
     border-style: none;
 }
 
-input[type=button],input[type=submit] {
+input[type=button],input[type=submit], button {
     background-color: rgb(241,200,100);
 }

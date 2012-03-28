@@ -40,13 +40,16 @@ function remove_row(sender) {
 }
 
 function wtf(a, b, c) {
-    alert('Opertion failed: '+ a + ' ' + b + ' c');
+    alert('Opertion failed: '+ a.message + ' ' + b.message + ' ' + c);
 }
 
 function set_operation(sender) {
     var submit_button = $(sender.target);
     var form = submit_button.parents('form.form-wp');
-    var operation = $('<input id="operation" type="hidden" value="" name="' + submit_button.attr('name') + '" />');
+    var mask = '<input id="operation" type="hidden" value="<v>" name="<n>" />';
+    var input = mask.replace('<v>', submit_button.attr('value'))
+            .replace('<n>', submit_button.attr('name'));
+    var operation = $(input);
     form.append(operation);
 }
 
