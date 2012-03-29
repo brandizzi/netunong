@@ -8,11 +8,13 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import loader, RequestContext
 from django.utils.translation import gettext as _
+from django.contrib.auth.decorators import login_required
 
 from register.models import Employee, Task, WorkingPeriod
 
 from settings import NETUNONG_DATE_FORMAT, NETUNONG_TIME_FORMAT
 
+@login_required
 def get_manage(request):
     """
     Shows the working period management page
@@ -57,6 +59,7 @@ def post_manage(request):
     elif request.POST.has_key('print'):
         return print_working_period(request)
 
+@login_required
 def update_working_period(request):
     """
     Update data from a working period.
@@ -96,6 +99,7 @@ def update_working_period(request):
     messages.success(request, _("The working period was udpated!"))
     return HttpResponseRedirect(reverse(manage))
 
+@login_required
 def delete_working_period(request):
     """
     Delete a working period.
@@ -107,6 +111,7 @@ def delete_working_period(request):
     messages.success(request, _("The working period was deleted!"))
     return HttpResponseRedirect(reverse(manage))
 
+@login_required
 def print_working_period(request):
     """
     Generate a print-friendly HTML page listing the working periodos from the
