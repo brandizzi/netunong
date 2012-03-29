@@ -1,0 +1,23 @@
+follow manage
+
+extend_with 'importer.parser'
+run 'wp1, wp2, wp3 = WorkingPeriod.objects.all()'
+
+fv form-wp "activity${str(wp1.id)}" '' # Just to select form
+submit print
+code 200
+
+find '${get_exported_description(wp1)}'
+find '${get_exported_description(wp2)}'
+find '${get_exported_description(wp3)}'
+
+find '${str(wp1.total_time)}'
+find '${str(wp2.total_time)}'
+find '${str(wp3.total_time)}'
+
+find '${str(wp1.executed_task)}'
+find '${str(wp2.executed_task)}'
+find '${str(wp3.executed_task)}'
+
+find '${str(wp1.total_time+wp2.total_time+wp3.total_time)}'
+

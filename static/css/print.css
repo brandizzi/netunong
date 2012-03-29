@@ -1,0 +1,36 @@
+html {
+    text-align: left;
+}
+
+table {
+    width: 80%;
+    border-style: solid;
+    margin: 0;
+}
+
+th, td { 
+    border-style: solid;
+}
+
+.day {
+    width: 20%;
+}
+
+.activitiy {
+    width: 40%;
+}
+
+.task {
+    width: 30;
+}
+
+.spent-hours {
+    width: 10%;
+}
+
+
+
+                <td class="day">{{wp.formatted_start_date}}</td>
+                <td class="activitiy">{{wp.exported_description}}</td>
+                <td class="task">{{wp.executed_task}}</td>
+                <td class="spent-hours">{{wp.total_time}}</td>

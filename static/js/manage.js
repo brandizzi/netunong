@@ -48,10 +48,12 @@ $(document).ready(
     function() {
         $('.form-wp').submit(
             function() {
+                var data = $(this).serialize();
+                if (data.indexOf("&print=") != -1) return;
                 $.ajax({
                     url : $(this).attr('action'),
                     type : "POST",
-                    data : $(this).serialize(),
+                    data : data,
                     success : highlight_row($(this)),
                     error : wtf
                 });

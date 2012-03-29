@@ -655,6 +655,14 @@ class WorkingPeriod(models.Model):
         """
         return self.end.strftime(NETUNONG_TIME_FORMAT) if self.end else ''
 
+    @property
+    def exported_description(self):
+        if not self.start or not self.end:
+            return "INCOMPLETE"
+        start = self.start.strftime(NETUNONG_TIME_FORMAT)
+        end = self.end.strftime(NETUNONG_TIME_FORMAT)
+        return (u"%s - %s: %s" % (start, end, self.executed)).encode('utf-8')
+
     def __unicode__(self):
         description = self.executed if self.is_complete else self.intended
         started = self.formatted_start_date

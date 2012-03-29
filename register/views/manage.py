@@ -54,6 +54,8 @@ def post_manage(request):
         return update_working_period(request)
     elif request.POST.has_key('delete'):
         return delete_working_period(request)
+    elif request.POST.has_key('print'):
+        return print_working_period(request)
 
 def update_working_period(request):
     """
@@ -104,6 +106,22 @@ def delete_working_period(request):
     # TODO identify the working period
     messages.success(request, _("The working period was deleted!"))
     return HttpResponseRedirect(reverse(manage))
+
+def print_working_period(request):
+    """
+    Generate a print-friendly HTML page listing the working periodos from the
+    current listing.
+    """
+    ids = request.POST.getlist('working_period')
+    print ids
+    working_periods = WorkingPeriod.objects.filter(id__in=(int(id) for id in ids))
+    total_time = sum(wp.total_time for wp in working_periods)
+
+    template = loader.get_template("register/print.html")
+    context = RequestContext(request, {
+            'working_periods' : working_periods, 'total_time' : total_time,
+    })
+    return HttpResponse(template.render(context))
 
 functions = {
     'GET'  : get_manage,

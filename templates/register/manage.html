@@ -33,7 +33,11 @@
     <input type="submit" id="filter" value="Filter" />
 </form>
 
-<form class="form-wp" name="form-wp" action="." method="POST">
+<form class="form-wp" name="form-wp"
+        action="{% block task_action %}.{% endblock %}" method="POST">
+<div id="wp-list-operations" class="list-toolbar">
+    <input type="submit" name="print" value="{% trans "Print" %}" />
+</div>
 <div class="working-periods">
     {% csrf_token %}
     <div class="header row">

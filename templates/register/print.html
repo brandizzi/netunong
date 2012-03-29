@@ -1,0 +1,31 @@
+{% load i18n %}
+<html>
+    <head>
+        <title>{% trans "Worked hours report" %}</title>
+        <link rel="stylesheet" type="text/css" src="/static/css/print.css" />
+    </head>
+    <body>
+        <h1>{% trans "Worked hours report" %}</h1>
+        <table>
+            <tr>
+                <th class="day">{% trans "Day" %}</th>
+                <th class="activitiy">{% trans "Activity" %}</th>
+                <th class="task">{% trans "Task" %}</th>
+                <th class="spent-hours">{% trans "Spent hours" %}</th>
+            </tr>
+            {% for wp in working_periods %}
+            <tr>
+                <td class="day">{{wp.formatted_start_date}}</td>
+                <td class="activitiy">{{wp.exported_description}}</td>
+                <td class="task">{{wp.executed_task}}</td>
+                <td class="spent-hours">{{wp.total_time}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="2"></td>
+                <td>{% trans "Total working time" %}</td>
+                <td>{{total_time}}</td>
+            </tr>
+        </table>
+    </body>
+</html>
