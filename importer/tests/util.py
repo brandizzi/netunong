@@ -1,4 +1,6 @@
+import os
 import os.path
+from glob import glob
 from multiprocessing import Process
 from netunomock.server import run_server
 from time import sleep
@@ -46,4 +48,5 @@ class NetunomockTestCase(unittest.TestCase):
 
     def tearDown(self):
         self.server.terminate()
-        sleep(0.2)
+        for f in glob('importer.*.log'):
+            os.remove(f)
