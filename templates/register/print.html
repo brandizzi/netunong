@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>{% trans "Worked hours report" %}</title>
-        <link rel="stylesheet" type="text/css" src="/static/css/print.css" />
+        <link rel="stylesheet" type="text/css" href="/static/css/print.css" />
     </head>
     <body>
         <h1>{% trans "Worked hours report" %}</h1>
@@ -21,10 +21,10 @@
                 <td class="spent-hours">{{wp.total_time}}</td>
             </tr>
             {% endfor %}
-            <tr>
-                <td colspan="2"></td>
-                <td>{% trans "Total working time" %}</td>
-                <td>{{total_time}}</td>
+            <tr class="total-row">
+                <td class="empty" colspan="2">&nbsp;</td>
+                <td class="total-cell">{% trans "Total working time" %}</td>
+                <td class="total-cell">{{total_time}}</td>
             </tr>
         </table>
     </body>
