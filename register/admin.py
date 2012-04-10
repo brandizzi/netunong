@@ -17,10 +17,10 @@ class EmployeeAdmin(admin.ModelAdmin):
             self.update_employee(request, employee, form, change)
 
     def add_employee(self,  request, employee, form, change):
-        if 'user' in form.cleaned_data:
+        try:
             user_id = int(form.cleaned_data['user'])
             user = User.objects.get(id=user_id)
-        else:
+        except TypeError:
             username=form.cleaned_data['username']
             password=form.cleaned_data['password']
             first_name=form.cleaned_data['first_name']
@@ -29,6 +29,9 @@ class EmployeeAdmin(admin.ModelAdmin):
             user = User(username=username, password=password, first_name=first_name,
                         last_name=last_name, email=email)
             user.save()
+
+        employee.organization = form.cleaned_data['organization']
+        employee.middle_name = form.cleaned_data['middle_name']       
         employee.user = user
         employee.save()
 
