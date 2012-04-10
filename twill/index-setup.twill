@@ -11,5 +11,5 @@ run 'task2 = Task(name="${taskname2}", project=project, description="taskdescrip
 run 'task2.save()'
 run 'employee.tasks.add(task1, task2)'
 
-setglobal taskid1 ${str(task1.id)}
-setglobal taskid2 ${str(task2.id)}
+setglobal taskid1 ${task1.id}
+setglobal taskid2 ${task2.id}

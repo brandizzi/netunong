@@ -1,7 +1,7 @@
 # Access login page
 go http://localhost:32198/netunong/login
 code 200
-notfind '<a +.*href="/netunong/logout/"'
+notfind "//a[@href='/netunong/logout/']" x
 # Authenticate
 fv 1 username test
 fv 1 password test
@@ -12,9 +12,9 @@ code 200
 url http://localhost:32198/netunong/$
 run 'e = Employee.objects.all()[0]'
 find '${e.name}'
-find '<a +.*href="/netunong/logout/"'
+find "//a[@href='/netunong/logout/']" x
 
 go http://localhost:32198/netunong/
 code 200
 find '${e.name}'
-find '<a +.*href="/netunong/logout/"'
+find "//a[@href='/netunong/logout/']" x

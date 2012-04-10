@@ -7,8 +7,23 @@ class EmployeeAdminForm(forms.ModelForm):
     username = forms.CharField(max_length=20)
     password = forms.CharField(widget=forms.PasswordInput())
     email = forms.EmailField()
+
+    def __init__(self, *args, **kwargs):
+        super(EmployeeAdminForm, self).__init__(*args, **kwargs)
+
+        if 'instance' in kwargs:
+            instance = kwargs['instance']
+            self.initial['first_name'] = instance.user.first_name
+            self.initial['middle_name'] = instance.middle_name
+            self.initial['last_name'] = instance.user.last_name
+            self.initial['username'] = instance.user.username
+            self.initial['email'] = instance.user.email
+    
     class Meta:
         model = Employee
-        exclude = ('user',)
+        fields = (
+            'organization', 'first_name', 'middle_name', 'last_name', 'username',
+            'password', 'email', 'user'
+        )
 
         
