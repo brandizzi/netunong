@@ -678,6 +678,9 @@ class WorkingPeriod(models.Model):
     class Meta:
         get_latest_by = "id"
         ordering = ['start', 'end']
+        permissions = [
+            ('view_workingperiod', "Can view working periods from any employee")
+        ]
 
 
 # Represents the null working period. Better than verifying if the working

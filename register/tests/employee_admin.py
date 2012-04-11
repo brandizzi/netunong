@@ -97,6 +97,7 @@ class EmployeeAdminTestCase(ModelTestCase):
         self.assertEquals(initial['last_name'], retrieved.user.last_name)
         self.assertEquals(initial['username'], retrieved.user.username)
         self.assertEquals(initial['email'], retrieved.user.email)
+        self.assertEquals(employee.user.password, retrieved.user.password)
         self.assertEquals(self.organization, retrieved.organization)
 
     def setUp(self):
