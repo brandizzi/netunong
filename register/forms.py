@@ -10,7 +10,6 @@ class EmployeeAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EmployeeAdminForm, self).__init__(*args, **kwargs)
-        self.fields['user'].required = False
 
         if 'instance' in kwargs:
             instance = kwargs['instance']
@@ -24,7 +23,7 @@ class EmployeeAdminForm(forms.ModelForm):
         model = Employee
         fields = (
             'organization', 'first_name', 'middle_name', 'last_name', 'username',
-            'password', 'email', 'user'
+            'password', 'email'
         )
 
         
