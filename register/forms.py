@@ -10,8 +10,9 @@ class EmployeeAdminForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EmployeeAdminForm, self).__init__(*args, **kwargs)
-
         if 'instance' in kwargs:
+            self.fields['password'].required = False
+
             instance = kwargs['instance']
             self.initial['first_name'] = instance.user.first_name
             self.initial['middle_name'] = instance.middle_name
