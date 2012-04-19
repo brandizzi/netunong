@@ -20,23 +20,39 @@
 
 {% block content %}
 <form name="filter" method="get" action=".">
-    <label for="startperiod">{% trans "After day" %}</label>
-    <input type="text" id="startperiod" class="date" name="startperiod" value="{{startperiod}}" />
-    <label for="endperiod">{% trans "Before day" %}</label>
-    <input type="text" id="endperiod" class="date" name="endperiod" value="{{endperiod}}" />
-    <label for="tasks">{% trans "Tasks" %}</label>
-    <select name="tasks" id="tasks" multiple="multiple">
-    {% for task in tasks %}
-        <option value="{{task.id}}" {% if task in selected_tasks %}selected="selected"{% endif %}>{{task}}</option>
-    {% endfor %}
-    </select>
+    <fieldset>
+        <label for="startperiod">{% trans "After day" %}</label>
+        <input type="text" id="startperiod" class="date" name="startperiod" value="{{startperiod}}" />
+        <label for="endperiod">{% trans "Before day" %}</label>
+        <input type="text" id="endperiod" class="date" name="endperiod" value="{{endperiod}}" />
+        <label for="tasks">{% trans "Tasks" %}</label>
+        <span class="task-selection">
+            {% if selected_tasks %}
+            <select name="selected_tasks" id="selected_tasks" multiple="multiple">
+            {% for task in selected_tasks %}
+                <option value="{{task.id}}">{{task}}</option>
+            {% endfor %}
+            </select>
+            {% for task in selected_tasks %}
+            <input name="tasks" type="hidden" value="{{task.id}}"  />
+            {% endfor %}
+            {% else %}
+            <span class="info">{% trans "No task selected" %}</span>
+            {% endif %}
+            <button type="submit" name="submit" value="select_tasks" id="select_tasks">
+                {% trans "Select tasks" %}
+            </button>
+        </span>
+    </fieldset>
     <input type="submit" id="filter" value="Filter" />
 </form>
 
 <form class="form-wp" name="form-wp"
-        action="{% block task_action %}.{% endblock %}" method="POST">
+        action="{% block wp_action %}.{% endblock %}" method="POST">
 <div id="wp-list-operations" class="list-toolbar">
+    {% block wp_operations %}
     <input type="submit" name="print" value="{% trans "Print" %}" />
+    {% endblock %}
 </div>
 <div class="working-periods">
     {% csrf_token %}

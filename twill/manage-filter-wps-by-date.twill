@@ -17,7 +17,7 @@ find '${wp3.end.strftime(settings.NETUNONG_DATE_FORMAT)}'
 find '${wp3.end.strftime(settings.NETUNONG_TIME_FORMAT)}'
 
 fv filter startperiod '${wp2.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
-submit
+submit filter
 code 200
 
 find "//input[@name='startperiod' and @value='${wp2.start.strftime(settings.NETUNONG_DATE_FORMAT)}']" x
@@ -35,7 +35,7 @@ find '${wp3.end.strftime(settings.NETUNONG_DATE_FORMAT)}'
 find '${wp3.end.strftime(settings.NETUNONG_TIME_FORMAT)}'
 
 fv filter endperiod '${wp2.start.strftime(settings.NETUNONG_DATE_FORMAT)}'
-submit
+submit filter
 code 200
 
 find "//input[@name='endperiod' and @value='${wp2.start.strftime(settings.NETUNONG_DATE_FORMAT)}']" x

@@ -1,6 +1,7 @@
 import views.index
 import views.manage
 import views.add
+import views.search
 from django.conf.urls.defaults import patterns
 from django.views.generic.simple import direct_to_template
 urlpatterns = patterns('',
@@ -9,4 +10,5 @@ urlpatterns = patterns('',
     (r'^close/$', views.index.close_period),
     (r'^manage/$', views.manage.manage),
     (r'^add/$', views.add.add),
+    (r'^search/tasks/$', views.search.search_tasks),
 )

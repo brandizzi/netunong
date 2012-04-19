@@ -1,0 +1,58 @@
+extend_with datetime
+
+follow manage
+
+# Found the WPs
+find "//input[@value='${activity1}']" x
+find "//input[@value='${activity2}']" x
+
+# No tasks select
+notfind "//select[@name='tasks_selected']" x
+# A info about it
+find "//*[@class='info']" x
+# The button to select some
+find "//button[@id='select_tasks']" x
+
+# Let us search for some tasks
+# First, let us define some date intervl
+setglobal startdate '${datetime(1980, 10, 9).strftime(settings.NETUNONG_DATE_FORMAT)}'
+setglobal enddate '${datetime(2200, 10, 9).strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv filter startperiod '${startdate}'
+fv filter endperiod '${enddate}'
+
+# Alright, gimme tasks
+submit select_tasks
+code 200
+
+# Has two tasks and the possibility of selecting them
+find "//input[@name='tasks' and @value='${taskid1}']" x
+find "//input[@name='tasks' and @value='${taskid2}']" x
+
+fv form-task tasks +${taskid1}
+submit select
+code 200
+url 'http://localhost:32198/netunong/manage'
+
+# Now there are tasks
+find "//select[@name='selected_tasks']" x
+# One is selected
+find "//select[@name='selected_tasks']/option[@value='${taskid1}']" x
+# another one is not
+notfind "//select[@name='selected_tasks']/option[@value='${taskid2}']" x
+# also, there are some hidden input
+find "//input[@name='tasks' and @type='hidden' and @value='${taskid1}']" x
+notfind "//input[@name='tasks' and @type='hidden' and @value='${taskid2}']" x
+# and you can remove it TODO, actually
+#find "//button[@name='remove_tasks']" x
+# dates are preserved
+find "//input[@name='startperiod' and @value='${startdate}']" x
+find "//input[@name='endperiod' and @value='${enddate}']" x
+
+# Search
+fv filter startperiod '${startdate}'
+submit filter
+code 200
+
+# Find wp from task 1 but not task 2
+find "//input[@value='${activity1}']" x
+notfind "//input[@value='${activity2}']" x

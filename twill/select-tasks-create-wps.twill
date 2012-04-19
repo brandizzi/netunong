@@ -1,0 +1,54 @@
+extend_with datetime
+run 'task1, task2 = Task.objects.all()'
+run 'employee = Employee.objects.all()[0]'
+run 'start = datetime(2000, 12, 31, 8, 31) # Long time ago'
+run 'end = start + timedelta(0, 60*8)'
+
+follow manage
+
+follow add-period
+
+setglobal activity1 'Select tasks for search of WPs'
+fv 1 activity ${activity1}
+fv 1 task ${task1.id}
+fv 1 start-date '${start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 start-time '${start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+fv 1 end-date '${end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 end-time '${end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+submit
+code 200
+url http://localhost:32198/netunong/manage/
+notfind "//li[@class='error']" x
+find "//li[@class='success']" x
+find '${activity1}'
+find '${start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+find '${end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+
+run 'wp1 = employee.last_working_period'
+run 'assert wp1.last_activity == activity1, "no?"'
+
+# Another one
+
+follow add-period
+setglobal activity2 'Search WPs using selected tasks'
+fv 1 activity ${activity2}
+fv 1 task ${task2.id}
+fv 1 start-date '${start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 start-time '${start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+fv 1 end-date '${end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+fv 1 end-time '${end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+submit
+code 200
+url http://localhost:32198/netunong/manage/
+notfind "//li[@class='error']" x
+find "//li[@class='success']" x
+find '$activity2'
+find '${start.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${start.strftime(settings.NETUNONG_TIME_FORMAT)}'
+find '${end.strftime(settings.NETUNONG_DATE_FORMAT)}'
+find '${end.strftime(settings.NETUNONG_TIME_FORMAT)}'
+
+run 'wp2 = employee.last_working_period'
+run 'assert wp2.last_activity == activity2, "no?"'

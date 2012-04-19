@@ -1,0 +1,81 @@
+{% extends "model.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Netuno NG - Manage" %}{% endblock %}
+
+{% block customcss %}
+<link rel="stylesheet" type="text/css" href="/static/manage.css" />
+<link type="text/css" href="/static/css/custom-theme/jquery-ui-1.8.12.custom.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/static/timePicker.css" />
+
+<script type="application/javascript" src="/static/js/jquery-1.7.1.min.js"></script>
+<script type="application/javascript" src="/static/js/jquery-ui-1.8.18.custom.min.js"></script>
+<script type="application/javascript" src="/static/js/jquery.timePicker.js"></script>
+<script type="application/javascript" src="/static/js/dateinput.js"></script>
+<script type="application/javascript" src="/static/js/jquery.autocomplete.pack.js"></script>
+<script type="application/javascript" src="/static/js/jquery.select-autocomplete.js"></script>
+<script type="application/javascript" src="/static/js/task-autocomplete.js"></script>
+<script type="application/javascript" src="/static/js/manage.js"></script>
+{% endblock %}
+
+{% block content %}
+<!-- Waiting for its hour -->
+<!--form name="filter" method="get" action=".">
+    <fieldset>
+        <label for="startperiod">{% trans "After day" %}</label>
+        <input type="text" id="startperiod" class="date" name="startperiod" value="{{startperiod}}" />
+        <label for="endperiod">{% trans "Before day" %}</label>
+        <input type="text" id="endperiod" class="date" name="endperiod" value="{{endperiod}}" />
+        <label for="tasks">{% trans "Tasks" %}</label>
+        <span class="info">{% trans "No task selected" %}</span>
+        <button type="submit" name="submit" value="select_tasks" id="select_tasks">
+            {% trans "Select tasks" %}
+        </button>
+    </fieldset>
+    <input type="submit" id="filter" value="Filter" />
+</form-->
+
+<form class="form-task" name="form-task"
+        action="{% block task_action %}.{% endblock %}" method="GET">
+<div id="wp-list-operations" class="list-toolbar">
+    {% block task_operations %}
+    <button type="submit" name="operation" id="select" value="select">
+        {% trans "Select" %}
+    </button>
+    {% endblock %}
+</div>
+<div class="tasks">
+    <input type="hidden" name="startperiod" value="{{startperiod|escape}}">
+    <input type="hidden" name="endperiod" value="{{endperiod|escape}}">
+    {% csrf_token %}
+    <div class="header row">
+        <span class="column selected">&nbsp;</span>
+        <span class="column name">{% trans "Name" %}</span>
+        <span class="column project">{% trans "Project" %}</span>
+        <span class="column parent">{% trans "Parent" %}</span>
+        <span class="column done">{% trans "Done" %}</span>
+    </div>
+    {% for task in tasks %}
+    <div id="row{{task.id}}" class="row">
+        <span class="column  executed">
+            <input type="hidden" id="task{{task.id}}" name="task" value="{{task.id|escape}}" />
+            <!-- TODO change name -->
+            <input class="selected" type="checkbox" name="tasks" value="{{task.id|escape}}" />
+        </span>
+        <span class="column  name">{{task.name|escape}}</span>
+        <span class="column  project">{{task.project.name|escape}}</span>
+        <span class="column  parent">
+            {% if task.parent %}{{task.parent|escape}}{% endif %}
+        </span>
+        <span class="column  done">
+            {% if task.done %}
+                {% trans "yes" %}
+            {% else %}
+                {% trans "no" %}
+            {% endif %}
+        </span>
+    {% endfor %}
+</div>
+</form>
+{% endblock %}
+

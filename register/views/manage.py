@@ -8,9 +8,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import loader, RequestContext
 from django.utils.translation import gettext as _
-from django.contrib.auth.decorators import login_required
 
 from register.models import Employee, Task, WorkingPeriod
+from register.views import search
 
 from settings import NETUNONG_DATE_FORMAT, NETUNONG_TIME_FORMAT
 
@@ -19,6 +19,9 @@ def get_manage(request):
     """
     Shows the working period management page
     """
+    if 'submit' in request.GET and request.GET['submit'] == 'select_tasks':
+        url = "%s?%s" % (reverse(search.search_tasks), request.META['QUERY_STRING'])
+        return HttpResponseRedirect(url)
     employee = request.user.get_profile()
     filter_params = {}
     startperiod = endperiod = ""
@@ -34,16 +37,14 @@ def get_manage(request):
         filter_params['end__lt'] = date
     if 'tasks' in request.GET and request.GET['tasks']:
         tasks_ids = request.GET.getlist('tasks')
-        selected_tasks = set(Task.objects.get(id=task_id) for task_id in tasks_ids)
+        selected_tasks = set(Task.objects.get(id=int(task_id)) for task_id in tasks_ids)
         filter_params['executed_task__in'] = selected_tasks
     wps = employee.workingperiod_set.filter(**filter_params)
-    tasks = employee.tasks.all()
     template = loader.get_template("register/manage.html")
     context = RequestContext(request, {
             'employee' : employee, 'settings' : settings,
             'working_periods' : wps, 'startperiod' : startperiod,
-            'endperiod' : endperiod, 'tasks' : tasks, 
-            'selected_tasks' : selected_tasks,
+            'endperiod' : endperiod, 'selected_tasks' : selected_tasks,
     })
     return HttpResponse(template.render(context))
 
